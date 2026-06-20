@@ -6,19 +6,16 @@ import SignaturePreparationSection from '../../components/SignaturePreparationSe
 import FeaturesStrip from '../../components/FeaturesStrip';
 import StreetStyleSection from '../../components/StreetStyleSection';
 import BurgerAssemblySection from '../../components/BurgerAssemblySection';
-import BestSellerSection from '../../components/BestSellerSection';
 import QROrderingSection from '../../components/QROrderingSection';
 import Footer from '../../components/Footer';
 import AnimatedChickenLeg from '../../components/AnimatedChickenLeg';
 import { getShopBySlug } from '../../services/shopService';
-import { getMenuBySlug } from '../../services/menuService';
 import { Loader2 } from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal';
 
 const LandingPage = () => {
   const [coords, setCoords] = useState(null);
   const [shop, setShop] = useState(null);
-  const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -39,21 +36,12 @@ const LandingPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [shopRes, menuRes] = await Promise.all([
-          getShopBySlug(defaultSlug),
-          getMenuBySlug(defaultSlug),
-        ]);
+        const shopRes = await getShopBySlug(defaultSlug);
 
         if (shopRes.success) {
           setShop(shopRes.data);
         } else {
           throw new Error(shopRes.message || 'Failed to fetch shop info');
-        }
-
-        if (menuRes.success) {
-          setMenuItems(menuRes.data);
-        } else {
-          throw new Error(menuRes.message || 'Failed to fetch menu items');
         }
       } catch (err) {
         console.error('Landing page fetch error:', err);
@@ -167,10 +155,6 @@ const LandingPage = () => {
         <>
           <ScrollReveal type="section">
             <BurgerAssemblySection />
-          </ScrollReveal>
-          
-          <ScrollReveal type="section">
-            <BestSellerSection menuItems={menuItems} slug={shop?.slug} />
           </ScrollReveal>
           
           <ScrollReveal type="section">

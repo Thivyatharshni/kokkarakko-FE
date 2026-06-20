@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { QrCode } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ shop }) => {
   const [activeTab, setActiveTab] = useState('landing');
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,8 +76,8 @@ const Navbar = ({ shop }) => {
           </button>
           
           <button 
-            onClick={() => scrollToSection('bestsellers', 'menu')}
-            className={`nav-link relative py-2 ${textColorClass} hover:text-[#D90404] transition-colors ${activeTab === 'menu' ? 'active' : ''}`}
+            onClick={() => navigate(`/menu/${shop?.slug || 'kokkarakko-fried-chicken'}`)}
+            className={`nav-link relative py-2 text-[#111111] hover:text-[#E50914] transition-colors ${activeTab === 'menu' ? 'active' : ''}`}
           >
             Menu
           </button>

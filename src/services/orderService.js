@@ -5,8 +5,13 @@ export const createOrder = async (orderData) => {
   return response.data;
 };
 
-export const getShopOrders = async (shopId) => {
-  const response = await api.get(`/orders/shop/${shopId}`);
+export const getLiveOrders = async (shopId) => {
+  const response = await api.get(`/orders/live/${shopId}`);
+  return response.data;
+};
+
+export const getHistoryOrders = async (shopId, params = {}) => {
+  const response = await api.get(`/orders/history/${shopId}`, { params });
   return response.data;
 };
 

@@ -18,6 +18,8 @@ const AdminLayout = () => {
   const navItems = [
     { name: 'Dashboard', path: '/owner/dashboard', icon: <LayoutDashboard size={20} /> },
     { name: 'Menu Management', path: '/owner/menu', icon: <UtensilsCrossed size={20} /> },
+    { name: 'Categories', path: '/owner/categories', icon: <MenuIcon size={20} /> },
+    { name: 'Analytics', path: '/owner/analytics', icon: <LayoutDashboard size={20} /> },
     { name: 'Orders', path: '/owner/orders', icon: <ClipboardList size={20} /> },
     { name: 'QR Code', path: '/owner/qr', icon: <QrCode size={20} /> },
   ];
