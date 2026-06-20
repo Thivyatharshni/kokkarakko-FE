@@ -42,8 +42,8 @@ const HeroSection = ({ slug, shop }) => {
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center relative z-10 w-full py-4 lg:py-6">
         
-        {/* Left Column: Typography & Text Wrapper - Premium Centered-Left Composition */}
-        <div className="lg:col-span-7 xl:col-span-6 lg:col-start-4 text-center lg:text-left flex flex-col justify-center items-center lg:items-start z-20 pt-20 lg:pt-24 space-y-6 md:space-y-8 max-w-xl w-full">
+        {/* Left Column: Typography & Text Wrapper - Premium Center-Left Composition */}
+        <div className="lg:col-span-6 xl:col-span-6 lg:col-start-3 text-center lg:text-left flex flex-col justify-center items-center lg:items-start z-20 pt-24 lg:pt-28 space-y-6 md:space-y-8 max-w-[580px] w-full">
           
           {/* Red Brush Banner / Badge */}
           <motion.div
