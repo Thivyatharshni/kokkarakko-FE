@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { IMAGE_BASE_URL } from '../config/constants';
 import toast from 'react-hot-toast';
+import ScrollReveal from './ScrollReveal';
 
 const BestSellerSection = ({ menuItems, slug }) => {
   const navigate = useNavigate();
@@ -29,7 +30,6 @@ const BestSellerSection = ({ menuItems, slug }) => {
 
   const getCategoryTag = (category) => {
     if (!category) return 'BEST SELLER';
-    // Map certain categories to match reference tags
     const catUpper = category.toUpperCase();
     if (catUpper.includes('LEG')) return 'BEST SELLER';
     if (catUpper.includes('WING')) return 'HOT & SPICY';
@@ -49,7 +49,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Headings */}
-        <div className="text-center mb-16 space-y-2">
+        <ScrollReveal type="text" className="text-center mb-16 space-y-2">
           <div className="flex items-center justify-center gap-2 text-[#E50914] font-black text-lg md:text-xl">
             <span>→</span>
             <span className="italic uppercase tracking-widest font-black">Our Bestsellers</span>
@@ -58,7 +58,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
           <h2 className="text-4xl md:text-5xl font-black text-[#111111] tracking-tight uppercase">
             PURE <span className="text-[#E50914]">FRIED.</span> PURE LOVE.
           </h2>
-        </div>
+        </ScrollReveal>
 
         {/* Bestseller Grid */}
         {bestSellers.length === 0 ? (
@@ -82,7 +82,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
             {bestSellers.map((item) => {
               const imageUrl = item.image
                 ? `${IMAGE_BASE_URL}${item.image}`
-                : '/placeholder-food.png';
+                : '/placeholder-food.svg';
 
               return (
                 <motion.div
@@ -91,7 +91,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
                     hidden: { opacity: 0, y: 30 },
                     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                   }}
-                  className="bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 p-4 flex flex-col justify-between relative group hover:-translate-y-1"
+                  className="bestseller-card bg-white rounded-3xl border border-gray-100 shadow-md p-4 flex flex-col justify-between relative group"
                 >
                   
                   {/* Category Tag (Top Left) */}
@@ -100,14 +100,14 @@ const BestSellerSection = ({ menuItems, slug }) => {
                   </span>
 
                   {/* Product Image */}
-                  <div className="w-full h-40 flex items-center justify-center mb-6 overflow-hidden rounded-2xl bg-gray-50/50 p-2">
+                  <div className="bestseller-image-container">
                     <img
                       src={imageUrl}
                       alt={item.name}
-                      className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300 select-none"
+                      className="bestseller-image select-none"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = '/placeholder-food.png';
+                        e.target.src = '/placeholder-food.svg';
                       }}
                     />
                   </div>
@@ -131,17 +131,15 @@ const BestSellerSection = ({ menuItems, slug }) => {
                       </p>
 
                       {/* Add to Order Button */}
-                      <motion.button
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
+                      <button
                         onClick={(e) => handleAddToCart(e, item)}
-                        className="w-full flex items-center justify-between border-2 border-gray-100 hover:border-[#E50914] rounded-xl overflow-hidden bg-white text-gray-700 hover:text-[#E50914] font-bold text-xs transition-colors py-1 pl-3 pr-1"
+                        className="add-to-order-btn w-full flex items-center justify-between border-2 border-gray-100 rounded-xl overflow-hidden bg-white text-gray-700 font-bold text-xs py-1 pl-3 pr-1"
                       >
                         <span className="uppercase tracking-wider">Add to Order</span>
-                        <span className="bg-[#E50914] text-white p-1.5 rounded-lg flex items-center justify-center">
+                        <span className="add-to-order-icon bg-[#E50914] text-white p-1.5 rounded-lg flex items-center justify-center">
                           <Plus size={12} strokeWidth={3} />
                         </span>
-                      </motion.button>
+                      </button>
                     </div>
 
                   </div>
@@ -154,18 +152,16 @@ const BestSellerSection = ({ menuItems, slug }) => {
 
         {/* View Full Menu CTA */}
         <div className="flex justify-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={() => slug && navigate(`/menu/${slug}`)}
-            className="group bg-[#E50914] hover:bg-[#c40710] text-white font-black text-xs md:text-sm uppercase tracking-wider py-4 px-8 rounded-full shadow-lg shadow-red-500/20 flex items-center justify-center gap-2 transition-all duration-200"
+            className="premium-btn group bg-[#E50914] hover:bg-[#c40710] text-white font-black text-xs md:text-sm uppercase tracking-wider py-4 px-8 rounded-full shadow-lg shadow-red-500/20 flex items-center justify-center gap-2"
             style={{
               clipPath: 'polygon(3% 0%, 97% 0%, 100% 50%, 97% 100%, 3% 100%, 0% 50%)'
             }}
           >
             View Full Menu
             <span className="font-bold group-hover:translate-x-1 transition-transform duration-200">→</span>
-          </motion.button>
+          </button>
         </div>
 
       </div>

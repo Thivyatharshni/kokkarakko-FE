@@ -3,28 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 
-const HeroSection = ({ slug }) => {
+const HeroSection = ({ slug, shop, bucketRef, originRef }) => {
   const navigate = useNavigate();
 
   const handleExploreMenu = () => {
     if (slug) {
       navigate(`/menu/${slug}`);
     } else {
-      // Fallback
       const el = document.getElementById('bestsellers');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <section className="relative min-h-screen pt-24 md:pt-32 pb-16 flex items-center bg-white overflow-hidden">
+    <section className="relative lg:h-[calc(100vh-80px)] min-h-[600px] pt-28 lg:pt-20 flex items-center bg-white overflow-hidden text-[#111111]">
       {/* Background Smoke Texture Overlay */}
       <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#111_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 w-full">
         
         {/* Left Column: Typography & Text */}
-        <div className="lg:col-span-6 space-y-8 text-center lg:text-left flex flex-col justify-center">
+        <div className="lg:col-span-6 space-y-5 text-center lg:text-left flex flex-col justify-center">
           
           {/* Red Brush Banner */}
           <motion.div
@@ -79,18 +78,16 @@ const HeroSection = ({ slug }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={handleExploreMenu}
-              className="group bg-[#E50914] hover:bg-[#c40710] text-white font-black text-sm uppercase tracking-wider py-4.5 px-8 rounded-full shadow-xl shadow-red-500/30 flex items-center justify-center gap-3 mx-auto lg:mx-0 transition-all duration-200"
+              className="premium-btn group bg-[#E50914] hover:bg-[#c40710] text-white font-black text-sm uppercase tracking-wider py-4.5 px-8 rounded-full shadow-xl shadow-red-500/30 flex items-center justify-center gap-3 mx-auto lg:mx-0"
             >
               <ShoppingCart size={18} className="group-hover:rotate-12 transition-transform duration-200" />
               Explore Menu
               <span className="bg-white text-[#E50914] w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs group-hover:translate-x-1 transition-transform duration-200">
                 →
               </span>
-            </motion.button>
+            </button>
           </motion.div>
 
           {/* Customer Trust Row */}
@@ -153,15 +150,27 @@ const HeroSection = ({ slug }) => {
 
           {/* Chicken Bucket Image */}
           <motion.div
+            ref={bucketRef}
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 100, damping: 15, delay: 0.3 }}
-            className="relative z-10 max-w-md w-full drop-shadow-[0_20px_35px_rgba(0,0,0,0.15)]"
+            className="relative z-10 max-w-md w-full aspect-square drop-shadow-[0_20px_35px_rgba(0,0,0,0.15)]"
           >
             <img
               src="/hero-bucket.png"
               alt="Crispy Fried Chicken Bucket"
-              className="w-full h-auto object-contain select-none"
+              className="w-full h-full object-contain select-none"
+            />
+            {/* Start coordinate target representing the selected leg piece inside the bucket */}
+            <div 
+              ref={originRef} 
+              className="hero-origin-chicken absolute pointer-events-none opacity-0"
+              style={{
+                top: '13.18%',
+                left: '31.25%',
+                width: '24.51%',
+                height: '24.02%'
+              }}
             />
 
             {/* Rotating Circular Badge (Bottom Right) */}

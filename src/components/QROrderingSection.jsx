@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import QRCode from 'react-qr-code';
 import { QrCode, ClipboardList, Send, ArrowRight } from 'lucide-react';
+import ScrollReveal from './ScrollReveal';
 
-const QROrderingSection = ({ slug }) => {
+const QROrderingSection = ({ slug, shop }) => {
   const fullShopUrl = `${window.location.origin}/menu/${slug || 'kokkarakko-fried-chicken'}`;
+  const brandName = shop?.shopName ? shop.shopName.split(' ')[0].toUpperCase() : 'KOKKARAKKO';
 
   const steps = [
     {
@@ -41,14 +43,14 @@ const QROrderingSection = ({ slug }) => {
           <div className="lg:col-span-7 space-y-8 flex flex-col justify-center text-center lg:text-left">
             
             {/* Header */}
-            <div className="space-y-3">
+            <ScrollReveal type="text" className="space-y-3">
               <h2 className="text-5xl md:text-6xl font-black tracking-tight uppercase leading-none">
                 SCAN. <span className="text-[#E50914]">ORDER.</span> ENJOY.
               </h2>
               <p className="text-gray-400 text-sm md:text-base font-semibold max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 Scan the QR code to view our digital menu and place your order instantly. No app download required!
               </p>
-            </div>
+            </ScrollReveal>
 
             {/* QR Code Display & direct link wrapper */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8">
@@ -66,7 +68,7 @@ const QROrderingSection = ({ slug }) => {
                 </div>
                 {/* Micro branding under QR */}
                 <div className="mt-3 leading-none text-center">
-                  <span className="text-[10px] font-black text-[#111111] uppercase tracking-widest block">TFC ORDER</span>
+                  <span className="text-[10px] font-black text-[#111111] uppercase tracking-widest block">{brandName} ORDER</span>
                   <span className="text-[7px] font-bold text-gray-400 uppercase tracking-widest block mt-0.5">Scan to Order</span>
                 </div>
               </div>
@@ -122,7 +124,7 @@ const QROrderingSection = ({ slug }) => {
             <div className="relative max-w-sm w-full select-none">
               <img
                 src="/street-cart.png"
-                alt="TFC Fried Chicken Cart"
+                alt={`${shop?.shopName || 'Kokkarakko'} Cart`}
                 className="w-full h-auto object-contain rounded-3xl drop-shadow-[0_10px_30px_rgba(229,9,20,0.15)]"
               />
 
