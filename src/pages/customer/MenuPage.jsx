@@ -11,9 +11,13 @@ import { getShopBySlug } from '../../services/shopService';
 import { trackQRScan } from '../../services/qrService';
 import { IMAGE_BASE_URL } from '../../config/constants';
 import toast from 'react-hot-toast';
+import { getShopBySlug } from '../../services/shopService';
+import { trackQRScan } from '../../services/qrService';
 
-// Import banner image statically if possible, otherwise use fallback
-import defaultBannerImg from '../../assets/images/chicken wings.jpg';
+// Import banner images
+import bucketImg from '../../assets/images/bucket_chicken.png';
+import burgerImg from '../../assets/images/burger.png';
+import popcornImg from '../../assets/images/popcorn_chicken.png';
 
 const MenuPage = () => {
   const { slug } = useParams();
@@ -29,7 +33,40 @@ const MenuPage = () => {
   const cartCount = getCartCount();
   const cartTotal = getCartTotal();
 
+
+  const [hasTracked, setHasTracked] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [bucketImg, burgerImg, popcornImg];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        const res = await getShopBySlug(slug);
+        if (res.success && res.data && !hasTracked) {
+          const shopId = res.data._id;
+          await trackQRScan(shopId);
+          setHasTracked(true);
+        }
+      } catch (error) {
+        console.error('Failed to track QR scan:', error);
+      }
+    };
+
+    if (slug && !hasTracked) {
+      trackVisit();
+    }
+  }, [slug, hasTracked]);
+
+
   // Fetch Menu
+
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -88,14 +125,7 @@ const MenuPage = () => {
 
   const handleAddToCart = (item) => {
     addToCart(item);
-    toast.success(`${item.name} added to cart!`, {
-      icon: '🍗',
-      style: {
-        background: '#1A1A1A',
-        color: '#ffffff',
-        border: '1px solid #333'
-      }
-    });
+    navigate(`/cart/${slug || 'kokkarakko-fried-chicken'}`);
   };
 
   if (loading) {
@@ -124,23 +154,7 @@ const MenuPage = () => {
           />
         </div>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-3 md:gap-4 shrink-0">
-          <div 
-            onClick={() => toast('Cart drawer coming soon!', { icon: '🛒' })}
-            className="relative bg-[#141414] p-3 rounded-full cursor-pointer hover:bg-[#222] transition-colors border border-[#222]"
-          >
-            <ShoppingCart className="w-5 h-5 text-gray-300" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-[#E50914] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md border-2 border-[#0A0A0A]">
-                {cartCount}
-              </span>
-            )}
-          </div>
-          <div className="bg-[#141414] p-3 rounded-full cursor-pointer hover:bg-[#222] transition-colors border border-[#222]">
-            <User className="w-5 h-5 text-gray-300" />
-          </div>
-        </div>
+        {/* Right Actions (Removed per request) */}
       </header>
 
       {/* Hero Banner */}
@@ -154,9 +168,9 @@ const MenuPage = () => {
             {/* Mobile dark overlay */}
             <div className="block md:hidden absolute inset-0 bg-black/60 z-10"></div>
             <img 
-              src={defaultBannerImg} 
+              src={slides[currentSlide]} 
               alt="Hot Fried Chicken" 
-              className="w-full h-full object-cover object-center" 
+              className="w-full h-full object-cover object-center transition-all duration-700 ease-in-out" 
               onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder-food.svg'; }} 
             />
           </div>
@@ -180,12 +194,21 @@ const MenuPage = () => {
 
           {/* Carousel Controls */}
           <div className="absolute bottom-6 left-8 md:left-14 flex items-center gap-2 z-20">
-            <div className="w-6 h-1.5 rounded-full bg-[#E50914]"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 cursor-pointer"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 cursor-pointer"></div>
+            {slides.map((_, idx) => (
+              <div 
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-1.5 rounded-full cursor-pointer transition-all ${
+                  currentSlide === idx ? 'w-6 bg-[#E50914]' : 'w-1.5 bg-gray-500'
+                }`}
+              ></div>
+            ))}
           </div>
           
-          <div className="absolute right-6 top-1/2 -translate-y-1/2 z-20 hidden md:flex cursor-pointer bg-black/40 hover:bg-black/60 p-3 rounded-full backdrop-blur-sm border border-white/10 transition-colors shadow-lg">
+          <div 
+            onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-20 hidden md:flex cursor-pointer bg-black/40 hover:bg-black/60 p-3 rounded-full backdrop-blur-sm border border-white/10 transition-colors shadow-lg"
+          >
             <ChevronRight className="w-5 h-5 text-white" />
           </div>
         </div>
@@ -193,7 +216,7 @@ const MenuPage = () => {
       </div>
 
       {/* Categories & Filter */}
-      <div className="px-6 max-w-[1400px] mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="px-6 max-w-[1100px] mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex gap-3 overflow-x-auto w-full md:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <button 
             onClick={() => setActiveCategory('ALL')}
@@ -228,23 +251,18 @@ const MenuPage = () => {
           })}
         </div>
 
-        {/* Sort Dropdown */}
-        <div className="bg-[#1A1A1A] border border-[#222] rounded-xl px-4 py-2.5 flex items-center gap-2 cursor-pointer hover:bg-[#222] transition-colors shrink-0 self-start md:self-auto shadow-sm">
-          <span className="text-gray-400 text-xs font-medium">Sort by:</span>
-          <span className="text-white text-sm font-bold">Popular</span>
-          <ChevronDown className="w-4 h-4 text-gray-400 ml-2" />
-        </div>
+        {/* Sort Dropdown (Removed) */}
       </div>
 
       {/* Section Title */}
-      <div className="px-6 max-w-[1400px] mx-auto mb-6 mt-2">
+      <div className="px-6 max-w-[1100px] mx-auto mb-6 mt-2">
         <h2 className="text-2xl font-bold text-white tracking-tight">
           {activeCategory === 'ALL' ? 'All Items' : activeCategory}
         </h2>
       </div>
 
       {/* Menu List */}
-      <div className="px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-[1400px] mx-auto pb-12">
+      <div className="px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1100px] mx-auto pb-12">
         {filteredItems.length === 0 ? (
           <div className="col-span-full text-center py-20 text-gray-500 font-bold uppercase tracking-wider text-sm">
             No items found.
@@ -260,18 +278,15 @@ const MenuPage = () => {
               <div key={item._id} className="bg-[#141414] border border-[#222] rounded-2xl overflow-hidden flex flex-col group hover:border-[#333] transition-colors shadow-sm hover:shadow-lg">
                 
                 {/* Image Section */}
-                <div className="relative h-56 w-full overflow-hidden bg-[#1A1A1A]">
+                <div className="relative h-40 w-full overflow-hidden bg-[#1A1A1A]">
                   <img src={imageUrl} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                        onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder-food.svg'; }} />
                   
-                  {/* Heart Icon */}
-                  <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm p-2.5 rounded-full cursor-pointer hover:bg-black/70 transition-colors border border-white/10 z-10">
-                    <Heart className="w-4 h-4 text-white hover:text-red-500 transition-colors" />
-                  </div>
+
                 </div>
 
                 {/* Content Section */}
-                <div className="p-5 flex flex-col flex-grow">
+                <div className="p-4 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-1.5 gap-2">
                     <h3 className="text-white font-bold text-[1.1rem] leading-tight tracking-tight">{item.name}</h3>
                     <span className="text-[#E50914] font-black text-lg shrink-0">
@@ -285,16 +300,10 @@ const MenuPage = () => {
                     </p>
                   )}
                   
-                  <div className="flex justify-between items-end mt-auto pt-2">
-                    <div className="flex items-center gap-1.5 text-xs">
-                      <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                      <span className="text-white font-semibold">{rating}</span>
-                      <span className="text-gray-500 font-medium">({reviews})</span>
-                    </div>
-                    
+                  <div className="flex justify-end mt-auto pt-2">
                     <button 
                       onClick={() => handleAddToCart(item)}
-                      className="bg-[#E50914] text-white font-bold text-xs uppercase px-4 py-2.5 rounded-xl flex items-center hover:bg-[#CC0812] transition-colors shadow-lg shadow-red-500/10"
+                      className="bg-[#E50914] text-white font-bold text-xs uppercase px-5 py-2 rounded-lg flex items-center hover:bg-[#CC0812] transition-colors shadow-md shadow-red-500/10"
                     >
                       ADD <PlusCircle className="w-4 h-4 ml-1.5" />
                     </button>
