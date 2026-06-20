@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -81,6 +82,35 @@ const MenuPage = () => {
       </div>
     );
   }
+=======
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { getShopBySlug } from '../../services/shopService';
+import { trackQRScan } from '../../services/qrService';
+
+const MenuPage = () => {
+  const { slug } = useParams();
+  const [hasTracked, setHasTracked] = useState(false);
+
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        const res = await getShopBySlug(slug);
+        if (res.success && res.data && !hasTracked) {
+          const shopId = res.data._id;
+          await trackQRScan(shopId);
+          setHasTracked(true);
+        }
+      } catch (error) {
+        console.error('Failed to track QR scan:', error);
+      }
+    };
+
+    if (slug && !hasTracked) {
+      trackVisit();
+    }
+  }, [slug, hasTracked]);
+
 
   return (
     <div className="bg-[#0A0A0A] min-h-screen font-sans text-white pb-20">
