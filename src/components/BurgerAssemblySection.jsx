@@ -483,7 +483,7 @@ const BurgerAssemblySection = () => {
           {/* Right Side: Storytelling Content Only (50% - No Preview Card) */}
           <motion.div 
             style={{ opacity: rightColumnOpacity }}
-            className="w-1/2 h-full flex flex-col justify-center px-24 bg-gradient-to-r from-transparent to-gray-50/10 z-10 relative"
+            className="w-1/2 h-full flex flex-col justify-center px-24 bg-gradient-to-r from-transparent to-gray-50/10 z-10 relative pt-12"
           >
             {/* Ambient Watermark Background */}
             <div className="absolute top-1/2 left-0 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] font-black text-[220px] text-gray-900 leading-none uppercase italic tracking-tighter whitespace-nowrap z-0">
