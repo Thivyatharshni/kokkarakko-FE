@@ -15,22 +15,23 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-red-500 rounded-full;
+    background-color: #D90404;
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-red-600;
+    background-color: #b80303;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300;
+    @apply bg-[#D90404] hover:bg-[#b80303] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300;
   }
   .btn-secondary {
     @apply bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300;
   }
   .btn-outline {
-    @apply border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300;
+    @apply border-2 border-[#D90404] text-[#D90404] hover:bg-[#D90404] hover:text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300;
   }
 
   /* Premium button hover, lift & shine sweep effects */
@@ -46,8 +47,8 @@
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
   }
   
-  .premium-btn.bg-\[\#E50914\]:hover {
-    box-shadow: 0 15px 30px rgba(229, 9, 20, 0.4) !important;
+  .premium-btn.bg-\[\#D90404\]:hover {
+    box-shadow: 0 15px 30px rgba(217, 4, 4, 0.45) !important;
   }
   
   /* Subtle shine sweep */
@@ -82,7 +83,7 @@
   .bestseller-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 22px 40px -10px rgba(0, 0, 0, 0.14) !important;
-    border-color: rgba(229, 9, 20, 0.18) !important;
+    border-color: rgba(217, 4, 4, 0.22) !important;
   }
 
   /* Bestseller Product Image adjustment & hover behavior */
@@ -123,9 +124,9 @@
   
   .add-to-order-btn:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 10px 15px -3px rgba(229, 9, 20, 0.22), 0 4px 6px -2px rgba(229, 9, 20, 0.12) !important;
-    border-color: #E50914 !important;
-    color: #E50914 !important;
+    box-shadow: 0 10px 15px -3px rgba(217, 4, 4, 0.25), 0 4px 6px -2px rgba(217, 4, 4, 0.15) !important;
+    border-color: #D90404 !important;
+    color: #D90404 !important;
   }
   
   .add-to-order-btn::after {
@@ -213,7 +214,7 @@
     left: 50%;
     width: 0;
     height: 3px;
-    background-color: #E50914;
+    background-color: #D90404;
     border-radius: 9999px;
     transform: translateX(-50%);
     transition: width 250ms ease;
@@ -223,5 +224,124 @@
   .nav-link.active::after {
     width: 100%;
   }
-}
 
+  /* Premium Dark Hero background styling */
+  .hero-premium-bg {
+    background-color: #070707;
+    background-image: linear-gradient(180deg, #070707 0%, #0C0C0C 100%);
+  }
+
+  /* Soft vignette around viewport edges (focuses eyes to center elements) */
+  .hero-vignette-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.85) 100%);
+    z-index: 2;
+  }
+
+  /* Fine cinematic grain texture overlay (2%-4% opacity) */
+  .hero-grain-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 2;
+  }
+
+  /* 3 Volumetric organic smoke layers (different depths/frequencies/drifts) */
+  .hero-smoke-layer-1 {
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise1)'/%3E%3C/svg%3E");
+    z-index: 1;
+    animation: smoke-drift-1 26s infinite alternate linear;
+  }
+
+  .hero-smoke-layer-2 {
+    position: absolute;
+    inset: -50px;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise2)'/%3E%3C/svg%3E");
+    z-index: 1;
+    animation: smoke-drift-2 32s infinite alternate linear;
+  }
+
+  .hero-smoke-layer-3 {
+    position: absolute;
+    inset: -100px;
+    opacity: 0.045;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise3)'/%3E%3C/svg%3E");
+    z-index: 1;
+    animation: smoke-drift-3 22s infinite alternate linear;
+  }
+
+  @keyframes smoke-drift-1 {
+    0% { transform: scale(1.0) translate(0, 0) rotate(0deg); }
+    100% { transform: scale(1.1) translate(15px, -15px) rotate(3deg); }
+  }
+  @keyframes smoke-drift-2 {
+    0% { transform: scale(1.05) translate(0, 0) rotate(0deg); }
+    100% { transform: scale(1.15) translate(-20px, -10px) rotate(-3deg); }
+  }
+  @keyframes smoke-drift-3 {
+    0% { transform: scale(1.1) translate(0, 0) rotate(0deg); }
+    100% { transform: scale(1.2) translate(10px, 20px) rotate(4deg); }
+  }
+
+  /* Floating Seasoning Particles System */
+  .hero-seasoning-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hero-seasoning-particle {
+    position: absolute;
+    bottom: -20px;
+    border-radius: 50%;
+    will-change: transform, opacity;
+    animation: float-seasoning 22s infinite linear;
+  }
+
+  @keyframes float-seasoning {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+      opacity: 0;
+    }
+    15% {
+      opacity: var(--particle-opacity);
+    }
+    85% {
+      opacity: var(--particle-opacity);
+    }
+    100% {
+      transform: translateY(-90vh) translateX(var(--drift-x)) rotate(360deg) scale(0.7);
+      opacity: 0;
+    }
+  }
+
+  .hero-seasoning-particle:nth-child(1)  { left: 8%;  width: 1.5px; height: 1.5px; background-color: #E7B45A; --particle-opacity: 0.35; --drift-x: 35px;  animation-delay: 0s;   animation-duration: 20s; }
+  .hero-seasoning-particle:nth-child(2)  { left: 18%; width: 2px;   height: 2px;   background-color: #D18F2A; --particle-opacity: 0.25; --drift-x: -25px; animation-delay: 3s;   animation-duration: 25s; }
+  .hero-seasoning-particle:nth-child(3)  { left: 28%; width: 1.2px; height: 1.2px; background-color: #F2D18A; --particle-opacity: 0.40; --drift-x: 45px;  animation-delay: 6s;   animation-duration: 18s; }
+  .hero-seasoning-particle:nth-child(4)  { left: 38%; width: 1.8px; height: 1.8px; background-color: #E7B45A; --particle-opacity: 0.20; --drift-x: -15px; animation-delay: 1s;   animation-duration: 22s; }
+  .hero-seasoning-particle:nth-child(5)  { left: 48%; width: 2.2px; height: 2.2px; background-color: #D18F2A; --particle-opacity: 0.30; --drift-x: 30px;  animation-delay: 8s;   animation-duration: 26s; }
+  .hero-seasoning-particle:nth-child(6)  { left: 58%; width: 1.5px; height: 1.5px; background-color: #F2D18A; --particle-opacity: 0.35; --drift-x: -35px; animation-delay: 11s;  animation-duration: 21s; }
+  .hero-seasoning-particle:nth-child(7)  { left: 68%; width: 2px;   height: 2px;   background-color: #E7B45A; --particle-opacity: 0.25; --drift-x: 20px;  animation-delay: 4s;   animation-duration: 24s; }
+  .hero-seasoning-particle:nth-child(8)  { left: 78%; width: 1.2px; height: 1.2px; background-color: #D18F2A; --particle-opacity: 0.40; --drift-x: -40px; animation-delay: 9s;   animation-duration: 19s; }
+  .hero-seasoning-particle:nth-child(9)  { left: 88%; width: 1.8px; height: 1.8px; background-color: #F2D18A; --particle-opacity: 0.20; --drift-x: 10px;  animation-delay: 14s;  animation-duration: 23s; }
+  .hero-seasoning-particle:nth-child(10) { left: 95%; width: 1.5px; height: 1.5px; background-color: #E7B45A; --particle-opacity: 0.30; --drift-x: -20px; animation-delay: 2s;   animation-duration: 27s; }
+  .hero-seasoning-particle:nth-child(11) { left: 13%; width: 2.2px; height: 2.2px; background-color: #F2D18A; --particle-opacity: 0.25; --drift-x: 25px;  animation-delay: 16s;  animation-duration: 20s; }
+  .hero-seasoning-particle:nth-child(12) { left: 33%; width: 1.2px; height: 1.2px; background-color: #E7B45A; --particle-opacity: 0.40; --drift-x: -30px; animation-delay: 7s;   animation-duration: 22s; }
+  .hero-seasoning-particle:nth-child(13) { left: 53%; width: 1.8px; height: 1.8px; background-color: #D18F2A; --particle-opacity: 0.20; --drift-x: 15px;  animation-delay: 12s;  animation-duration: 25s; }
+  .hero-seasoning-particle:nth-child(14) { left: 73%; width: 1.5px; height: 1.5px; background-color: #F2D18A; --particle-opacity: 0.35; --drift-x: -25px; animation-delay: 5s;   animation-duration: 18s; }
+  .hero-seasoning-particle:nth-child(15) { left: 83%; width: 2px;   height: 2px;   background-color: #E7B45A; --particle-opacity: 0.30; --drift-x: 40px;  animation-delay: 18s;  animation-duration: 26s; }
+  .hero-seasoning-particle:nth-child(16) { left: 91%; width: 1.2px; height: 1.2px; background-color: #D18F2A; --particle-opacity: 0.38; --drift-x: -10px; animation-delay: 10s;  animation-duration: 21s; }
+}

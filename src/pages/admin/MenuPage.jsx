@@ -187,6 +187,7 @@ const MenuPage = () => {
     outOfStock: menu.filter(m => m.status === 'Out Of Stock').length,
   };
 
+
   return (
     <div className="space-y-8">
       {/* Header */}

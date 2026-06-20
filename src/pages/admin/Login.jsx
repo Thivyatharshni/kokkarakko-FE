@@ -45,8 +45,8 @@ const Login = () => {
         className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden"
       >
         <div className="bg-[#111111] p-8 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-[#E50914]"></div>
-          <UtensilsCrossed size={48} className="mx-auto text-[#E50914] mb-4" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-[#D90404]"></div>
+          <UtensilsCrossed size={48} className="mx-auto text-[#D90404] mb-4" />
           <h2 className="text-3xl font-black text-white uppercase tracking-wider">Kokkarakko</h2>
           <p className="text-gray-400 mt-2 font-medium">Owner Portal Login</p>
         </div>
@@ -58,7 +58,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E50914] focus:ring-2 focus:ring-red-100 outline-none transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#D90404] focus:ring-2 focus:ring-red-100 outline-none transition-all"
               placeholder="admin@kokkarakko.com"
             />
           </div>
@@ -70,7 +70,7 @@ const Login = () => {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E50914] focus:ring-2 focus:ring-red-100 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#D90404] focus:ring-2 focus:ring-red-100 outline-none transition-all"
                 placeholder="••••••••"
               />
               <button
@@ -86,7 +86,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#E50914] hover:bg-red-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-red-500/30 flex items-center justify-center"
+            className="w-full bg-[#D90404] hover:bg-red-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-red-500/30 flex items-center justify-center"
           >
             {isLoading ? <Loader2 className="animate-spin" size={24} /> : 'Sign In to Dashboard'}
           </button>

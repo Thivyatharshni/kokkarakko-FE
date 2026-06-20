@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { getMenuBySlug } from '../../services/menuService';
+import { getShopBySlug } from '../../services/shopService';
+import { trackQRScan } from '../../services/qrService';
 import { IMAGE_BASE_URL } from '../../config/constants';
 import toast from 'react-hot-toast';
 import { getShopBySlug } from '../../services/shopService';
@@ -25,10 +27,12 @@ const MenuPage = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [hasTracked, setHasTracked] = useState(false);
   
   const { cart, addToCart, getCartCount, getCartTotal } = useCart();
   const cartCount = getCartCount();
   const cartTotal = getCartTotal();
+
 
   const [hasTracked, setHasTracked] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -60,6 +64,9 @@ const MenuPage = () => {
     }
   }, [slug, hasTracked]);
 
+
+  // Fetch Menu
+
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -83,6 +90,26 @@ const MenuPage = () => {
     };
     fetchMenu();
   }, [slug]);
+
+  // Track QR Visit
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        const res = await getShopBySlug(slug);
+        if (res.success && res.data && !hasTracked) {
+          const shopId = res.data._id;
+          await trackQRScan(shopId);
+          setHasTracked(true);
+        }
+      } catch (error) {
+        console.error('Failed to track QR scan:', error);
+      }
+    };
+
+    if (slug && !hasTracked) {
+      trackVisit();
+    }
+  }, [slug, hasTracked]);
 
   const availableCategories = [...new Set(menuItems.map(item => item.category?.toUpperCase() || 'UNCATEGORIZED'))];
   const categories = ['ALL', ...availableCategories.filter(c => c !== 'ALL')];
@@ -111,6 +138,7 @@ const MenuPage = () => {
   }
 
   return (
+
     <div className="bg-[#0A0A0A] min-h-screen font-sans text-white pb-20">
       {/* Header */}
       <header className="flex justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full gap-4">
@@ -184,6 +212,7 @@ const MenuPage = () => {
             <ChevronRight className="w-5 h-5 text-white" />
           </div>
         </div>
+
       </div>
 
       {/* Categories & Filter */}

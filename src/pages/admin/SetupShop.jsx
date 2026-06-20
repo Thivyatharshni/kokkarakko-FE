@@ -51,9 +51,9 @@ const SetupShop = () => {
         className="max-w-xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100"
       >
         <div className="bg-[#111111] p-10 text-center relative">
-          <div className="absolute top-0 left-0 w-full h-1 bg-[#E50914]"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-[#D90404]"></div>
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-800 mb-4 border-2 border-gray-700">
-             <Store size={32} className="text-[#E50914]" />
+             <Store size={32} className="text-[#D90404]" />
           </div>
           <h2 className="text-3xl font-black text-white">Setup Your Shop</h2>
           <p className="text-gray-400 mt-2 font-medium">Let's get your digital menu up and running.</p>
@@ -68,7 +68,7 @@ const SetupShop = () => {
                 type="text"
                 value={shopName}
                 onChange={(e) => setShopName(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#E50914] focus:ring-2 focus:ring-red-100 outline-none transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#D90404] focus:ring-2 focus:ring-red-100 outline-none transition-all"
                 placeholder="e.g. Kokkarakko Anna Nagar"
               />
             </div>
@@ -83,7 +83,7 @@ const SetupShop = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 rows={3}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#E50914] focus:ring-2 focus:ring-red-100 outline-none transition-all resize-none"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#D90404] focus:ring-2 focus:ring-red-100 outline-none transition-all resize-none"
                 placeholder="Shop number, street, city..."
               />
             </div>
@@ -92,7 +92,7 @@ const SetupShop = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#E50914] hover:bg-red-700 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-lg shadow-red-500/30 flex items-center justify-center mt-4"
+            className="w-full bg-[#D90404] hover:bg-red-700 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-lg shadow-red-500/30 flex items-center justify-center mt-4"
           >
             {isLoading ? <Loader2 className="animate-spin" size={24} /> : 'Create My Shop'}
           </button>

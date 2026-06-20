@@ -82,22 +82,21 @@ const QRPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         
-        {/* QR Code Generator Column */}
-        <div className="space-y-6">
-          <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200" ref={qrRef}>
-            <div className="bg-white p-4 rounded-2xl shadow-sm">
-              <QRCode
-                value={fullShopUrl}
-                size={220}
-                level="H"
-                fgColor="#111111"
-                bgColor="#ffffff"
-              />
-            </div>
-            <h2 className="mt-6 text-2xl font-black text-[#E50914] tracking-wide uppercase text-center">{shopName}</h2>
-            <p className="text-gray-500 text-sm mt-1">Scan to order</p>
+        <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200" ref={qrRef}>
+          <div className="bg-white p-4 rounded-2xl shadow-sm">
+            <QRCode
+              value={fullShopUrl}
+              size={256}
+              level="H"
+              fgColor="#111111"
+              bgColor="#ffffff"
+            />
           </div>
+          <h2 className="mt-6 text-2xl font-black text-[#E50914] tracking-wide uppercase text-center">{shopName}</h2>
+          <p className="text-gray-500 text-sm mt-1">Scan to order</p>
+        </div>
 
+        <div className="space-y-6">
           <div className="space-y-4">
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -108,11 +107,7 @@ const QRPage = () => {
               <Download size={20} /> Download High-Res PNG
             </motion.button>
           </div>
-        </div>
 
-        {/* Info Column */}
-        <div className="space-y-6">
-          
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
             <h3 className="text-xl font-bold text-gray-900">QR Information</h3>
             

@@ -50,13 +50,13 @@ const BestSellerSection = ({ menuItems, slug }) => {
         
         {/* Headings */}
         <ScrollReveal type="text" className="text-center mb-16 space-y-2">
-          <div className="flex items-center justify-center gap-2 text-[#E50914] font-black text-lg md:text-xl">
+          <div className="flex items-center justify-center gap-2 text-[#D90404] font-black text-lg md:text-xl">
             <span>→</span>
             <span className="italic uppercase tracking-widest font-black">Our Bestsellers</span>
             <span>←</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-[#111111] tracking-tight uppercase">
-            PURE <span className="text-[#E50914]">FRIED.</span> PURE LOVE.
+            PURE <span className="text-[#D90404]">FRIED.</span> PURE LOVE.
           </h2>
         </ScrollReveal>
 
@@ -95,7 +95,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
                 >
                   
                   {/* Category Tag (Top Left) */}
-                  <span className="absolute top-4 left-4 bg-[#E50914] text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded-lg uppercase shadow-sm z-10">
+                  <span className="absolute top-4 left-4 bg-[#D90404] text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded-lg uppercase shadow-sm z-10">
                     {getCategoryTag(item.category)}
                   </span>
 
@@ -126,7 +126,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
                     </div>
 
                     <div className="space-y-3">
-                      <p className="text-lg font-black text-[#E50914]">
+                      <p className="text-lg font-black text-[#D90404]">
                         ₹{item.price}
                       </p>
 
@@ -136,7 +136,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
                         className="add-to-order-btn w-full flex items-center justify-between border-2 border-gray-100 rounded-xl overflow-hidden bg-white text-gray-700 font-bold text-xs py-1 pl-3 pr-1"
                       >
                         <span className="uppercase tracking-wider">Add to Order</span>
-                        <span className="add-to-order-icon bg-[#E50914] text-white p-1.5 rounded-lg flex items-center justify-center">
+                        <span className="add-to-order-icon bg-[#D90404] text-white p-1.5 rounded-lg flex items-center justify-center">
                           <Plus size={12} strokeWidth={3} />
                         </span>
                       </button>
@@ -154,7 +154,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
         <div className="flex justify-center">
           <button
             onClick={() => slug && navigate(`/menu/${slug}`)}
-            className="premium-btn group bg-[#E50914] hover:bg-[#c40710] text-white font-black text-xs md:text-sm uppercase tracking-wider py-4 px-8 rounded-full shadow-lg shadow-red-500/20 flex items-center justify-center gap-2"
+            className="premium-btn group bg-[#D90404] hover:bg-[#b80303] text-white font-black text-xs md:text-sm uppercase tracking-wider py-4 px-8 rounded-full shadow-lg shadow-red-500/20 flex items-center justify-center gap-2"
             style={{
               clipPath: 'polygon(3% 0%, 97% 0%, 100% 50%, 97% 100%, 3% 100%, 0% 50%)'
             }}

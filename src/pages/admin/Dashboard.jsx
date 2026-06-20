@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getDashboardAnalytics } from '../../services/analyticsService';
-import { DEMO_MODE, DEMO_DASHBOARD_DATA } from '../../utils/demoData';
+import { getLiveOrders } from '../../services/orderService';
+import { DEMO_MODE, DEMO_DASHBOARD_DATA, DEMO_ORDERS_DATA } from '../../utils/demoData';
 import { UtensilsCrossed, MenuIcon, DollarSign, ShoppingBag, Package, Clock, TrendingUp } from 'lucide-react';
 import { 
   LineChart, Line, BarChart, Bar, AreaChart, Area,
@@ -28,6 +29,7 @@ const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [recentOrders, setRecentOrders] = useState([]);
 
   const fetchDashboardData = async () => {
     if (!shopId) return;
@@ -39,6 +41,18 @@ const Dashboard = () => {
         setData(res.data);
       } else {
         setError('Failed to fetch dashboard data');
+      }
+
+      // Fetch recent orders
+      if (DEMO_MODE || !res.success || !res.data || res.data.totalProducts === 0) {
+        setRecentOrders(DEMO_ORDERS_DATA.slice(0, 5));
+      } else {
+        const ordersRes = await getLiveOrders(shopId);
+        if (ordersRes.success) {
+          setRecentOrders(ordersRes.data.slice(0, 5));
+        } else {
+          setRecentOrders(DEMO_ORDERS_DATA.slice(0, 5));
+        }
       }
     } catch (err) {
       setError(err.message || 'Error loading dashboard');
@@ -62,6 +76,7 @@ const Dashboard = () => {
   const displayData = (DEMO_MODE || !data || data.totalProducts === 0) ? DEMO_DASHBOARD_DATA : data;
 
   if (!displayData) return <ErrorState message="No dashboard data found" />;
+
 
   return (
     <div className="space-y-8">
@@ -152,6 +167,53 @@ const Dashboard = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
+        </div>
+      </div>
+
+      {/* Recent Orders (Full Width) */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+        <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+          <h2 className="text-xl font-bold text-gray-900">Recent Orders</h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-gray-50 text-gray-500 text-sm">
+              <tr>
+                <th className="p-4 font-semibold">Order ID</th>
+                <th className="p-4 font-semibold">Customer</th>
+                <th className="p-4 font-semibold">Amount</th>
+                <th className="p-4 font-semibold">Status</th>
+                <th className="p-4 font-semibold">Time</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {recentOrders.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="p-8 text-center text-gray-500">No recent orders found.</td>
+                </tr>
+              ) : (
+                recentOrders.map((order) => (
+                  <tr key={order._id} className="hover:bg-gray-50 transition-colors">
+                    <td className="p-4 font-medium text-gray-900">{order.orderNumber}</td>
+                    <td className="p-4 text-gray-600">{order.customerName}</td>
+                    <td className="p-4 font-semibold text-[#E50914]">₹{order.totalAmount}</td>
+                    <td className="p-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                        order.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                        order.status === 'Pending' ? 'bg-orange-100 text-orange-700' :
+                        'bg-blue-100 text-blue-700'
+                      }`}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className="p-4 text-gray-500 text-sm">
+                      {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

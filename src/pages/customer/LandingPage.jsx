@@ -113,12 +113,12 @@ const LandingPage = () => {
       <div ref={containerRef} className="relative z-30">
         {loading ? (
           <div className="min-h-screen bg-white flex flex-col justify-center items-center gap-4">
-            <Loader2 className="animate-spin text-[#E50914]" size={40} />
+            <Loader2 className="animate-spin text-[#D90404]" size={40} />
             <p className="text-gray-500 font-bold tracking-wider uppercase text-xs">Loading Kokkarakko Experience...</p>
           </div>
         ) : error ? (
           <div className="min-h-screen bg-white flex flex-col justify-center items-center gap-4 px-6 text-center">
-            <div className="text-[#E50914] text-5xl font-black mb-2">OOPS!</div>
+            <div className="text-[#D90404] text-5xl font-black mb-2">OOPS!</div>
             <h1 className="text-2xl font-black text-[#111111] uppercase tracking-wide">Shop Not Found</h1>
             <p className="text-gray-500 max-w-md font-semibold leading-relaxed">
               The default shop <strong>{defaultSlug}</strong> could not be loaded. Please check that the backend server is running and the database is seeded.
@@ -126,10 +126,10 @@ const LandingPage = () => {
           </div>
         ) : (
           <>
-            <HeroSection slug={shop?.slug} shop={shop} bucketRef={bucketRef} originRef={originRef} />
+            <HeroSection slug={shop?.slug} shop={shop} />
             
             <ScrollReveal type="section">
-              <SignaturePreparationSection />
+              <SignaturePreparationSection bucketRef={bucketRef} originRef={originRef} />
             </ScrollReveal>
             
             <ScrollReveal type="section">

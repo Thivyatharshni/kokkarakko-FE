@@ -56,7 +56,7 @@ const OrdersPage = () => {
               <div className="flex items-start">
                 <div className="flex-shrink-0 pt-0.5">
                   <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
-                    <BellRing className="text-[#E50914]" size={24} />
+                    <BellRing className="text-[#D90404]" size={24} />
                   </div>
                 </div>
                 <div className="ml-3 flex-1">
@@ -96,6 +96,7 @@ const OrdersPage = () => {
     }
   };
 
+
   if (shopLoading || loading) return <LoadingState message="Loading orders..." />;
   if (shopError) return <ErrorState message={shopError} />;
   if (error && !DEMO_MODE) return <ErrorState message={error} onRetry={fetchOrders} />;
@@ -111,6 +112,7 @@ const OrdersPage = () => {
       time: date.toLocaleTimeString('en-US', optionsTime)
     };
   };
+
 
   return (
     <div className="space-y-6">

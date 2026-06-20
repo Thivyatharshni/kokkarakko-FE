@@ -1,8 +1,69 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import ScrollReveal from './ScrollReveal';
+
+const badgeVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { duration: 0.5, ease: 'easeOut' }
+  }
+};
+
+const headingLineNormalVariants = (index) => ({
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.15 + index * 0.15,
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+});
+
+const headingLineEmphasisVariants = (index) => ({
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.15 + index * 0.15,
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+});
+
+const descriptionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.85,
+      duration: 0.5,
+      ease: 'easeOut'
+    }
+  }
+};
+
+const ctaVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: 1.15,
+      duration: 0.5,
+      ease: 'easeOut'
+    }
+  }
+};
 
 const UrbanBackground = () => (
   <svg viewBox="0 0 1000 300" className="absolute bottom-0 left-0 w-full h-56 text-gray-100/60 fill-current pointer-events-none select-none z-0 hidden md:block">
@@ -14,6 +75,25 @@ const UrbanBackground = () => (
 const StreetStyleSection = ({ slug, shop, plateRef }) => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springConfig = { damping: 30, stiffness: 100 };
+  const parallaxX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), springConfig);
+  const parallaxY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-8, 8]), springConfig);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const xVal = (e.clientX - rect.left) / rect.width - 0.5;
+    const yVal = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(xVal);
+    mouseY.set(yVal);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -38,43 +118,72 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
   };
 
   return (
-    <section ref={sectionRef} className="relative py-24 bg-white overflow-hidden z-10 border-b border-gray-100">
+    <section 
+      id="street-style"
+      ref={sectionRef} 
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative py-24 bg-white overflow-hidden z-10 border-b border-gray-100"
+    >
       {/* Urban skyline background */}
       <UrbanBackground />
 
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 w-full py-4 lg:py-12">
         
         {/* Left Column: Info & Action */}
-        <div className="lg:col-span-6 space-y-6 text-center lg:text-left flex flex-col justify-center">
-          <div className="inline-flex self-center lg:self-start bg-[#E50914] text-white font-black text-xs px-5 py-2 uppercase tracking-widest rounded-lg shadow-md shadow-red-500/10">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          style={{ x: parallaxX, y: parallaxY }}
+          className="lg:col-span-6 space-y-6 text-center lg:text-left flex flex-col justify-center"
+        >
+          <motion.div 
+            variants={badgeVariants}
+            className="inline-flex self-center lg:self-start bg-[#D90404] text-white font-black text-xs px-5 py-2 uppercase tracking-widest rounded-lg shadow-md shadow-[#D90404]/10"
+          >
             STREET STYLE
+          </motion.div>
+
+          <div className="space-y-1">
+            <motion.h2 
+              variants={headingLineNormalVariants(0)}
+              whileHover={{ x: 5, color: '#000000' }}
+              transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+              className="text-5xl md:text-6xl font-black text-[#111111] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
+            >
+              BOLD FLAVOUR.
+            </motion.h2>
+            <motion.h2 
+              variants={headingLineEmphasisVariants(1)}
+              whileHover={{ x: 5, color: '#ff1a1a' }}
+              transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+              className="text-5xl md:text-6xl font-black text-[#D90404] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
+            >
+              STREET CRUNCH.
+            </motion.h2>
           </div>
 
-          <ScrollReveal type="text">
-            <div className="space-y-1">
-              <h2 className="text-5xl md:text-6xl font-black text-[#111111] leading-none uppercase tracking-tight">
-                BOLD FLAVOUR.
-              </h2>
-              <h2 className="text-5xl md:text-6xl font-black text-[#E50914] leading-none uppercase tracking-tight">
-                STREET CRUNCH.
-              </h2>
-            </div>
-          </ScrollReveal>
-
-          <p className="text-gray-600 text-sm md:text-base font-bold leading-relaxed max-w-md mx-auto lg:mx-0">
+          <motion.p 
+            variants={descriptionVariants}
+            className="text-gray-600 text-sm md:text-base font-bold leading-relaxed max-w-md mx-auto lg:mx-0"
+          >
             From the streets to your plate. Big crunch. Bigger attitude. Our street style recipe brings out authentic, mouth-watering heat in every bite.
-          </p>
+          </motion.p>
 
           <div className="pt-2">
-            <button
+            <motion.button
+              variants={ctaVariants}
+              whileHover={{ y: -3, boxShadow: '0 15px 30px rgba(0,0,0,0.15)' }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
               onClick={handleOrderNow}
-              className="premium-btn bg-[#111111] hover:bg-black text-white font-black text-xs uppercase tracking-wider py-4 px-8 rounded-full shadow-lg shadow-black/10 flex items-center justify-center gap-2 mx-auto lg:mx-0"
+              className="premium-btn bg-[#111111] hover:bg-black text-white font-black text-xs uppercase tracking-wider py-4 px-8 rounded-full flex items-center justify-center gap-2 mx-auto lg:mx-0 shadow-lg shadow-black/10"
             >
               Order Now
-              <ArrowRight size={14} className="text-[#E50914] stroke-[3px]" />
-            </button>
+              <ArrowRight size={14} className="text-[#D90404] stroke-[3px]" />
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Column: Cart, Plate & Serve Text */}
         <div className="lg:col-span-6 relative flex justify-center items-center py-10">
@@ -97,9 +206,9 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               className="w-full h-auto object-contain"
             />
             {/* Glowing neon red sign */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full border-4 border-[#E50914] bg-black flex flex-col items-center justify-center shadow-[0_0_15px_rgba(229,9,20,0.6),inset_0_0_8px_rgba(229,9,20,0.4)] rotate-[-12deg]">
+            <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full border-4 border-[#D90404] bg-black flex flex-col items-center justify-center shadow-[0_0_15px_rgba(217,4,4,0.6),inset_0_0_8px_rgba(217,4,4,0.4)] rotate-[-12deg]">
               <span className="text-[10px] font-black text-white tracking-widest block uppercase">FRIED</span>
-              <span className="text-[10px] font-black text-[#E50914] tracking-widest block uppercase mt-0.5">FRESH</span>
+              <span className="text-[10px] font-black text-[#D90404] tracking-widest block uppercase mt-0.5">FRESH</span>
             </div>
           </motion.div>
 
@@ -118,11 +227,11 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               {/* Inner Base */}
               <div className="w-[84%] h-[76%] bg-gradient-to-b from-[#111] to-[#060606] rounded-[50%] shadow-[inset_0_8px_16px_rgba(0,0,0,0.85)] border border-gray-950 flex items-center justify-center">
                 {/* Gold Rim Detail */}
-                <div className="w-[88%] h-[80%] rounded-[50%] border border-amber-500/10 flex items-center justify-center">
+                <div className="w-[88%] h-[80%] rounded-[50%] border border-amber-500/10 flex items-center justify-center relative">
                   {/* Plating target for the chicken leg */}
                   <div 
                     ref={plateRef}
-                    className="w-28 h-28 pointer-events-none opacity-0"
+                    className="w-28 h-28 pointer-events-none opacity-0 -translate-y-3.5"
                   />
                 </div>
               </div>
@@ -132,7 +241,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
           {/* Serve Text Overlay */}
           <motion.div
             style={{ opacity: textOpacity, y: textY }}
-            className="absolute -bottom-6 right-0 md:-right-8 z-30 text-right leading-none uppercase font-black text-lg md:text-2xl tracking-tighter text-[#E50914]"
+            className="absolute -bottom-6 right-0 md:-right-8 z-30 text-right leading-none uppercase font-black text-lg md:text-2xl tracking-tighter text-[#D90404]"
           >
             <span className="block text-[#111111] text-[10px] font-bold tracking-widest mb-1.5 opacity-60">Serving Status</span>
             FRESHLY FRIED.

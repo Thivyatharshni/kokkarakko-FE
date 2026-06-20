@@ -3,7 +3,7 @@ import { Facebook, Instagram, PhoneCall } from 'lucide-react';
 
 const Footer = ({ shop }) => {
   return (
-    <footer className="bg-[#E50914] text-white py-12 border-t border-red-500/20">
+    <footer className="bg-[#D90404] text-white py-12 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6">
         
         {/* Social Icons Row */}
@@ -39,7 +39,7 @@ const Footer = ({ shop }) => {
 
         {/* Copyright Text */}
         <div className="text-center text-xs md:text-sm font-semibold tracking-wider text-red-100/80 uppercase">
-          &copy; 2030 {shop?.shopName || 'Kokkarakko Fried Chicken'}. All Rights Reserved.
+          &copy; 2026 {shop?.shopName || 'Kokkarakko Fried Chicken'}. All Rights Reserved.
         </div>
 
       </div>
