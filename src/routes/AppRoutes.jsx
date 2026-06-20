@@ -9,8 +9,12 @@ import Login from '../pages/admin/Login';
 import SetupShop from '../pages/admin/SetupShop';
 import Dashboard from '../pages/admin/Dashboard';
 import MenuPage from '../pages/admin/MenuPage';
+import CategoryManagement from '../pages/admin/CategoryManagement';
+import Analytics from '../pages/admin/Analytics';
 import OrdersPage from '../pages/admin/OrdersPage';
+import OrderHistoryPage from '../pages/admin/OrderHistoryPage';
 import QRPage from '../pages/admin/QRPage';
+import ErrorBoundary from '../components/common/ErrorBoundary';
 import TestTailwind from '../pages/TestTailwind';
 
 // Customer Pages
@@ -46,10 +50,13 @@ const AppRoutes = () => {
         {/* The rest of the dashboard requires the owner to have created a shop */}
         <Route path="/owner" element={<RequireShop><AdminLayout /></RequireShop>}>
           <Route index element={<Navigate to="/owner/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="menu" element={<MenuPage />} />
-          <Route path="orders" element={<OrdersPage />} />
-          <Route path="qr" element={<QRPage />} />
+          <Route path="dashboard" element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+          <Route path="menu" element={<ErrorBoundary><MenuPage /></ErrorBoundary>} />
+          <Route path="categories" element={<ErrorBoundary><CategoryManagement /></ErrorBoundary>} />
+          <Route path="analytics" element={<ErrorBoundary><Analytics /></ErrorBoundary>} />
+          <Route path="orders" element={<ErrorBoundary><OrdersPage /></ErrorBoundary>} />
+          <Route path="orders/history" element={<ErrorBoundary><OrderHistoryPage /></ErrorBoundary>} />
+          <Route path="qr" element={<ErrorBoundary><QRPage /></ErrorBoundary>} />
         </Route>
       </Route>
 
