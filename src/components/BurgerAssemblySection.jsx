@@ -163,7 +163,7 @@ const BurgerAssemblySection = () => {
   });
 
   // Hero assembly burger base width (Desktop)
-  const W_hero = 480;
+  const W_hero = 350;
 
   // Specific layer configurations with target visual balance proportions
   // Top Bun = 100% (1.00), Vegetables = 90% (0.90), Cheese = 95% (0.95), Chicken = 115% (1.15), Bottom Bun = 105% (1.05)
@@ -411,7 +411,7 @@ const BurgerAssemblySection = () => {
             <motion.div 
               style={{ 
                 width: `${W_hero}px`, 
-                height: `580px`, // Restrict wrapper height to final assembled height
+                height: `${Math.round(W_hero * 1.208)}px`, // Restrict wrapper height to final assembled height
                 scale: burgerScale,
                 y: burgerY,
                 x: burgerX
