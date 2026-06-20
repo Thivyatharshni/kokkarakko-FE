@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
+import heroVideo from '../assets/animations/herosection video.mp4';
 
 const HeroSection = ({ slug, shop }) => {
   const navigate = useNavigate();
@@ -17,6 +18,16 @@ const HeroSection = ({ slug, shop }) => {
 
   return (
     <section className="relative h-screen min-h-[500px] lg:min-h-0 flex items-center hero-premium-bg overflow-hidden text-white">
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-70"
+      >
+        <source src={heroVideo} type="video/mp4" />
+      </video>
       {/* Premium Smoky Atmosphere Layers, Vignette, Grain & Floating Seasoning */}
       <div className="hero-smoke-layer-1"></div>
       <div className="hero-smoke-layer-2"></div>
