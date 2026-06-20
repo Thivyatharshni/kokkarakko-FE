@@ -122,7 +122,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
                   {/* Plating target for the chicken leg */}
                   <div 
                     ref={plateRef}
-                    className="w-28 h-28 pointer-events-none opacity-0"
+                    className="w-16 h-16 pointer-events-none opacity-0 -translate-y-2.5"
                   />
                 </div>
               </div>
