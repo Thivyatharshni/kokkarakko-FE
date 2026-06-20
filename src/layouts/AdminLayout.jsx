@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, UtensilsCrossed, ClipboardList, QrCode, LogOut, Menu as MenuIcon, X } from 'lucide-react';
+import { LayoutDashboard, UtensilsCrossed, ClipboardList, QrCode, LogOut, Menu as MenuIcon, X, Home } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const AdminLayout = () => {
@@ -52,7 +52,16 @@ const AdminLayout = () => {
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-800">
+      <div className="p-4 border-t border-gray-800 space-y-1">
+        <Link 
+          to="/" 
+          onClick={() => setIsMobileOpen(false)}
+          className="flex items-center space-x-3 w-full px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl transition-colors duration-200"
+        >
+          <Home size={20} />
+          <span className="font-semibold">Back to Home</span>
+        </Link>
+
         <button 
           onClick={handleLogout}
           className="flex items-center space-x-3 w-full px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-[#D90404] rounded-xl transition-colors duration-200"
