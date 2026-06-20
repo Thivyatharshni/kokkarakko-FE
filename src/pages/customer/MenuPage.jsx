@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
-  Search, User, ShoppingCart, Heart, Star, PlusCircle, ArrowRight, 
-  ChevronDown, Drumstick, Package, Layers, Loader2, ChevronRight 
+  Search, ShoppingCart, Star, PlusCircle, ArrowRight, 
+  ChevronDown, Drumstick, Package, Layers, Loader2, ChevronRight, ArrowLeft 
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { getMenuBySlug } from '../../services/menuService';
@@ -11,8 +11,6 @@ import { getShopBySlug } from '../../services/shopService';
 import { trackQRScan } from '../../services/qrService';
 import { IMAGE_BASE_URL } from '../../config/constants';
 import toast from 'react-hot-toast';
-import { getShopBySlug } from '../../services/shopService';
-import { trackQRScan } from '../../services/qrService';
 
 // Import banner images
 import bucketImg from '../../assets/images/bucket_chicken.png';
@@ -34,7 +32,6 @@ const MenuPage = () => {
   const cartTotal = getCartTotal();
 
 
-  const [hasTracked, setHasTracked] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [bucketImg, burgerImg, popcornImg];
 
@@ -44,26 +41,6 @@ const MenuPage = () => {
     }, 4000);
     return () => clearInterval(timer);
   }, [slides.length]);
-
-  useEffect(() => {
-    const trackVisit = async () => {
-      try {
-        const res = await getShopBySlug(slug);
-        if (res.success && res.data && !hasTracked) {
-          const shopId = res.data._id;
-          await trackQRScan(shopId);
-          setHasTracked(true);
-        }
-      } catch (error) {
-        console.error('Failed to track QR scan:', error);
-      }
-    };
-
-    if (slug && !hasTracked) {
-      trackVisit();
-    }
-  }, [slug, hasTracked]);
-
 
   // Fetch Menu
 
@@ -75,7 +52,10 @@ const MenuPage = () => {
         if (menuRes.success) {
           setMenuItems(menuRes.data);
           
-          const fetchedCats = [...new Set(menuRes.data.map(item => item.category?.toUpperCase() || 'UNCATEGORIZED'))];
+          const fetchedCats = [...new Set(menuRes.data.map(item => {
+            const catName = typeof item.category === 'object' ? item.category?.name : item.category;
+            return (catName || 'Uncategorized').toUpperCase();
+          }))];
           if (fetchedCats.includes('BESTSELLERS')) {
             setActiveCategory('BESTSELLERS');
           } else if (fetchedCats.length > 0) {
@@ -111,13 +91,18 @@ const MenuPage = () => {
     }
   }, [slug, hasTracked]);
 
-  const availableCategories = [...new Set(menuItems.map(item => item.category?.toUpperCase() || 'UNCATEGORIZED'))];
+  const getCatName = (item) => {
+    const raw = typeof item.category === 'object' ? item.category?.name : item.category;
+    return (raw || 'Uncategorized').toUpperCase();
+  };
+
+  const availableCategories = [...new Set(menuItems.map(getCatName))];
   const categories = ['ALL', ...availableCategories.filter(c => c !== 'ALL')];
 
   const filteredItems = menuItems.filter(item => {
     if (item.available === false) return false;
     
-    const matchesCategory = activeCategory === 'ALL' || (item.category?.toUpperCase() || 'UNCATEGORIZED') === activeCategory;
+    const matchesCategory = activeCategory === 'ALL' || getCatName(item) === activeCategory;
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
@@ -142,6 +127,17 @@ const MenuPage = () => {
     <div className="bg-[#0A0A0A] min-h-screen font-sans text-white pb-20">
       {/* Header */}
       <header className="flex justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full gap-4">
+        {/* Back to Home */}
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-gray-400 hover:text-white font-bold text-sm uppercase tracking-wider transition-colors shrink-0 group"
+        >
+          <span className="p-2 rounded-full bg-[#1A1A1A] border border-[#2d2d2d] group-hover:bg-[#252525] group-hover:border-[#E50914]/40 transition-all">
+            <ArrowLeft className="w-4 h-4" />
+          </span>
+          <span className="hidden md:inline">Home</span>
+        </button>
+
         {/* Search Bar */}
         <div className="flex-1 max-w-md relative">
           <Search className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -154,7 +150,19 @@ const MenuPage = () => {
           />
         </div>
 
-        {/* Right Actions (Removed per request) */}
+        {/* Cart */}
+        <button
+          onClick={() => navigate(`/cart/${slug || 'kokkarakko-fried-chicken'}`)}
+          className="relative flex items-center gap-2 bg-[#E50914] hover:bg-[#CC0812] text-white font-bold py-2.5 px-4 rounded-full transition-all text-sm shrink-0 shadow-lg shadow-red-500/20"
+        >
+          <ShoppingCart className="w-4 h-4" />
+          <span className="hidden sm:inline">Cart</span>
+          {cartCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 bg-white text-[#E50914] text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#E50914]">
+              {cartCount}
+            </span>
+          )}
+        </button>
       </header>
 
       {/* Hero Banner */}
@@ -269,39 +277,60 @@ const MenuPage = () => {
           </div>
         ) : (
           filteredItems.map((item) => {
-            const imageUrl = item.image ? `${IMAGE_BASE_URL}${item.image}` : '/placeholder-food.svg';
-            // Placeholder for ratings since the backend API model might not have rating/reviews fields yet
-            const rating = (Math.random() * (5 - 4) + 4).toFixed(1); 
-            const reviews = Math.floor(Math.random() * 200) + 50;
+            const imageUrl = item.image ? `${IMAGE_BASE_URL}${item.image}` : null;
             
             return (
-              <div key={item._id} className="bg-[#141414] border border-[#222] rounded-2xl overflow-hidden flex flex-col group hover:border-[#333] transition-colors shadow-sm hover:shadow-lg">
-                
-                {/* Image Section */}
-                <div className="relative h-40 w-full overflow-hidden bg-[#1A1A1A]">
-                  <img src={imageUrl} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                       onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder-food.svg'; }} />
-                  
+              <div
+                key={item._id}
+                className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-black/50 transition-all duration-300 border border-[#222] hover:border-[#333]"
+                style={{ aspectRatio: '3 / 4' }}
+              >
+                {/* Full-bleed image */}
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={item.name}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center text-7xl select-none">
+                    🍗
+                  </div>
+                )}
 
-                </div>
+                {/* Bottom gradient overlay — ensures text always readable */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none" />
 
-                {/* Content Section */}
-                <div className="p-4 flex flex-col flex-grow">
-                  <div className="flex justify-between items-start mb-1.5 gap-2">
-                    <h3 className="text-white font-bold text-[1.1rem] leading-tight tracking-tight">{item.name}</h3>
-                    <span className="text-[#E50914] font-black text-lg shrink-0">
-                      ${item.price.toFixed(2)}
+                {/* Category badge — top left */}
+                {item.category && (
+                  <span className="absolute top-3 left-3 z-10 text-[10px] font-black tracking-widest uppercase text-white bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
+                    {getCatName(item)}
+                  </span>
+                )}
+
+                {/* Text content — sits over gradient */}
+                <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
+                  {/* Name + Price row */}
+                  <div className="flex items-end justify-between gap-2 mb-1.5">
+                    <h3 className="text-white font-black text-base leading-tight tracking-tight drop-shadow-md">
+                      {item.name}
+                    </h3>
+                    <span className="text-[#E50914] font-black text-lg shrink-0 drop-shadow-md">
+                      ₹{item.price}
                     </span>
                   </div>
-                  
+
+                  {/* Description */}
                   {item.description && (
-                    <p className="text-gray-400 text-sm mb-5 line-clamp-2 leading-snug font-medium">
+                    <p className="text-gray-300 text-xs font-medium leading-snug mb-3 line-clamp-1 drop-shadow">
                       {item.description}
                     </p>
                   )}
-                  
-                  <div className="flex justify-end mt-auto pt-2">
-                    <button 
+
+                  {/* Add button */}
+                  <div className="flex justify-end">
+                    <button
                       onClick={() => handleAddToCart(item)}
                       className="bg-[#E50914] text-white font-bold text-xs uppercase px-5 py-2 rounded-lg flex items-center hover:bg-[#CC0812] transition-colors shadow-md shadow-red-500/10"
                     >

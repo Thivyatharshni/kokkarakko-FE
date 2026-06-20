@@ -23,3 +23,8 @@ export const deleteMenuItem = async (id) => {
   const response = await api.delete(`/menu/${id}`);
   return response.data;
 };
+
+export const getFeaturedMenuBySlug = async (slug) => {
+  const response = await api.get(`/menu/featured/${slug}`);
+  return response.data;
+};

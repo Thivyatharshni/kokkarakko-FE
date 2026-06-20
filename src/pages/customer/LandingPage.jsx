@@ -6,6 +6,7 @@ import SignaturePreparationSection from '../../components/SignaturePreparationSe
 import FeaturesStrip from '../../components/FeaturesStrip';
 import StreetStyleSection from '../../components/StreetStyleSection';
 import BurgerAssemblySection from '../../components/BurgerAssemblySection';
+import FeaturedMenuSection from '../../components/FeaturedMenuSection';
 import QROrderingSection from '../../components/QROrderingSection';
 import Footer from '../../components/Footer';
 import AnimatedChickenLeg from '../../components/AnimatedChickenLeg';
@@ -156,6 +157,8 @@ const LandingPage = () => {
           <ScrollReveal type="section">
             <BurgerAssemblySection />
           </ScrollReveal>
+          
+          <FeaturedMenuSection shop={shop} />
           
           <ScrollReveal type="section">
             <QROrderingSection slug={shop?.slug} shop={shop} />

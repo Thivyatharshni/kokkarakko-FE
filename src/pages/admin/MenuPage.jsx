@@ -4,7 +4,7 @@ import { getMenuBySlug, createMenuItem, updateMenuItem, deleteMenuItem } from '.
 import { getCategoriesBySlug } from '../../services/categoryService';
 import { DEMO_MODE, DEMO_MENU_DATA, DEMO_CATEGORIES_DATA } from '../../utils/demoData';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, Search, Package, CheckCircle, XCircle } from 'lucide-react';
+import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, Search, Package, CheckCircle, XCircle, Star } from 'lucide-react';
 import { IMAGE_BASE_URL } from '../../config/constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingState from '../../components/common/LoadingState';
@@ -36,6 +36,7 @@ const MenuPage = () => {
     category: '',
     price: '',
     status: 'Available',
+    featured: false,
     image: null,
   });
 
@@ -88,6 +89,7 @@ const MenuPage = () => {
         category: item.category?._id || categories[0]?._id,
         price: item.price,
         status: item.status || 'Available',
+        featured: item.featured || false,
         image: null,
       });
     } else {
@@ -98,6 +100,7 @@ const MenuPage = () => {
         category: categories[0]?._id || '',
         price: '',
         status: 'Available',
+        featured: false,
         image: null,
       });
     }
@@ -185,6 +188,7 @@ const MenuPage = () => {
     total: menu.length,
     available: menu.filter(m => m.status === 'Available').length,
     outOfStock: menu.filter(m => m.status === 'Out Of Stock').length,
+    featured: menu.filter(m => m.featured).length,
   };
 
 
@@ -202,7 +206,7 @@ const MenuPage = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
           <div>
             <p className="text-gray-500 text-sm font-semibold mb-1">Total Products</p>
@@ -228,6 +232,15 @@ const MenuPage = () => {
           </div>
           <div className="p-4 rounded-full bg-orange-500 bg-opacity-10">
             <XCircle className="text-orange-500" size={24} />
+          </div>
+        </div>
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
+          <div>
+            <p className="text-gray-500 text-sm font-semibold mb-1">Featured Items</p>
+            <h3 className="text-3xl font-black text-gray-900">{displayStats.featured ?? 0}</h3>
+          </div>
+          <div className="p-4 rounded-full bg-amber-400 bg-opacity-10">
+            <Star className="text-amber-500" size={24} />
           </div>
         </div>
       </div>
@@ -298,13 +311,14 @@ const MenuPage = () => {
                 <th className="p-4 font-semibold">Category</th>
                 <th className="p-4 font-semibold">Price</th>
                 <th className="p-4 font-semibold">Status</th>
+                <th className="p-4 font-semibold">Featured</th>
                 <th className="p-4 font-semibold text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {displayFilteredMenu.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="p-10 text-center text-gray-500">
+                  <td colSpan="6" className="p-10 text-center text-gray-500">
                     No menu items found matching your filters.
                   </td>
                 </tr>
@@ -336,6 +350,15 @@ const MenuPage = () => {
                       }`}>
                         {item.status || 'Available'}
                       </span>
+                    </td>
+                    <td className="p-4 whitespace-nowrap">
+                      {item.featured ? (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-600 border border-amber-200">
+                          <Star size={11} fill="currentColor" /> Featured
+                        </span>
+                      ) : (
+                        <span className="text-gray-300 text-sm">—</span>
+                      )}
                     </td>
                     <td className="p-4 text-right whitespace-nowrap">
                       <button onClick={() => handleOpenModal(item)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors mr-2">
@@ -400,6 +423,26 @@ const MenuPage = () => {
                   <div>
                     <label className="block text-sm font-semibold mb-1 text-gray-700">Image {editingItem && <span className="text-xs font-normal text-gray-400">(Optional)</span>}</label>
                     <input type="file" accept="image/*" onChange={e => setFormData({...formData, image: e.target.files[0]})} className="w-full text-sm text-gray-500 file:mr-2 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100" />
+                  </div>
+                </div>
+
+                {/* Featured Item Toggle */}
+                <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                  <div className="mt-0.5">
+                    <input
+                      type="checkbox"
+                      id="featuredCheckbox"
+                      checked={formData.featured}
+                      onChange={e => setFormData({...formData, featured: e.target.checked})}
+                      className="w-4 h-4 accent-amber-500 cursor-pointer rounded"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="featuredCheckbox" className="flex items-center gap-2 text-sm font-bold text-amber-700 cursor-pointer select-none">
+                      <Star size={14} fill="currentColor" className="text-amber-500" />
+                      Featured Item
+                    </label>
+                    <p className="text-xs text-amber-600 mt-0.5 font-medium">Featured items appear in the showcase section on the landing page.</p>
                   </div>
                 </div>
 
