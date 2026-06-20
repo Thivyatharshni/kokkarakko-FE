@@ -25,7 +25,7 @@ const AdminLayout = () => {
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-[#111111] text-white">
       <div className="p-6">
-        <h2 className="text-2xl font-black text-[#E50914] uppercase tracking-wider">Kokkarakko</h2>
+        <h2 className="text-2xl font-black text-[#D90404] uppercase tracking-wider">Kokkarakko</h2>
         <p className="text-sm text-gray-400 mt-1">{shop ? shop.shopName : 'Admin Panel'}</p>
       </div>
       
@@ -39,7 +39,7 @@ const AdminLayout = () => {
               onClick={() => setIsMobileOpen(false)}
               className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                 isActive 
-                  ? 'bg-[#E50914] text-white shadow-lg shadow-red-500/30' 
+                  ? 'bg-[#D90404] text-white shadow-lg shadow-red-500/30' 
                   : 'text-gray-400 hover:bg-gray-800 hover:text-white'
               }`}
             >
@@ -53,7 +53,7 @@ const AdminLayout = () => {
       <div className="p-4 border-t border-gray-800">
         <button 
           onClick={handleLogout}
-          className="flex items-center space-x-3 w-full px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-[#E50914] rounded-xl transition-colors duration-200"
+          className="flex items-center space-x-3 w-full px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-[#D90404] rounded-xl transition-colors duration-200"
         >
           <LogOut size={20} />
           <span className="font-semibold">Logout</span>

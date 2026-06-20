@@ -44,7 +44,7 @@ const SeasoningParticle = ({ index, scrollYProgress, startX, startY, endX, endY,
   return (
     <motion.div
       className={`absolute rounded-full filter blur-[0.2px] ${
-        index % 2 === 0 ? 'bg-[#E50914]/65' : 'bg-amber-600/65'
+        index % 2 === 0 ? 'bg-[#D90404]/65' : 'bg-amber-600/65'
       }`}
       style={{
         left: 0,

@@ -28,7 +28,7 @@ const QROrderingSection = ({ slug, shop }) => {
       
       {/* Street Light Background Glow */}
       <div className="absolute top-1/2 left-1/3 -translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-yellow-500/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-10 right-10 w-[300px] h-[300px] bg-[#E50914]/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+      <div className="absolute bottom-10 right-10 w-[300px] h-[300px] bg-[#D90404]/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
@@ -45,7 +45,7 @@ const QROrderingSection = ({ slug, shop }) => {
             {/* Header */}
             <ScrollReveal type="text" className="space-y-3">
               <h2 className="text-5xl md:text-6xl font-black tracking-tight uppercase leading-none">
-                SCAN. <span className="text-[#E50914]">ORDER.</span> ENJOY.
+                SCAN. <span className="text-[#D90404]">ORDER.</span> ENJOY.
               </h2>
               <p className="text-gray-400 text-sm md:text-base font-semibold max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 Scan the QR code to view our digital menu and place your order instantly. No app download required!
@@ -75,7 +75,7 @@ const QROrderingSection = ({ slug, shop }) => {
 
               {/* URL Direct Access Info */}
               <div className="space-y-3 max-w-xs text-center sm:text-left">
-                <div className="inline-block bg-[#E50914]/15 border border-[#E50914]/30 rounded-xl px-3 py-1 text-[#E50914] text-xs font-black uppercase tracking-wider">
+                <div className="inline-block bg-[#D90404]/15 border border-[#D90404]/30 rounded-xl px-3 py-1 text-[#D90404] text-xs font-black uppercase tracking-wider">
                   Direct Order Link
                 </div>
                 <p className="text-xs text-gray-400 font-semibold leading-relaxed">
@@ -85,7 +85,7 @@ const QROrderingSection = ({ slug, shop }) => {
                   href={fullShopUrl} 
                   target="_blank" 
                   rel="noreferrer" 
-                  className="block text-[#E50914] hover:underline font-bold text-sm truncate"
+                  className="block text-[#D90404] hover:underline font-bold text-sm truncate"
                 >
                   {fullShopUrl}
                 </a>
@@ -99,7 +99,7 @@ const QROrderingSection = ({ slug, shop }) => {
                 {steps.map((step, idx) => (
                   <React.Fragment key={idx}>
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-[#E50914] flex items-center justify-center shadow-lg shadow-red-500/25">
+                      <div className="w-9 h-9 rounded-full bg-[#D90404] flex items-center justify-center shadow-lg shadow-[#D90404]/25">
                         {step.icon}
                       </div>
                       <span className="text-[11px] font-black tracking-widest text-gray-200">
@@ -125,13 +125,13 @@ const QROrderingSection = ({ slug, shop }) => {
               <img
                 src="/street-cart.png"
                 alt={`${shop?.shopName || 'Kokkarakko'} Cart`}
-                className="w-full h-auto object-contain rounded-3xl drop-shadow-[0_10px_30px_rgba(229,9,20,0.15)]"
+                className="w-full h-auto object-contain rounded-3xl drop-shadow-[0_10px_30px_rgba(217,4,4,0.15)]"
               />
 
               {/* Glowing Red Neon Sign */}
-              <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full border-4 border-[#E50914] bg-black/80 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(229,9,20,0.8),inset_0_0_10px_rgba(229,9,20,0.5)] rotate-12 animate-pulse select-none">
+              <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full border-4 border-[#D90404] bg-black/80 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(217,4,4,0.8),inset_0_0_10px_rgba(217,4,4,0.5)] rotate-12 animate-pulse select-none">
                 <span className="text-[10px] font-black text-white tracking-widest block uppercase">HOT</span>
-                <span className="text-[8px] font-bold text-[#E50914] tracking-widest block uppercase my-0.5">&</span>
+                <span className="text-[8px] font-bold text-[#D90404] tracking-widest block uppercase my-0.5">&</span>
                 <span className="text-[9px] font-black text-white tracking-widest block uppercase">CRISPY</span>
               </div>
             </div>

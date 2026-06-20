@@ -10,14 +10,14 @@ const SignaturePreparationSection = () => {
       <div className="absolute inset-0 opacity-[0.025] pointer-events-none bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px]"></div>
       {/* Warm ambient glow behind left content */}
       <div className="absolute left-[-100px] top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(229,9,20,0.06) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(217,4,4,0.06) 0%, transparent 70%)' }}
       ></div>
 
       <div className="max-w-7xl mx-auto px-6 flex items-center w-full">
         
         {/* Text Content - full width now */}
         <div className="w-full max-w-2xl space-y-8 flex flex-col justify-center text-center lg:text-left">
-          <div className="inline-flex self-center lg:self-start bg-[#E50914] text-white font-black text-xs px-5 py-2 uppercase tracking-widest rounded-lg shadow-md shadow-red-500/10">
+          <div className="inline-flex self-center lg:self-start bg-[#D90404] text-white font-black text-xs px-5 py-2 uppercase tracking-widest rounded-lg shadow-md shadow-[#D90404]/10">
             Signature Preparation
           </div>
 
@@ -26,7 +26,7 @@ const SignaturePreparationSection = () => {
               <h2 className="text-4xl md:text-5xl font-black text-[#111111] leading-none uppercase tracking-tight">
                 HAND SELECTED.
               </h2>
-              <h2 className="text-4xl md:text-5xl font-black text-[#E50914] leading-none uppercase tracking-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-[#D90404] leading-none uppercase tracking-tight">
                 SEASONED TO PERFECTION.
               </h2>
               <h2 className="text-4xl md:text-5xl font-black text-[#111111] leading-none uppercase tracking-tight italic">

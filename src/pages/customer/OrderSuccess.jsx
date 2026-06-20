@@ -21,13 +21,13 @@ const OrderSuccess = () => {
 
         <div className="bg-[#111111] text-white p-4 rounded-2xl">
           <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">Order Number</p>
-          <p className="text-2xl font-black mt-1 text-[#E50914]">{orderNumber || 'KKR-1001'}</p>
+          <p className="text-2xl font-black mt-1 text-[#D90404]">{orderNumber || 'KKR-1001'}</p>
         </div>
 
         <div className="pt-2">
           <Link
             to="/"
-            className="block w-full bg-[#E50914] hover:bg-[#c40710] text-white font-bold py-3.5 px-4 rounded-2xl transition-colors text-center"
+            className="block w-full bg-[#D90404] hover:bg-[#b80303] text-white font-bold py-3.5 px-4 rounded-2xl transition-colors text-center"
           >
             Back to Home
           </Link>

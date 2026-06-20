@@ -75,7 +75,7 @@ const Dashboard = () => {
   }, [shop]);
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64"><Loader2 className="animate-spin text-[#E50914]" size={32} /></div>;
+    return <div className="flex justify-center items-center h-64"><Loader2 className="animate-spin text-[#D90404]" size={32} /></div>;
   }
 
   return (
@@ -116,7 +116,7 @@ const Dashboard = () => {
                   <tr key={order._id} className="hover:bg-gray-50 transition-colors">
                     <td className="p-4 font-medium text-gray-900">{order.orderNumber}</td>
                     <td className="p-4 text-gray-600">{order.customerName}</td>
-                    <td className="p-4 font-semibold text-[#E50914]">₹{order.totalAmount}</td>
+                    <td className="p-4 font-semibold text-[#D90404]">₹{order.totalAmount}</td>
                     <td className="p-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                         order.status === 'Completed' ? 'bg-green-100 text-green-700' :

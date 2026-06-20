@@ -12,7 +12,7 @@ const MenuPage = () => {
         <p className="text-gray-600 text-sm">This is the Customer Menu & Order page for <strong>{slug}</strong>.</p>
         <Link 
           to="/" 
-          className="inline-block bg-[#E50914] text-white font-bold py-2 px-6 rounded-xl text-sm hover:bg-[#c40710] transition-colors"
+          className="inline-block bg-[#D90404] text-white font-bold py-2 px-6 rounded-xl text-sm hover:bg-[#b80303] transition-colors"
         >
           Back to Marketing Page
         </Link>

@@ -58,7 +58,7 @@ const QRPage = () => {
               bgColor="#ffffff"
             />
           </div>
-          <h2 className="mt-6 text-2xl font-black text-[#E50914] tracking-wide uppercase">{shop.shopName}</h2>
+          <h2 className="mt-6 text-2xl font-black text-[#D90404] tracking-wide uppercase">{shop.shopName}</h2>
           <p className="text-gray-500 text-sm mt-1">Scan to order</p>
         </div>
 
@@ -70,7 +70,7 @@ const QRPage = () => {
           
           <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 break-all">
             <p className="text-sm font-semibold text-gray-500 mb-1">Direct Link</p>
-            <a href={fullShopUrl} target="_blank" rel="noreferrer" className="text-[#E50914] hover:underline font-medium">
+            <a href={fullShopUrl} target="_blank" rel="noreferrer" className="text-[#D90404] hover:underline font-medium">
               {fullShopUrl}
             </a>
           </div>

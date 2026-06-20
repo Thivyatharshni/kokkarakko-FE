@@ -46,7 +46,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
         
         {/* Left Column: Info & Action */}
         <div className="lg:col-span-6 space-y-6 text-center lg:text-left flex flex-col justify-center">
-          <div className="inline-flex self-center lg:self-start bg-[#E50914] text-white font-black text-xs px-5 py-2 uppercase tracking-widest rounded-lg shadow-md shadow-red-500/10">
+          <div className="inline-flex self-center lg:self-start bg-[#D90404] text-white font-black text-xs px-5 py-2 uppercase tracking-widest rounded-lg shadow-md shadow-[#D90404]/10">
             STREET STYLE
           </div>
 
@@ -55,7 +55,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               <h2 className="text-5xl md:text-6xl font-black text-[#111111] leading-none uppercase tracking-tight">
                 BOLD FLAVOUR.
               </h2>
-              <h2 className="text-5xl md:text-6xl font-black text-[#E50914] leading-none uppercase tracking-tight">
+              <h2 className="text-5xl md:text-6xl font-black text-[#D90404] leading-none uppercase tracking-tight">
                 STREET CRUNCH.
               </h2>
             </div>
@@ -71,7 +71,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               className="premium-btn bg-[#111111] hover:bg-black text-white font-black text-xs uppercase tracking-wider py-4 px-8 rounded-full shadow-lg shadow-black/10 flex items-center justify-center gap-2 mx-auto lg:mx-0"
             >
               Order Now
-              <ArrowRight size={14} className="text-[#E50914] stroke-[3px]" />
+              <ArrowRight size={14} className="text-[#D90404] stroke-[3px]" />
             </button>
           </div>
         </div>
@@ -97,9 +97,9 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               className="w-full h-auto object-contain"
             />
             {/* Glowing neon red sign */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full border-4 border-[#E50914] bg-black flex flex-col items-center justify-center shadow-[0_0_15px_rgba(229,9,20,0.6),inset_0_0_8px_rgba(229,9,20,0.4)] rotate-[-12deg]">
+            <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full border-4 border-[#D90404] bg-black flex flex-col items-center justify-center shadow-[0_0_15px_rgba(217,4,4,0.6),inset_0_0_8px_rgba(217,4,4,0.4)] rotate-[-12deg]">
               <span className="text-[10px] font-black text-white tracking-widest block uppercase">FRIED</span>
-              <span className="text-[10px] font-black text-[#E50914] tracking-widest block uppercase mt-0.5">FRESH</span>
+              <span className="text-[10px] font-black text-[#D90404] tracking-widest block uppercase mt-0.5">FRESH</span>
             </div>
           </motion.div>
 
@@ -132,7 +132,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
           {/* Serve Text Overlay */}
           <motion.div
             style={{ opacity: textOpacity, y: textY }}
-            className="absolute -bottom-6 right-0 md:-right-8 z-30 text-right leading-none uppercase font-black text-lg md:text-2xl tracking-tighter text-[#E50914]"
+            className="absolute -bottom-6 right-0 md:-right-8 z-30 text-right leading-none uppercase font-black text-lg md:text-2xl tracking-tighter text-[#D90404]"
           >
             <span className="block text-[#111111] text-[10px] font-bold tracking-widest mb-1.5 opacity-60">Serving Status</span>
             FRESHLY FRIED.

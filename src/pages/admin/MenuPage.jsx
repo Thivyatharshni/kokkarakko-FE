@@ -97,7 +97,7 @@ const MenuPage = () => {
 
   const filteredMenu = filterCategory === 'All' ? menu : menu.filter(m => m.category === filterCategory);
 
-  if (loading) return <div className="flex justify-center mt-20"><Loader2 className="animate-spin text-[#E50914]" size={32} /></div>;
+  if (loading) return <div className="flex justify-center mt-20"><Loader2 className="animate-spin text-[#D90404]" size={32} /></div>;
 
   return (
     <div className="space-y-6">
@@ -105,7 +105,7 @@ const MenuPage = () => {
         <h1 className="text-3xl font-bold text-gray-900">Menu Management</h1>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#E50914] hover:bg-red-700 text-white font-bold py-2.5 px-5 rounded-xl shadow-lg flex items-center gap-2 transition-all"
+          className="bg-[#D90404] hover:bg-red-700 text-white font-bold py-2.5 px-5 rounded-xl shadow-lg flex items-center gap-2 transition-all"
         >
           <Plus size={20} /> Add New Item
         </button>

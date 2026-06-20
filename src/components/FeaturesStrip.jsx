@@ -36,9 +36,9 @@ const FeaturesStrip = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="bg-[#E50914] rounded-3xl shadow-xl shadow-red-900/10 p-8 md:p-10 border border-red-500/25"
+        className="bg-[#D90404] rounded-3xl shadow-xl shadow-red-950/15 p-8 md:p-10 border border-white/10"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 divide-y md:divide-y-0 lg:divide-x lg:divide-red-400/30 divide-red-400/20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 divide-y md:divide-y-0 lg:divide-x lg:divide-white/20 divide-white/10">
           
           {features.map((feature, idx) => (
             <div 

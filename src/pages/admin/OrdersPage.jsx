@@ -49,7 +49,7 @@ const OrdersPage = () => {
               <div className="flex items-start">
                 <div className="flex-shrink-0 pt-0.5">
                   <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
-                    <BellRing className="text-[#E50914]" size={24} />
+                    <BellRing className="text-[#D90404]" size={24} />
                   </div>
                 </div>
                 <div className="ml-3 flex-1">
@@ -83,7 +83,7 @@ const OrdersPage = () => {
     }
   };
 
-  if (loading) return <div className="flex justify-center mt-20"><Loader2 className="animate-spin text-[#E50914]" size={32} /></div>;
+  if (loading) return <div className="flex justify-center mt-20"><Loader2 className="animate-spin text-[#D90404]" size={32} /></div>;
 
   return (
     <div className="space-y-6">
@@ -120,7 +120,7 @@ const OrdersPage = () => {
                       ))}
                     </ul>
                   </td>
-                  <td className="p-4 font-black text-[#E50914]">₹{order.totalAmount}</td>
+                  <td className="p-4 font-black text-[#D90404]">₹{order.totalAmount}</td>
                   <td className="p-4">
                     <select 
                       value={order.status}
