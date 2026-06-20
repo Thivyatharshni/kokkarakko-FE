@@ -17,7 +17,7 @@ const HeroSection = ({ slug, shop }) => {
   };
 
   return (
-    <section className="relative h-screen min-h-[500px] lg:min-h-0 flex items-center hero-premium-bg overflow-hidden text-white">
+    <section id="hero" className="relative h-screen min-h-[500px] lg:min-h-0 flex items-center hero-premium-bg overflow-hidden text-white">
       {/* Background Video */}
       <video
         autoPlay

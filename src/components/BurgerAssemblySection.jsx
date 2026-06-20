@@ -8,6 +8,7 @@ import cheddarCheese from '../assets/images/cheddar cheese.png';
 import lettuce from '../assets/images/lettuce.png';
 import onionTomato from '../assets/images/onion tomato.png';
 import topBun from '../assets/images/top bun.png';
+import bgImage from '../assets/images/bg.png';
 
 const steps = [
   {
@@ -359,8 +360,9 @@ const BurgerAssemblySection = () => {
 
   return (
     <section 
+      id="burger-assembly"
       ref={sectionRef} 
-      className="relative w-full bg-white z-20 border-b border-gray-100"
+      className="relative w-full bg-neutral-950 z-20 border-b border-neutral-900"
       style={{ height: '600vh' }}
     >
       <style>{`
@@ -378,7 +380,10 @@ const BurgerAssemblySection = () => {
       `}</style>
 
       {/* Pinned Desktop Viewport (50% / 50% Split) */}
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden hidden md:block">
+      <div 
+        className="sticky top-0 left-0 w-full h-screen overflow-hidden hidden md:block bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      >
         
         {/* Premium Film Grain Noise Overlay */}
         <svg className="absolute inset-0 w-full h-full opacity-[0.015] pointer-events-none z-30">
@@ -390,8 +395,8 @@ const BurgerAssemblySection = () => {
 
         <div className="w-full h-full flex flex-row relative">
           
-          {/* Left Side: Burger Assembly (50%) with soft warm background gradient */}
-          <div className="w-1/2 h-full relative flex items-center justify-center border-r border-gray-50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-50/10 via-white to-gray-50/20">
+          {/* Left Side: Burger Assembly (50%) */}
+          <div className="w-1/2 h-full relative flex items-center justify-center border-r border-white/5 bg-transparent">
             {/* Warm Golden Spotlight Backlight */}
             <motion.div 
               style={{ 
@@ -483,10 +488,10 @@ const BurgerAssemblySection = () => {
           {/* Right Side: Storytelling Content Only (50% - No Preview Card) */}
           <motion.div 
             style={{ opacity: rightColumnOpacity }}
-            className="w-1/2 h-full flex flex-col justify-center px-24 bg-gradient-to-r from-transparent to-gray-50/10 z-10 relative pt-12"
+            className="w-1/2 h-full flex flex-col justify-center px-24 bg-gradient-to-r from-transparent to-black/20 z-10 relative pt-12"
           >
             {/* Ambient Watermark Background */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] font-black text-[220px] text-gray-900 leading-none uppercase italic tracking-tighter whitespace-nowrap z-0">
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 select-none pointer-events-none opacity-[0.025] font-black text-[220px] text-white leading-none uppercase italic tracking-tighter whitespace-nowrap z-0">
               BUILD.
             </div>
 
@@ -505,27 +510,27 @@ const BurgerAssemblySection = () => {
                     <span className="text-sm font-black text-[#E50914] tracking-widest uppercase">
                       {steps[activeStep].number}
                     </span>
-                    <h4 className="text-xs font-extrabold text-gray-400 tracking-widest uppercase block">
+                    <h4 className="text-xs font-extrabold text-gray-300 tracking-widest uppercase block">
                       {steps[activeStep].subtitle}
                     </h4>
                   </div>
 
-                  <h2 className="text-5xl md:text-6xl font-black text-gray-900 leading-tight tracking-tight uppercase max-w-xl">
+                  <h2 className="text-5xl md:text-6xl font-black text-white leading-tight tracking-tight uppercase max-w-xl">
                     {steps[activeStep].title}
                   </h2>
 
-                  <p className="text-gray-600 text-base md:text-lg font-medium leading-relaxed max-w-xl">
+                  <p className="text-gray-300 text-base md:text-lg font-medium leading-relaxed max-w-xl">
                     {steps[activeStep].description}
                   </p>
 
                   {/* Ingredient Quality Notes */}
-                  <div className="space-y-4 pt-6 border-t border-gray-100 max-w-xl">
-                    <h4 className="text-xs font-black text-gray-900 tracking-wider uppercase">
+                  <div className="space-y-4 pt-6 border-t border-white/10 max-w-xl">
+                    <h4 className="text-xs font-black text-white tracking-wider uppercase">
                       INGREDIENT QUALITY NOTES
                     </h4>
                     <ul className="grid grid-cols-1 gap-3.5">
                       {steps[activeStep].qualityNotes.map((note, index) => (
-                        <li key={index} className="flex items-center gap-3 text-sm md:text-base text-gray-500 font-medium">
+                        <li key={index} className="flex items-center gap-3 text-sm md:text-base text-gray-300 font-medium">
                           <span className="w-2 h-2 rounded-full bg-[#E50914] shrink-0 animate-pulse" />
                           {note}
                         </li>
@@ -541,7 +546,7 @@ const BurgerAssemblySection = () => {
                   <div 
                     key={idx} 
                     className={`h-2 rounded-full transition-all duration-300 ${
-                      idx === activeStep ? 'w-10 bg-[#E50914]' : 'bg-gray-250 w-2.5 bg-gray-200'
+                      idx === activeStep ? 'w-10 bg-[#E50914]' : 'w-2.5 bg-white/20'
                     }`}
                   />
                 ))}
@@ -553,24 +558,27 @@ const BurgerAssemblySection = () => {
       </div>
 
       {/* Static Stacked Layout for Mobile Screens (No placeholders, dynamically stacked complete burger) */}
-      <div className="block md:hidden py-16 bg-white w-full">
+      <div 
+        className="block md:hidden py-16 bg-cover bg-center w-full"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      >
         <div className="px-6 space-y-12 w-full">
           
           <div className="space-y-3 text-center">
-            <span className="text-xs font-black text-[#E50914] tracking-widest uppercase bg-red-50 px-4 py-1.5 rounded-full">
+            <span className="text-xs font-black text-[#E50914] tracking-widest uppercase bg-red-950/40 border border-[#E50914]/20 px-4 py-1.5 rounded-full">
               ASSEMBLY STORY
             </span>
-            <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tight">
+            <h2 className="text-3xl font-black text-white uppercase tracking-tight">
               Crafting The Legend
             </h2>
-            <p className="text-gray-500 text-xs font-medium max-w-xs mx-auto">
+            <p className="text-gray-300 text-xs font-medium max-w-xs mx-auto">
               How we assemble our ultimate crispy chicken masterpiece layer by layer.
             </p>
           </div>
 
           {/* Hero Stacked Burger (Rendered dynamically using the same 6 local assets) */}
-          <div className="relative w-full h-[430px] flex items-end justify-center bg-gradient-to-b from-gray-50/50 to-white rounded-3xl overflow-hidden border border-gray-50 pb-8">
-            <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(245,158,11,0.08)_0%,rgba(255,255,255,0)_70%)] pointer-events-none" />
+          <div className="relative w-full h-[430px] flex items-end justify-center bg-black/40 rounded-3xl overflow-hidden border border-white/5 pb-8">
+            <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(245,158,11,0.05)_0%,rgba(0,0,0,0)_70%)] pointer-events-none" />
             
             {/* Complete Stack for Mobile */}
             <div className="relative w-[210px] h-[370px] select-none pointer-events-none z-10 flex items-end justify-center">
@@ -605,10 +613,10 @@ const BurgerAssemblySection = () => {
           </div>
 
           {/* Step Timeline */}
-          <div className="space-y-8 relative pl-6 border-l border-gray-100 max-w-sm mx-auto">
+          <div className="space-y-8 relative pl-6 border-l border-white/10 max-w-sm mx-auto">
             {steps.map((step, idx) => (
               <div key={idx} className="relative space-y-2">
-                <div className="absolute -left-[31px] top-1 w-4 h-4 bg-white border-2 border-[#E50914] rounded-full flex items-center justify-center z-10">
+                <div className="absolute -left-[31px] top-1 w-4 h-4 bg-neutral-900 border-2 border-[#E50914] rounded-full flex items-center justify-center z-10">
                   <div className="w-1.5 h-1.5 bg-[#E50914] rounded-full" />
                 </div>
 
@@ -618,12 +626,12 @@ const BurgerAssemblySection = () => {
                       STEP {idx + 1}
                     </span>
                   </div>
-                  <h3 className="text-sm font-black text-gray-900 uppercase">
+                  <h3 className="text-sm font-black text-white uppercase">
                     {step.title}
                   </h3>
                 </div>
 
-                <p className="text-gray-500 text-xs font-medium leading-relaxed">
+                <p className="text-gray-300 text-xs font-medium leading-relaxed">
                   {step.description}
                 </p>
               </div>

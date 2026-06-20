@@ -39,7 +39,7 @@ const Footer = ({ shop }) => {
 
         {/* Copyright Text */}
         <div className="text-center text-xs md:text-sm font-semibold tracking-wider text-red-100/80 uppercase">
-          &copy; 2030 {shop?.shopName || 'Kokkarakko Fried Chicken'}. All Rights Reserved.
+          &copy; 2026 {shop?.shopName || 'Kokkarakko Fried Chicken'}. All Rights Reserved.
         </div>
 
       </div>

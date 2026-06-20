@@ -2,7 +2,170 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import QRCode from 'react-qr-code';
 import { QrCode, ClipboardList, Send, ArrowRight } from 'lucide-react';
-import ScrollReveal from './ScrollReveal';
+
+const scanVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 40,
+    filter: 'blur(8px)'
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.1, 0.25, 1.0]
+    }
+  }
+};
+
+const orderVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 40,
+    scale: 0.95,
+    color: '#a01010',
+    textShadow: '0 0 0px rgba(217, 4, 4, 0)'
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    color: '#D90404',
+    textShadow: [
+      '0 0 0px rgba(217, 4, 4, 0)',
+      '0 0 20px rgba(217, 4, 4, 0.7)',
+      '0 0 0px rgba(217, 4, 4, 0)'
+    ],
+    transition: {
+      delay: 0.15,
+      duration: 0.6,
+      ease: [0.25, 0.1, 0.25, 1.0],
+      textShadow: {
+        delay: 0.45,
+        duration: 0.8,
+        times: [0, 0.5, 1]
+      }
+    }
+  }
+};
+
+const enjoyVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 40,
+    filter: 'blur(8px)'
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      delay: 0.30,
+      duration: 0.6,
+      ease: [0.25, 0.1, 0.25, 1.0]
+    }
+  }
+};
+
+const descriptionVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 20 
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      delay: 1.20,
+      duration: 0.5,
+      ease: 'easeOut'
+    }
+  }
+};
+
+const qrVariants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.9
+  },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: {
+      delay: 1.50,
+      duration: 0.6,
+      ease: [0.34, 1.56, 0.64, 1]
+    }
+  }
+};
+
+const linkVariants = {
+  hidden: { 
+    opacity: 0, 
+    x: -20 
+  },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: {
+      delay: 1.80,
+      duration: 0.4,
+      ease: 'easeOut'
+    }
+  }
+};
+
+const stepVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 20, 
+    scale: 0.95 
+  },
+  visible: (index) => ({ 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: {
+      delay: 2.10 + index * 0.15,
+      duration: 0.5,
+      ease: 'easeOut'
+    }
+  })
+};
+
+const arrowVariants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.8 
+  },
+  visible: (index) => ({ 
+    opacity: 1, 
+    scale: 1,
+    transition: {
+      delay: 2.18 + index * 0.15,
+      duration: 0.4,
+      ease: 'easeOut'
+    }
+  })
+};
+
+const cartVariants = {
+  hidden: { 
+    opacity: 0, 
+    x: 40 
+  },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: {
+      delay: 0.5,
+      duration: 0.8,
+      ease: 'easeOut'
+    }
+  }
+};
 
 const QROrderingSection = ({ slug, shop }) => {
   const fullShopUrl = `${window.location.origin}/menu/${slug || 'kokkarakko-fried-chicken'}`;
@@ -32,10 +195,9 @@ const QROrderingSection = ({ slug, shop }) => {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
         >
           
@@ -43,20 +205,28 @@ const QROrderingSection = ({ slug, shop }) => {
           <div className="lg:col-span-7 space-y-8 flex flex-col justify-center text-center lg:text-left">
             
             {/* Header */}
-            <ScrollReveal type="text" className="space-y-3">
-              <h2 className="text-5xl md:text-6xl font-black tracking-tight uppercase leading-none">
-                SCAN. <span className="text-[#D90404]">ORDER.</span> ENJOY.
+            <div className="space-y-3">
+              <h2 className="text-5xl md:text-6xl font-black tracking-tight uppercase leading-none flex flex-wrap justify-center lg:justify-start gap-x-4">
+                <motion.span variants={scanVariants} className="inline-block">SCAN.</motion.span>{' '}
+                <motion.span variants={orderVariants} className="inline-block">ORDER.</motion.span>{' '}
+                <motion.span variants={enjoyVariants} className="inline-block">ENJOY.</motion.span>
               </h2>
-              <p className="text-gray-400 text-sm md:text-base font-semibold max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              <motion.p 
+                variants={descriptionVariants}
+                className="text-gray-400 text-sm md:text-base font-semibold max-w-xl mx-auto lg:mx-0 leading-relaxed"
+              >
                 Scan the QR code to view our digital menu and place your order instantly. No app download required!
-              </p>
-            </ScrollReveal>
+              </motion.p>
+            </div>
 
             {/* QR Code Display & direct link wrapper */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8">
               
               {/* QR Code Container */}
-              <div className="bg-white p-5 rounded-3xl shadow-[0_15px_30px_rgba(0,0,0,0.5)] border-4 border-white flex flex-col items-center">
+              <motion.div 
+                variants={qrVariants}
+                className="bg-white p-5 rounded-3xl shadow-[0_15px_30px_rgba(0,0,0,0.5)] border-4 border-white flex flex-col items-center"
+              >
                 <div className="bg-white p-1 rounded-2xl">
                   <QRCode
                     value={fullShopUrl}
@@ -71,10 +241,13 @@ const QROrderingSection = ({ slug, shop }) => {
                   <span className="text-[10px] font-black text-[#111111] uppercase tracking-widest block">{brandName} ORDER</span>
                   <span className="text-[7px] font-bold text-gray-400 uppercase tracking-widest block mt-0.5">Scan to Order</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* URL Direct Access Info */}
-              <div className="space-y-3 max-w-xs text-center sm:text-left">
+              <motion.div 
+                variants={linkVariants}
+                className="space-y-3 max-w-xs text-center sm:text-left"
+              >
                 <div className="inline-block bg-[#D90404]/15 border border-[#D90404]/30 rounded-xl px-3 py-1 text-[#D90404] text-xs font-black uppercase tracking-wider">
                   Direct Order Link
                 </div>
@@ -89,7 +262,7 @@ const QROrderingSection = ({ slug, shop }) => {
                 >
                   {fullShopUrl}
                 </a>
-              </div>
+              </motion.div>
 
             </div>
 
@@ -98,17 +271,27 @@ const QROrderingSection = ({ slug, shop }) => {
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
                 {steps.map((step, idx) => (
                   <React.Fragment key={idx}>
-                    <div className="flex items-center gap-3">
+                    <motion.div 
+                      custom={idx}
+                      variants={stepVariants}
+                      className="flex items-center gap-3"
+                    >
                       <div className="w-9 h-9 rounded-full bg-[#D90404] flex items-center justify-center shadow-lg shadow-[#D90404]/25">
                         {step.icon}
                       </div>
                       <span className="text-[11px] font-black tracking-widest text-gray-200">
                         {step.label}
                       </span>
-                    </div>
+                    </motion.div>
 
                     {idx < steps.length - 1 && (
-                      <ArrowRight size={16} className="text-gray-600 hidden sm:block" />
+                      <motion.div 
+                        custom={idx}
+                        variants={arrowVariants}
+                        className="hidden sm:block"
+                      >
+                        <ArrowRight size={16} className="text-gray-600" />
+                      </motion.div>
                     )}
                   </React.Fragment>
                 ))}
@@ -118,7 +301,10 @@ const QROrderingSection = ({ slug, shop }) => {
           </div>
 
           {/* Right Column: Cart Illustration & Neon Sign */}
-          <div className="lg:col-span-5 relative flex justify-center items-center py-8">
+          <motion.div 
+            variants={cartVariants}
+            className="lg:col-span-5 relative flex justify-center items-center py-8"
+          >
             
             {/* Street Cart Illustration */}
             <div className="relative max-w-sm w-full select-none">
@@ -136,8 +322,7 @@ const QROrderingSection = ({ slug, shop }) => {
               </div>
             </div>
 
-          </div>
-
+          </motion.div>
         </motion.div>
       </div>
     </section>
