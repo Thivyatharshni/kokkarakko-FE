@@ -32,7 +32,7 @@ const HeroSection = ({ slug, shop }) => {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center relative z-10 w-full py-4 lg:py-6">
         
         {/* Left Column: Typography & Text Wrapper */}
-        <div className="lg:col-span-7 xl:col-span-6 lg:col-start-1 text-left flex flex-col justify-center z-20">
+        <div className="lg:col-span-7 xl:col-span-6 lg:col-start-1 text-left flex flex-col justify-center z-20 pt-20 lg:pt-24">
           
           {/* Controlled Content Wrapper to keep content in the left-center region and ensure readability over video */}
           <div className="bg-black/30 backdrop-blur-[2px] p-6 md:p-8 lg:p-10 rounded-3xl border border-white/5 space-y-6 md:space-y-7 max-w-xl w-full">
