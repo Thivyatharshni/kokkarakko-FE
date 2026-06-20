@@ -4,7 +4,7 @@ import maskedLegPiece from '../assets/images/masked legpiece.png';
 
 // Seasoning Dust / Masala Powder particle (Stage 2)
 const SeasoningParticle = ({ index, scrollYProgress, startX, startY, endX, endY, travelEnd, halfWidth, halfHeight }) => {
-  const startTrigger = 0.12 + (index * 0.045);
+  const startTrigger = 0.42 + (index * 0.045);
   const endTrigger = startTrigger + 0.20;
 
   // Drift offsets
@@ -62,7 +62,7 @@ const SeasoningParticle = ({ index, scrollYProgress, startX, startY, endX, endY,
 
 // Crispy Golden Crumb particle (Stage 3)
 const CrumbParticle = ({ index, scrollYProgress, startX, startY, endX, endY, travelEnd, halfWidth, halfHeight }) => {
-  const startTrigger = 0.18 + (index * 0.05);
+  const startTrigger = 0.47 + (index * 0.05);
   const endTrigger = startTrigger + 0.18;
 
   const driftX = (Math.cos(index * 3) * 18) - 9;
@@ -118,7 +118,7 @@ const CrumbParticle = ({ index, scrollYProgress, startX, startY, endX, endY, tra
 
 // Soft Smoke Puff particle (Stage 4)
 const SmokeParticle = ({ index, scrollYProgress, startX, startY, endX, endY, travelEnd, halfWidth, halfHeight }) => {
-  const startTrigger = 0.15 + (index * 0.09);
+  const startTrigger = 0.44 + (index * 0.09);
   const endTrigger = startTrigger + 0.22;
 
   const driftX = (Math.sin(index * 1.5) * 30) - 15;
@@ -178,12 +178,21 @@ const AnimatedChickenLeg = ({ coords, scrollYProgress }) => {
   const height = coords.start.height;
 
   // Travel range endpoints — use full scroll range for slow, cinematic movement
-  const travelStart = 0.05; // small delay before chicken starts moving
+  const travelStart = 0.40; // delay before chicken starts moving
   const travelEnd = 1.0;
 
-  // Transform coordinates for the chicken leg along a direct diagonal path
-  const x = useTransform(scrollYProgress, [0.0, travelStart, travelEnd], [startX, startX, endX], { clamp: true });
-  const y = useTransform(scrollYProgress, [0.0, travelStart, travelEnd], [startY, startY, endY], { clamp: true });
+  // Smooth ease-in-out function
+  const easeInOut = t => t * t * (3 - 2 * t);
+
+  // Transform coordinates for the chicken leg along a direct diagonal path with smoothing
+  const x = useTransform(scrollYProgress, [0.0, travelStart, travelEnd], [startX, startX, endX], { 
+    clamp: true,
+    ease: [t => t, easeInOut]
+  });
+  const y = useTransform(scrollYProgress, [0.0, travelStart, travelEnd], [startY, startY, endY], { 
+    clamp: true,
+    ease: [t => t, easeInOut]
+  });
   
   // Consistent size scale tracking
   let targetScale = 0.5;

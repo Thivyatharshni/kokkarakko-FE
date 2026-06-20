@@ -126,10 +126,10 @@ const LandingPage = () => {
           </div>
         ) : (
           <>
-            <HeroSection slug={shop?.slug} shop={shop} bucketRef={bucketRef} originRef={originRef} />
+            <HeroSection slug={shop?.slug} shop={shop} />
             
             <ScrollReveal type="section">
-              <SignaturePreparationSection />
+              <SignaturePreparationSection bucketRef={bucketRef} originRef={originRef} />
             </ScrollReveal>
             
             <ScrollReveal type="section">
