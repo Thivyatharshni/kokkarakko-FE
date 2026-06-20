@@ -42,7 +42,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
       {/* Urban skyline background */}
       <UrbanBackground />
 
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 w-full py-4 lg:py-12">
         
         {/* Left Column: Info & Action */}
         <div className="lg:col-span-6 space-y-6 text-center lg:text-left flex flex-col justify-center">
@@ -118,11 +118,11 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               {/* Inner Base */}
               <div className="w-[84%] h-[76%] bg-gradient-to-b from-[#111] to-[#060606] rounded-[50%] shadow-[inset_0_8px_16px_rgba(0,0,0,0.85)] border border-gray-950 flex items-center justify-center">
                 {/* Gold Rim Detail */}
-                <div className="w-[88%] h-[80%] rounded-[50%] border border-amber-500/10 flex items-center justify-center">
+                <div className="w-[88%] h-[80%] rounded-[50%] border border-amber-500/10 flex items-center justify-center relative">
                   {/* Plating target for the chicken leg */}
                   <div 
                     ref={plateRef}
-                    className="w-16 h-16 pointer-events-none opacity-0 -translate-y-2.5"
+                    className="w-28 h-28 pointer-events-none opacity-0 -translate-y-3.5"
                   />
                 </div>
               </div>
