@@ -282,8 +282,8 @@ const MenuPage = () => {
             return (
               <div
                 key={item._id}
-                className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-black/50 transition-all duration-300 border border-[#222] hover:border-[#333]"
-                style={{ aspectRatio: '3 / 4' }}
+                className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-black/50 transition-all duration-300 border border-[#222] hover:border-[#333] hover:-translate-y-1"
+                style={{ aspectRatio: '1.2 / 1' }}
               >
                 {/* Full-bleed image */}
                 {imageUrl ? (
@@ -299,12 +299,12 @@ const MenuPage = () => {
                   </div>
                 )}
 
-                {/* Bottom gradient overlay — ensures text always readable */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none" />
+                {/* Bottom gradient overlay — softer and limited to bottom half for maximum image visibility */}
+                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
 
                 {/* Category badge — top left */}
                 {item.category && (
-                  <span className="absolute top-3 left-3 z-10 text-[10px] font-black tracking-widest uppercase text-white bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
+                  <span className="absolute top-3 left-3 z-10 text-[10px] font-black tracking-widest uppercase text-white bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
                     {getCatName(item)}
                   </span>
                 )}
@@ -313,7 +313,7 @@ const MenuPage = () => {
                 <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
                   {/* Name + Price row */}
                   <div className="flex items-end justify-between gap-2 mb-1.5">
-                    <h3 className="text-white font-black text-base leading-tight tracking-tight drop-shadow-md">
+                    <h3 className="text-white font-black text-base leading-tight tracking-tight drop-shadow-md group-hover:text-[#E50914] transition-colors">
                       {item.name}
                     </h3>
                     <span className="text-[#E50914] font-black text-lg shrink-0 drop-shadow-md">
@@ -331,8 +331,11 @@ const MenuPage = () => {
                   {/* Add button */}
                   <div className="flex justify-end">
                     <button
-                      onClick={() => handleAddToCart(item)}
-                      className="bg-[#E50914] text-white font-bold text-xs uppercase px-5 py-2 rounded-lg flex items-center hover:bg-[#CC0812] transition-colors shadow-md shadow-red-500/10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(item);
+                      }}
+                      className="bg-[#E50914] text-white font-bold text-xs uppercase px-5 py-2.5 rounded-lg flex items-center hover:bg-[#CC0812] transition-colors shadow-md shadow-red-500/10"
                     >
                       ADD <PlusCircle className="w-4 h-4 ml-1.5" />
                     </button>
