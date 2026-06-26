@@ -38,13 +38,13 @@ const FeaturesStrip = () => {
         transition={{ duration: 0.8 }}
         className="bg-[#D90404] rounded-3xl shadow-xl shadow-red-950/15 p-8 md:p-10 border border-white/10"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 divide-y md:divide-y-0 lg:divide-x lg:divide-white/20 divide-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 md:gap-y-0 lg:divide-x lg:divide-white/20 divide-white/10">
           
           {features.map((feature, idx) => (
             <div 
               key={idx} 
-              className={`flex flex-col items-center text-center ${
-                idx > 0 ? 'pt-6 md:pt-0 lg:pl-6' : ''
+              className={`flex flex-col items-center text-center p-4 md:p-6 lg:p-0 ${
+                idx > 0 ? 'pt-8 md:pt-6 lg:pt-0 lg:pl-6 border-t divide-white/10 md:border-t-0' : ''
               }`}
             >
               {/* Icon Container with Circular Border */}

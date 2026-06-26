@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 
 // Import all 6 correct assets directly using ES modules
@@ -141,6 +141,16 @@ const SteamOverlay = ({ opacity }) => {
 const BurgerAssemblySection = () => {
   const sectionRef = useRef(null);
   const [activeStep, setActiveStep] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Scroll tracking across 600vh height
   const { scrollYProgress } = useScroll({
@@ -363,7 +373,7 @@ const BurgerAssemblySection = () => {
       id="burger-assembly"
       ref={sectionRef} 
       className="relative w-full bg-neutral-950 z-20 border-b border-neutral-900"
-      style={{ height: '600vh' }}
+      style={{ height: isDesktop ? '600vh' : 'auto' }}
     >
       <style>{`
         @keyframes floatParticle {

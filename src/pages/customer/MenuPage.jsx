@@ -9,7 +9,7 @@ import { useCart } from '../../context/CartContext';
 import { getMenuBySlug } from '../../services/menuService';
 import { getShopBySlug } from '../../services/shopService';
 import { trackQRScan } from '../../services/qrService';
-import { IMAGE_BASE_URL } from '../../config/constants';
+import { IMAGE_BASE_URL, API_BASE_URL } from '../../config/constants';
 import toast from 'react-hot-toast';
 
 // Import banner images
@@ -75,7 +75,10 @@ const MenuPage = () => {
   useEffect(() => {
     const trackVisit = async () => {
       try {
+        console.log("Current API URL:", API_BASE_URL);
+        console.log("Requested Shop:", slug);
         const res = await getShopBySlug(slug);
+        console.log("Shop Response:", res);
         if (res.success && res.data && !hasTracked) {
           const shopId = res.data._id;
           await trackQRScan(shopId);
@@ -126,20 +129,36 @@ const MenuPage = () => {
 
     <div className="bg-[#0A0A0A] min-h-screen font-sans text-white pb-20">
       {/* Header */}
-      <header className="flex justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full gap-4">
-        {/* Back to Home */}
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-400 hover:text-white font-bold text-sm uppercase tracking-wider transition-colors shrink-0 group"
-        >
-          <span className="p-2 rounded-full bg-[#1A1A1A] border border-[#2d2d2d] group-hover:bg-[#252525] group-hover:border-[#E50914]/40 transition-all">
-            <ArrowLeft className="w-4 h-4" />
-          </span>
-          <span className="hidden md:inline">Home</span>
-        </button>
+      <header className="flex flex-col sm:flex-row gap-4 justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full">
+        <div className="flex justify-between items-center w-full sm:w-auto gap-4">
+          {/* Back to Home */}
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 text-gray-400 hover:text-white font-bold text-sm uppercase tracking-wider transition-colors group"
+          >
+            <span className="p-2 rounded-full bg-[#1A1A1A] border border-[#2d2d2d] group-hover:bg-[#252525] group-hover:border-[#E50914]/40 transition-all">
+              <ArrowLeft className="w-4 h-4" />
+            </span>
+            <span>Home</span>
+          </button>
+
+          {/* Cart */}
+          <button
+            onClick={() => navigate(`/cart/${slug || 'kokkarakko-fried-chicken'}`)}
+            className="relative flex items-center gap-2 bg-[#E50914] hover:bg-[#CC0812] text-white font-bold py-2.5 px-4 rounded-full transition-all text-sm shadow-lg shadow-red-500/20"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            <span>Cart</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-white text-[#E50914] text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#E50914]">
+                {cartCount}
+              </span>
+            )}
+          </button>
+        </div>
 
         {/* Search Bar */}
-        <div className="flex-1 max-w-md relative">
+        <div className="w-full sm:flex-1 sm:max-w-md relative">
           <Search className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
@@ -149,25 +168,11 @@ const MenuPage = () => {
             className="w-full bg-[#141414] text-gray-200 placeholder-gray-500 rounded-full py-3 pl-12 pr-4 border border-[#222] outline-none focus:border-gray-500 transition-colors text-sm font-medium shadow-inner"
           />
         </div>
-
-        {/* Cart */}
-        <button
-          onClick={() => navigate(`/cart/${slug || 'kokkarakko-fried-chicken'}`)}
-          className="relative flex items-center gap-2 bg-[#E50914] hover:bg-[#CC0812] text-white font-bold py-2.5 px-4 rounded-full transition-all text-sm shrink-0 shadow-lg shadow-red-500/20"
-        >
-          <ShoppingCart className="w-4 h-4" />
-          <span className="hidden sm:inline">Cart</span>
-          {cartCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-white text-[#E50914] text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#E50914]">
-              {cartCount}
-            </span>
-          )}
-        </button>
       </header>
 
       {/* Hero Banner */}
       <div className="px-6 max-w-[1400px] mx-auto mb-10 mt-2">
-        <div className="relative w-full rounded-[2rem] overflow-hidden bg-gradient-to-r from-[#111] to-[#222] border border-[#222] flex flex-col md:flex-row h-[350px] shadow-2xl">
+        <div className="relative w-full rounded-[2rem] overflow-hidden bg-gradient-to-r from-[#111] to-[#222] border border-[#222] flex flex-col md:flex-row h-[240px] sm:h-[290px] md:h-[350px] shadow-2xl">
           
           {/* Banner Image (Background/Right) */}
           <div className="absolute inset-0 md:left-1/3 md:w-2/3 h-full z-0 opacity-40 md:opacity-100">
@@ -184,18 +189,18 @@ const MenuPage = () => {
           </div>
 
           {/* Banner Content (Left) */}
-          <div className="relative z-20 w-full md:w-3/5 p-8 md:p-14 flex flex-col justify-center h-full">
-            <p className="text-[#E50914] text-xs font-black tracking-widest uppercase mb-3 drop-shadow-md">Crispy. Juicy. Irresistible.</p>
-            <h1 className="text-4xl md:text-6xl font-bold text-white leading-none mb-1 drop-shadow-md tracking-tight">
+          <div className="relative z-20 w-full md:w-3/5 p-6 sm:p-8 md:p-14 flex flex-col justify-center h-full">
+            <p className="text-[#E50914] text-[10px] sm:text-xs font-black tracking-widest uppercase mb-1 sm:mb-3 drop-shadow-md">Crispy. Juicy. Irresistible.</p>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-none mb-0.5 sm:mb-1 drop-shadow-md tracking-tight">
               Hot Chicken,
             </h1>
-            <h1 className="text-4xl md:text-6xl font-bold text-[#E50914] leading-none mb-5 drop-shadow-md tracking-tight">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#E50914] leading-none mb-3 sm:mb-5 drop-shadow-md tracking-tight">
               Great Moments!
             </h1>
-            <p className="text-gray-300 text-sm md:text-base font-medium mb-8 max-w-sm leading-relaxed text-shadow-sm">
+            <p className="text-gray-300 text-xs sm:text-sm md:text-base font-medium mb-4 sm:mb-8 max-w-xs sm:max-w-sm leading-relaxed text-shadow-sm line-clamp-2 sm:line-clamp-none">
               Freshly prepared with the finest ingredients. Flavors you'll love, every single time.
             </p>
-            <button className="bg-[#E50914] hover:bg-[#CC0812] text-white font-bold py-3 px-7 rounded-full w-max flex items-center gap-2 transition-all shadow-lg shadow-red-500/20 text-sm">
+            <button className="bg-[#E50914] hover:bg-[#CC0812] text-white font-bold py-2 sm:py-3 px-5 sm:px-7 rounded-full w-max flex items-center gap-2 transition-all shadow-lg shadow-red-500/20 text-xs sm:text-sm">
               Order Now <ArrowRight className="w-4 h-4 ml-1" />
             </button>
           </div>
@@ -224,7 +229,7 @@ const MenuPage = () => {
       </div>
 
       {/* Categories & Filter */}
-      <div className="px-6 max-w-[1100px] mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="px-6 max-w-[1200px] mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex gap-3 overflow-x-auto w-full md:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <button 
             onClick={() => setActiveCategory('ALL')}
@@ -263,14 +268,14 @@ const MenuPage = () => {
       </div>
 
       {/* Section Title */}
-      <div className="px-6 max-w-[1100px] mx-auto mb-6 mt-2">
+      <div className="px-6 max-w-[1200px] mx-auto mb-6 mt-2">
         <h2 className="text-2xl font-bold text-white tracking-tight">
           {activeCategory === 'ALL' ? 'All Items' : activeCategory}
         </h2>
       </div>
 
       {/* Menu List */}
-      <div className="px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1100px] mx-auto pb-12">
+      <div className="px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 max-w-[1200px] mx-auto pb-12">
         {filteredItems.length === 0 ? (
           <div className="col-span-full text-center py-20 text-gray-500 font-bold uppercase tracking-wider text-sm">
             No items found.

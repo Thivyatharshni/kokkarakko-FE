@@ -11,6 +11,7 @@ import QROrderingSection from '../../components/QROrderingSection';
 import Footer from '../../components/Footer';
 import AnimatedChickenLeg from '../../components/AnimatedChickenLeg';
 import { getShopBySlug } from '../../services/shopService';
+import { API_BASE_URL } from '../../config/constants';
 import { Loader2 } from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal';
 
@@ -37,7 +38,10 @@ const LandingPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        console.log("Current API URL:", API_BASE_URL);
+        console.log("Requested Shop:", defaultSlug);
         const shopRes = await getShopBySlug(defaultSlug);
+        console.log("Shop Response:", shopRes);
 
         if (shopRes.success) {
           setShop(shopRes.data);

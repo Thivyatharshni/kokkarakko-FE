@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QrCode, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import bgImage from '../assets/images/bg.png';
 
 const Navbar = ({ shop }) => {
@@ -191,39 +192,47 @@ const Navbar = ({ shop }) => {
       </div>
 
       {/* Mobile/Tablet Drawer Menu */}
-      {isMobileMenuOpen && (
-        <div className={`md:hidden absolute top-full left-0 w-full ${drawerBgClass} border-b shadow-xl py-4 px-6 flex flex-col gap-4 font-black text-sm uppercase tracking-wider transition-all duration-300`}>
-          <button 
-            onClick={() => {
-              scrollToSection('top', 'landing');
-              setIsMobileMenuOpen(false);
-            }}
-            className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors"
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className={`md:hidden absolute top-full left-0 w-full ${drawerBgClass} border-b shadow-xl overflow-hidden py-4 px-6 flex flex-col gap-4 font-black text-sm uppercase tracking-wider`}
           >
-            Landing Page
-          </button>
-          
-          <button 
-            onClick={() => {
-              navigate(`/menu/${shop?.slug || 'kokkarakko-fried-chicken'}`);
-              setIsMobileMenuOpen(false);
-            }}
-            className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors"
-          >
-            Menu
-          </button>
+            <button 
+              onClick={() => {
+                scrollToSection('top', 'landing');
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors"
+            >
+              Landing Page
+            </button>
+            
+            <button 
+              onClick={() => {
+                navigate(`/menu/${shop?.slug || 'kokkarakko-fried-chicken'}`);
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors"
+            >
+              Menu
+            </button>
 
-          <button 
-            onClick={() => {
-              navigate('/owner/login');
-              setIsMobileMenuOpen(false);
-            }}
-            className="text-left py-2 hover:text-[#D90404] transition-colors"
-          >
-            Admin
-          </button>
-        </div>
-      )}
+            <button 
+              onClick={() => {
+                navigate('/owner/login');
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left py-2 hover:text-[#D90404] transition-colors"
+            >
+              Admin
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

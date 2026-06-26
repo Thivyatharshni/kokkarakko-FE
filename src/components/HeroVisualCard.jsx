@@ -66,9 +66,9 @@ const HeroVisualCard = ({ bucketRef, originRef }) => {
           initial={{ opacity: 0, rotate: -45 }}
           animate={{ opacity: 1, rotate: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="absolute bottom-2 right-2 lg:bottom-4 lg:right-4 z-20 bg-white rounded-full p-1 shadow-2xl border border-gray-100 hover:scale-110 transition-transform duration-200 cursor-pointer"
+          className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 lg:bottom-4 lg:right-4 z-20 bg-white rounded-full p-0.5 sm:p-1 shadow-2xl border border-gray-100 hover:scale-110 transition-transform duration-200 cursor-pointer"
         >
-          <div className="relative w-20 h-20 lg:w-28 lg:h-28 flex items-center justify-center">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-28 lg:h-28 flex items-center justify-center">
             
             {/* SVG Text Rotation */}
             <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_12s_linear_infinite] select-none">
@@ -85,9 +85,9 @@ const HeroVisualCard = ({ bucketRef, originRef }) => {
             </svg>
 
             {/* Badge Center Red Circle + Chicken Icon */}
-            <div className="absolute inset-3 lg:inset-4 bg-[#D90404] rounded-full flex items-center justify-center shadow-inner">
+            <div className="absolute inset-2 sm:inset-3 lg:inset-4 bg-[#D90404] rounded-full flex items-center justify-center shadow-inner">
               {/* Chicken SVG Icon */}
-              <svg viewBox="0 0 24 24" className="w-6 h-6 lg:w-8 lg:h-8 fill-white text-white">
+              <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 fill-white text-white">
                 <path d="M12 2A10 10 0 0 0 2 12c0 3 .5 6 2 8l2-2v-2c2-1 3-3 4-5 1-2 2-3 4-3 1 0 2 .5 3 1 .5.5.8 1.2.8 2 0 1.2-.8 2.2-2 2.6V15h2v-2h2v-2c0-4.4-3.6-8-8-8zm-2 10a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
               </svg>
             </div>

@@ -43,7 +43,7 @@ const HeroSection = ({ slug, shop }) => {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center relative z-10 w-full py-4 lg:py-6">
         
         {/* Left Column: Typography & Text Wrapper - Premium Center-Left Composition */}
-        <div className="lg:col-span-6 xl:col-span-6 lg:col-start-3 text-center lg:text-left flex flex-col justify-center items-center lg:items-start z-20 pt-24 lg:pt-28 space-y-6 md:space-y-8 max-w-[580px] w-full">
+        <div className="lg:col-span-6 xl:col-span-6 lg:col-start-3 text-center lg:text-left flex flex-col justify-center items-center lg:items-start z-20 pt-28 sm:pt-32 md:pt-36 lg:pt-28 space-y-6 md:space-y-8 max-w-[580px] w-full">
           
           {/* Red Brush Banner / Badge */}
           <motion.div
@@ -59,12 +59,12 @@ const HeroSection = ({ slug, shop }) => {
           </motion.div>
 
           {/* Large Typography: CRISPY JUICY IRRESISTIBLE! */}
-          <div className="space-y-1 lg:space-y-2 select-none">
+          <div className="space-y-1 lg:space-y-2 select-none w-full">
             <motion.h1 
               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
             >
               CRISPY
             </motion.h1>
@@ -72,7 +72,7 @@ const HeroSection = ({ slug, shop }) => {
               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-[#D90404] leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-[#D90404] leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
             >
               JUICY
             </motion.h1>
@@ -80,7 +80,7 @@ const HeroSection = ({ slug, shop }) => {
               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none uppercase italic [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none uppercase italic [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
             >
               IRRESISTIBLE!
             </motion.h1>

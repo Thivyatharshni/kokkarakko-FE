@@ -144,7 +144,8 @@ const CategoryManagement = () => {
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <table className="w-full text-left">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left whitespace-nowrap">
           <thead className="bg-gray-50 text-gray-500 text-sm">
             <tr>
               <th className="p-4 font-semibold">Image</th>
@@ -189,12 +190,13 @@ const CategoryManagement = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Add/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-md p-6 overflow-hidden">
+          <div className="bg-white rounded-2xl w-full max-w-md p-6 overflow-hidden max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-bold mb-4">{editingId ? 'Edit Category' : 'Add Category'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

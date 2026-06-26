@@ -213,7 +213,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
           </motion.div>
 
           {/* Large Premium Matte Black Ceramic Serving Platter */}
-          <div className="absolute bottom-2 left-0 z-20 w-64 h-24 flex items-center justify-center">
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 z-20 w-52 sm:w-64 h-20 sm:h-24 flex items-center justify-center">
             {/* Soft drop shadow under the plate */}
             <motion.div
               style={{ opacity: plateOpacity, scale: plateScale }}
@@ -231,7 +231,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
                   {/* Plating target for the chicken leg */}
                   <div 
                     ref={plateRef}
-                    className="w-28 h-28 pointer-events-none opacity-0 -translate-y-3.5"
+                    className="w-24 h-24 sm:w-28 sm:h-28 pointer-events-none opacity-0 -translate-y-3.5"
                   />
                 </div>
               </div>
@@ -241,11 +241,11 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
           {/* Serve Text Overlay */}
           <motion.div
             style={{ opacity: textOpacity, y: textY }}
-            className="absolute -bottom-6 right-0 md:-right-8 z-30 text-right leading-none uppercase font-black text-lg md:text-2xl tracking-tighter text-[#D90404]"
+            className="absolute -bottom-8 right-4 sm:right-6 lg:-right-8 z-30 text-right leading-none uppercase font-black text-sm sm:text-base md:text-2xl tracking-tighter text-[#D90404]"
           >
-            <span className="block text-[#111111] text-[10px] font-bold tracking-widest mb-1.5 opacity-60">Serving Status</span>
+            <span className="block text-[#111111] text-[9px] sm:text-[10px] font-bold tracking-widest mb-1 opacity-60">Serving Status</span>
             FRESHLY FRIED.
-            <span className="block text-[#111111] mt-1 font-black">PERFECTLY SERVED.</span>
+            <span className="block text-[#111111] mt-0.5 font-black">PERFECTLY SERVED.</span>
           </motion.div>
 
         </div>

@@ -10,11 +10,21 @@ import toast from 'react-hot-toast';
 const FeaturedCard = ({ item, index }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const cardRef = useRef(null);
   const { addToCart } = useCart();
 
+  useEffect(() => {
+    const checkTouch = () => {
+      setIsTouchDevice(window.innerWidth < 1024 || window.matchMedia('(pointer: coarse)').matches);
+    };
+    checkTouch();
+    window.addEventListener('resize', checkTouch);
+    return () => window.removeEventListener('resize', checkTouch);
+  }, []);
+
   const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || isTouchDevice) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientY - rect.top) / rect.height - 0.5) * 10;
     const y = ((e.clientX - rect.left) / rect.width - 0.5) * -10;
@@ -40,19 +50,22 @@ const FeaturedCard = ({ item, index }) => {
       initial={{ opacity: 0, y: 50, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      className="h-full"
     >
       <motion.div
         ref={cardRef}
         onMouseMove={(e) => { handleMouseMove(e); setIsHovered(true); }}
         onMouseLeave={handleMouseLeave}
         style={{
-          transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(${isHovered ? '-10px' : '0px'})`,
+          transform: (!isTouchDevice && isHovered)
+            ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-10px)`
+            : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)',
           transition: 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease',
-          boxShadow: isHovered
+          boxShadow: (isHovered && !isTouchDevice)
             ? '0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(229,9,20,0.15)'
             : '0 10px 30px rgba(0,0,0,0.4)',
         }}
-        className="relative bg-[#141414] border border-[#252525] rounded-2xl overflow-hidden flex flex-col group cursor-pointer"
+        className="relative bg-[#141414] border border-[#252525] rounded-2xl overflow-hidden flex flex-col h-full group cursor-pointer"
       >
         {/* ⭐ Featured Badge */}
         <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-[#E50914] text-white text-[10px] font-black tracking-widest uppercase px-2.5 py-1 rounded-full shadow-lg shadow-red-500/30">

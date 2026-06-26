@@ -143,7 +143,7 @@ const CartPage = () => {
                   <div key={item._id} className="bg-[#141414] border border-[#222] rounded-2xl p-4 flex gap-4 items-center">
                     <div className="flex-grow min-w-0">
                       <h3 className="text-white font-bold text-base truncate">{item.name}</h3>
-                      <p className="text-[#E50914] font-black text-sm mt-0.5">${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-[#E50914] font-black text-sm mt-0.5">₹{(item.price * item.quantity).toFixed(2)}</p>
                     </div>
 
                     {/* Quantity Controls */}
@@ -210,7 +210,7 @@ const CartPage = () => {
                 <div className="bg-[#1A1A1A] rounded-2xl p-4 mt-6 space-y-2 border border-[#2d2d2d]">
                   <div className="flex justify-between items-center text-sm font-bold text-gray-400">
                     <span>Subtotal</span>
-                    <span>${getCartTotal().toFixed(2)}</span>
+                    <span>₹{getCartTotal().toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm font-bold text-gray-400">
                     <span>Delivery / Table Service</span>
@@ -218,7 +218,7 @@ const CartPage = () => {
                   </div>
                   <div className="border-t border-[#2d2d2d] my-2 pt-2 flex justify-between items-center">
                     <span className="text-base font-extrabold text-white">Grand Total</span>
-                    <span className="text-xl font-black text-[#E50914]">${getCartTotal().toFixed(2)}</span>
+                    <span className="text-xl font-black text-[#E50914]">₹{getCartTotal().toFixed(2)}</span>
                   </div>
                 </div>
 
