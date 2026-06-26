@@ -254,14 +254,15 @@ const QROrderingSection = ({ slug, shop }) => {
                 <p className="text-xs text-gray-400 font-semibold leading-relaxed">
                   Or click this direct link if you're browsing on your phone:
                 </p>
-                <a 
+                <motion.a 
                   href={fullShopUrl} 
                   target="_blank" 
                   rel="noreferrer" 
+                  whileTap={{ scale: 0.98 }}
                   className="block text-[#D90404] hover:underline font-bold text-sm truncate"
                 >
                   {fullShopUrl}
-                </a>
+                </motion.a>
               </motion.div>
 
             </div>

@@ -175,6 +175,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
             <motion.button
               variants={ctaVariants}
               whileHover={{ y: -3, boxShadow: '0 15px 30px rgba(0,0,0,0.15)' }}
+              whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
               onClick={handleOrderNow}
               className="premium-btn bg-[#111111] hover:bg-black text-white font-black text-xs uppercase tracking-wider py-4 px-8 rounded-full flex items-center justify-center gap-2 mx-auto lg:mx-0 shadow-lg shadow-black/10"
@@ -219,15 +220,15 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               style={{ opacity: plateOpacity, scale: plateScale }}
               className="absolute bottom-[-8px] w-[95%] h-[80%] bg-black/40 filter blur-[8px] rounded-[50%] z-0"
             />
-            {/* Plate Body */}
+            {/* Plate Body (Matte Red Theme Ceramic Platter) */}
             <motion.div
               style={{ opacity: plateOpacity, scale: plateScale }}
-              className="w-full h-full bg-gradient-to-b from-[#222] to-[#0f0f0f] rounded-[50%] border-t-2 border-l border-r border-gray-800 shadow-[0_15px_30px_rgba(0,0,0,0.55)] z-10 relative flex items-center justify-center"
+              className="w-full h-full bg-gradient-to-b from-[#E31E24] to-[#5c0306] rounded-[50%] border-t-2 border-l border-r border-red-500/40 shadow-[0_15px_30px_rgba(0,0,0,0.55)] z-10 relative flex items-center justify-center"
             >
               {/* Inner Base */}
-              <div className="w-[84%] h-[76%] bg-gradient-to-b from-[#111] to-[#060606] rounded-[50%] shadow-[inset_0_8px_16px_rgba(0,0,0,0.85)] border border-gray-950 flex items-center justify-center">
-                {/* Gold Rim Detail */}
-                <div className="w-[88%] h-[80%] rounded-[50%] border border-amber-500/10 flex items-center justify-center relative">
+              <div className="w-[84%] h-[76%] bg-gradient-to-b from-[#a8050b] to-[#3a0103] rounded-[50%] shadow-[inset_0_8px_16px_rgba(0,0,0,0.85)] border border-red-950 flex items-center justify-center">
+                {/* Silver/Red Rim Detail */}
+                <div className="w-[88%] h-[80%] rounded-[50%] border border-red-400/20 flex items-center justify-center relative">
                   {/* Plating target for the chicken leg */}
                   <div 
                     ref={plateRef}

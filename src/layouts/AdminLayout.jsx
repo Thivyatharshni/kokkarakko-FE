@@ -26,9 +26,12 @@ const AdminLayout = () => {
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-[#111111] text-white">
-      <div className="p-6">
-        <h2 className="text-2xl font-black text-[#D90404] uppercase tracking-wider">Kokkarakko</h2>
-        <p className="text-sm text-gray-400 mt-1">{shop ? shop.shopName : 'Admin Panel'}</p>
+      <div className="p-6 flex items-center gap-4 border-b border-gray-800">
+        <img src="/logo.png" alt="Logo" className="h-14 w-auto object-contain rounded-full shadow-md border border-white/5" />
+        <div>
+          <h2 className="text-xl font-black text-[#D90404] uppercase tracking-wider">Kokkarakko</h2>
+          <p className="text-xs text-gray-400 mt-0.5">{shop ? shop.shopName : 'Admin Panel'}</p>
+        </div>
       </div>
       
       <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">

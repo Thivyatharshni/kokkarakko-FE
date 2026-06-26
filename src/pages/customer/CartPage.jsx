@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { getShopBySlug } from '../../services/shopService';
 import { createOrder } from '../../services/orderService';
@@ -100,9 +101,11 @@ const CartPage = () => {
     <div className="bg-[#0A0A0A] min-h-screen text-white font-sans pb-16">
       {/* Header */}
       <div className="px-6 py-5 max-w-[1100px] mx-auto border-b border-[#222] flex items-center gap-4">
-        <Link to={menuUrl} className="p-2 hover:bg-[#1A1A1A] rounded-full transition-colors text-gray-400 hover:text-white">
-          <ArrowLeft className="w-5 h-5" />
-        </Link>
+        <motion.div whileTap={{ scale: 0.9 }} className="inline-block">
+          <Link to={menuUrl} className="p-2 hover:bg-[#1A1A1A] rounded-full transition-colors text-gray-400 hover:text-white block">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+        </motion.div>
         <div>
           <h1 className="text-xl font-bold text-white tracking-tight">Your Cart</h1>
           <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">{shop?.name || 'Shop'}</p>
@@ -148,28 +151,31 @@ const CartPage = () => {
 
                     {/* Quantity Controls */}
                     <div className="flex items-center bg-[#1A1A1A] border border-[#2d2d2d] rounded-xl px-2.5 py-1.5 gap-3 shrink-0">
-                      <button 
+                      <motion.button 
                         onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                        whileTap={{ scale: 0.8 }}
                         className="text-gray-400 hover:text-white transition-colors"
                       >
                         <Minus className="w-4 h-4" />
-                      </button>
+                      </motion.button>
                       <span className="text-white text-sm font-extrabold w-4 text-center">{item.quantity}</span>
-                      <button 
+                      <motion.button 
                         onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                        whileTap={{ scale: 0.8 }}
                         className="text-gray-400 hover:text-white transition-colors"
                       >
                         <Plus className="w-4 h-4" />
-                      </button>
+                      </motion.button>
                     </div>
 
                     {/* Remove Action */}
-                    <button 
+                    <motion.button 
                       onClick={() => removeFromCart(item._id)}
+                      whileTap={{ scale: 0.9 }}
                       className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all shrink-0"
                     >
                       <Trash2 className="w-5 h-5" />
-                    </button>
+                    </motion.button>
                   </div>
                 ))}
               </div>
@@ -222,9 +228,10 @@ const CartPage = () => {
                   </div>
                 </div>
 
-                <button
+                <motion.button
                   type="submit"
                   disabled={placingOrder}
+                  whileTap={{ scale: 0.96 }}
                   className="w-full bg-[#E50914] hover:bg-[#CC0812] disabled:bg-red-800 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-red-500/10 flex items-center justify-center gap-2 mt-4 text-sm uppercase tracking-wider"
                 >
                   {placingOrder ? (
@@ -236,7 +243,7 @@ const CartPage = () => {
                       Place Order <ArrowRight className="w-5 h-5" />
                     </>
                   )}
-                </button>
+                </motion.button>
               </form>
             </div>
 

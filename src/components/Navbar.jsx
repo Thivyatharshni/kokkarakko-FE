@@ -134,13 +134,17 @@ const Navbar = ({ shop }) => {
         
         {/* Left: Logo and Tagline - Anchored to Left */}
         <div className="flex-1 flex justify-start items-center">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => scrollToSection('top', 'landing')}>
-            <img src="/logo.svg" alt="Logo" className="h-10 md:h-12 w-auto object-contain" />
+          <motion.div 
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-3 cursor-pointer" 
+            onClick={() => scrollToSection('top', 'landing')}
+          >
+            <img src="/logo.png" alt="Logo" className="h-16 md:h-20 w-auto object-contain rounded-full shadow-md border border-white/10" />
             <div className="leading-tight">
               <span className={`block text-lg md:text-xl font-black ${textColorClass} tracking-tight uppercase transition-colors duration-500`}>{brandMain}</span>
               <span className={`block text-[8px] md:text-[9px] font-bold ${subTextColorClass} uppercase tracking-widest transition-colors duration-500`}>{brandSub || 'Fried Chicken'}</span>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Center: Nav Links - Centered in Navbar */}
@@ -150,7 +154,7 @@ const Navbar = ({ shop }) => {
               onClick={() => scrollToSection('top', 'landing')}
               className={`nav-link relative py-2 ${textColorClass} hover:text-[#D90404] transition-colors duration-500 ${activeTab === 'landing' ? 'active' : ''}`}
             >
-              Landing Page
+              Home
             </button>
             
             <button 
@@ -171,22 +175,24 @@ const Navbar = ({ shop }) => {
 
         {/* Right: Scan QR CTA + Mobile Menu Button - Anchored to Right */}
         <div className="flex-1 flex justify-end items-center gap-3 md:gap-4">
-          <button 
+          <motion.button 
             onClick={() => scrollToSection('qr-section', 'landing')}
+            whileTap={{ scale: 0.95 }}
             className="premium-btn flex items-center gap-1.5 md:gap-2 bg-[#D90404] hover:bg-[#b80303] text-white font-black px-3.5 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-xs uppercase tracking-widest shadow-lg shadow-red-500/20 whitespace-nowrap"
           >
             <QrCode size={14} className="md:w-4 md:h-4" />
             <span className="hidden sm:inline">Scan QR to Order</span>
             <span className="sm:hidden">Order</span>
-          </button>
+          </motion.button>
 
-          <button 
+          <motion.button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            whileTap={{ scale: 0.9, rotate: isMobileMenuOpen ? -90 : 90 }}
             className={`md:hidden p-2 rounded-lg ${textColorClass} hover:bg-gray-100/10 transition-colors duration-500`}
             aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          </motion.button>
         </div>
 
       </div>
@@ -201,35 +207,38 @@ const Navbar = ({ shop }) => {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className={`md:hidden absolute top-full left-0 w-full ${drawerBgClass} border-b shadow-xl overflow-hidden py-4 px-6 flex flex-col gap-4 font-black text-sm uppercase tracking-wider`}
           >
-            <button 
+            <motion.button 
               onClick={() => {
                 scrollToSection('top', 'landing');
                 setIsMobileMenuOpen(false);
               }}
-              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors"
+              whileTap={{ scale: 0.98, x: 4 }}
+              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors w-full"
             >
-              Landing Page
-            </button>
+              Home
+            </motion.button>
             
-            <button 
+            <motion.button 
               onClick={() => {
                 navigate(`/menu/${shop?.slug || 'kokkarakko-fried-chicken'}`);
                 setIsMobileMenuOpen(false);
               }}
-              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors"
+              whileTap={{ scale: 0.98, x: 4 }}
+              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors w-full"
             >
               Menu
-            </button>
+            </motion.button>
 
-            <button 
+            <motion.button 
               onClick={() => {
                 navigate('/owner/login');
                 setIsMobileMenuOpen(false);
               }}
-              className="text-left py-2 hover:text-[#D90404] transition-colors"
+              whileTap={{ scale: 0.98, x: 4 }}
+              className="text-left py-2 hover:text-[#D90404] transition-colors w-full"
             >
               Admin
-            </button>
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>

@@ -50,6 +50,7 @@ const FeaturedCard = ({ item, index }) => {
       initial={{ opacity: 0, y: 50, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      whileTap={{ scale: 0.98 }}
       className="h-full"
     >
       <motion.div
@@ -115,13 +116,14 @@ const FeaturedCard = ({ item, index }) => {
             <span className="text-[#E50914] font-black text-xl">
               ₹{item.price}
             </span>
-            <button
+            <motion.button
               onClick={handleAddToCart}
+              whileTap={{ scale: 0.95 }}
               className="premium-btn flex items-center gap-2 bg-[#E50914] hover:bg-[#CC0812] text-white font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-lg shadow-red-500/20 transition-all"
             >
               <ShoppingCart size={13} />
               Add
-            </button>
+            </motion.button>
           </div>
         </div>
       </motion.div>

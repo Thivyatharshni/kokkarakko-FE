@@ -48,9 +48,13 @@ const FeaturesStrip = () => {
               }`}
             >
               {/* Icon Container with Circular Border */}
-              <div className="w-16 h-16 rounded-full border-2 border-white/80 flex items-center justify-center mb-4 bg-white/5 shadow-inner hover:scale-110 transition-transform duration-200">
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-16 h-16 rounded-full border-2 border-white/80 flex items-center justify-center mb-4 bg-white/5 shadow-inner transition-all duration-200 cursor-pointer"
+              >
                 {feature.icon}
-              </div>
+              </motion.div>
 
               {/* Title */}
               <h3 className="text-white font-black text-sm md:text-base tracking-widest uppercase mb-1">

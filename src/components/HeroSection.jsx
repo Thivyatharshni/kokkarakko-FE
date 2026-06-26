@@ -57,58 +57,58 @@ const HeroSection = ({ slug, shop }) => {
           >
             HOT. FRESH. ALWAYS FRIED TO PERFECTION.
           </motion.div>
-
-          {/* Large Typography: CRISPY JUICY IRRESISTIBLE! */}
-          <div className="space-y-1 lg:space-y-2 select-none w-full">
-            <motion.h1 
-              initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
-            >
-              CRISPY
-            </motion.h1>
-            <motion.h1 
-              initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-[#D90404] leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
-            >
-              JUICY
-            </motion.h1>
-            <motion.h1 
-              initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none uppercase italic [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
-            >
-              IRRESISTIBLE!
-            </motion.h1>
-          </div>
-
-          {/* Description Row / Supporting text */}
-          <motion.p
-            initial={{ opacity: 0, y: 15, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="text-xs md:text-sm font-bold text-gray-200 flex flex-wrap justify-center lg:justify-start items-center gap-x-2 gap-y-1 leading-relaxed [text-shadow:_0_2px_8px_rgba(0,0,0,0.6)]"
-          >
-            <span>100% Real Chicken</span>
-            <span className="text-gray-500">|</span>
-            <span>Perfectly Seasoned</span>
-            <span className="text-gray-500">|</span>
-            <span>Fried Fresh</span>
-            <span className="text-gray-500">|</span>
-            <span>Made To Order</span>
-          </motion.p>
-
-          {/* Primary CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 15, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="pt-2"
-          >
+ 
+           {/* Large Typography: CRISPY JUICY IRRESISTIBLE! */}
+           <div className="space-y-1 lg:space-y-2 select-none w-full">
+             <motion.h1 
+               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
+               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+               transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+             >
+               CRISPY
+             </motion.h1>
+             <motion.h1 
+               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
+               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+               transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-[#D90404] leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+             >
+               JUICY
+             </motion.h1>
+             <motion.h1 
+               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
+               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+               transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none uppercase italic [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+             >
+               IRRESISTIBLE!
+             </motion.h1>
+           </div>
+ 
+           {/* Description Row / Supporting text */}
+           <motion.p
+             initial={{ opacity: 0, y: 15, filter: 'blur(4px)' }}
+             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+             transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+             className="text-xs md:text-sm font-bold text-gray-200 flex flex-wrap justify-center lg:justify-start items-center gap-x-2 gap-y-1 leading-relaxed [text-shadow:_0_2px_8px_rgba(0,0,0,0.6)]"
+           >
+             <span>100% Real Chicken</span>
+             <span className="text-gray-500">|</span>
+             <span>Perfectly Seasoned</span>
+             <span className="text-gray-500">|</span>
+             <span>Fried Fresh</span>
+             <span className="text-gray-500">|</span>
+             <span>Made To Order</span>
+           </motion.p>
+ 
+           {/* Primary CTA */}
+           <motion.div
+             initial={{ opacity: 0, y: 15, filter: 'blur(4px)' }}
+             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+             transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+             className="pt-2"
+           >
             <button
               onClick={handleExploreMenu}
               className="premium-btn group bg-[#D90404] hover:bg-[#b80303] text-white font-black text-xs lg:text-sm uppercase tracking-wider py-3.5 lg:py-4.5 px-6 lg:px-8 rounded-full shadow-xl shadow-[#D90404]/30 flex items-center justify-center gap-3"

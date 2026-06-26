@@ -91,7 +91,8 @@ const BestSellerSection = ({ menuItems, slug }) => {
                     hidden: { opacity: 0, y: 30 },
                     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                   }}
-                  className="bestseller-card bg-white rounded-3xl border border-gray-100 shadow-md p-4 flex flex-col justify-between relative group"
+                  whileTap={{ scale: 0.97 }}
+                  className="bestseller-card bg-white rounded-3xl border border-gray-100 shadow-md p-4 flex flex-col justify-between relative group cursor-pointer"
                 >
                   
                   {/* Category Tag (Top Left) */}
@@ -131,15 +132,16 @@ const BestSellerSection = ({ menuItems, slug }) => {
                       </p>
 
                       {/* Add to Order Button */}
-                      <button
+                      <motion.button
                         onClick={(e) => handleAddToCart(e, item)}
+                        whileTap={{ scale: 0.95 }}
                         className="add-to-order-btn w-full flex items-center justify-between border-2 border-gray-100 rounded-xl overflow-hidden bg-white text-gray-700 font-bold text-xs py-1 pl-3 pr-1"
                       >
                         <span className="uppercase tracking-wider">Add to Order</span>
                         <span className="add-to-order-icon bg-[#D90404] text-white p-1.5 rounded-lg flex items-center justify-center">
                           <Plus size={12} strokeWidth={3} />
                         </span>
-                      </button>
+                      </motion.button>
                     </div>
 
                   </div>
@@ -152,8 +154,9 @@ const BestSellerSection = ({ menuItems, slug }) => {
 
         {/* View Full Menu CTA */}
         <div className="flex justify-center">
-          <button
+          <motion.button
             onClick={() => slug && navigate(`/menu/${slug}`)}
+            whileTap={{ scale: 0.95 }}
             className="premium-btn group bg-[#D90404] hover:bg-[#b80303] text-white font-black text-xs md:text-sm uppercase tracking-wider py-4 px-8 rounded-full shadow-lg shadow-red-500/20 flex items-center justify-center gap-2"
             style={{
               clipPath: 'polygon(3% 0%, 97% 0%, 100% 50%, 97% 100%, 3% 100%, 0% 50%)'
@@ -161,7 +164,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
           >
             View Full Menu
             <span className="font-bold group-hover:translate-x-1 transition-transform duration-200">→</span>
-          </button>
+          </motion.button>
         </div>
 
       </div>

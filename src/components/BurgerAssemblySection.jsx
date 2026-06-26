@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import all 6 correct assets directly using ES modules
 import bottomBun from '../assets/images/bottom bun.png';
@@ -373,7 +374,7 @@ const BurgerAssemblySection = () => {
       id="burger-assembly"
       ref={sectionRef} 
       className="relative w-full bg-neutral-950 z-20 border-b border-neutral-900"
-      style={{ height: isDesktop ? '600vh' : 'auto' }}
+      style={{ height: '600vh' }}
     >
       <style>{`
         @keyframes floatParticle {
@@ -567,85 +568,152 @@ const BurgerAssemblySection = () => {
         </div>
       </div>
 
-      {/* Static Stacked Layout for Mobile Screens (No placeholders, dynamically stacked complete burger) */}
+      {/* Interactive Sticky Scroll Layout for Mobile Screens */}
       <div 
-        className="block md:hidden py-16 bg-cover bg-center w-full"
+        className="sticky top-0 left-0 w-full h-screen overflow-hidden block md:hidden bg-cover bg-center"
         style={{ backgroundImage: `url(${bgImage})` }}
       >
-        <div className="px-6 space-y-12 w-full">
+        <div className="px-3.5 py-4 w-full h-full flex flex-col items-center justify-center space-y-4 relative">
           
-          <div className="space-y-3 text-center">
-            <span className="text-xs font-black text-[#E50914] tracking-widest uppercase bg-red-950/40 border border-[#E50914]/20 px-4 py-1.5 rounded-full">
+          <div className="space-y-1 text-center pt-14">
+            <span className="text-[10px] font-black text-[#E50914] tracking-widest uppercase bg-red-950/40 border border-[#E50914]/20 px-3.5 py-1 rounded-full">
               ASSEMBLY STORY
             </span>
             <h2 className="text-3xl font-black text-white uppercase tracking-tight">
               Crafting The Legend
             </h2>
-            <p className="text-gray-300 text-xs font-medium max-w-xs mx-auto">
-              How we assemble our ultimate crispy chicken masterpiece layer by layer.
-            </p>
           </div>
 
-          {/* Hero Stacked Burger (Rendered dynamically using the same 6 local assets) */}
-          <div className="relative w-full h-[430px] flex items-end justify-center bg-black/40 rounded-3xl overflow-hidden border border-white/5 pb-8">
-            <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(245,158,11,0.05)_0%,rgba(0,0,0,0)_70%)] pointer-events-none" />
+          {/* Mobile Visual Stack Container (No Background Card) */}
+          <div className="relative w-full h-[290px] flex items-end justify-center pb-4">
+            <div 
+              className="absolute inset-0 transition-opacity duration-500 pointer-events-none" 
+              style={{
+                background: 'radial-gradient(circle, rgba(255,220,120,0.12) 0%, rgba(0,0,0,0) 70%)',
+                opacity: activeStep === 4 ? 1 : 0.3
+              }}
+            />
             
-            {/* Complete Stack for Mobile */}
-            <div className="relative w-[210px] h-[370px] select-none pointer-events-none z-10 flex items-end justify-center">
-              {[
-                { src: bottomBun, bottom: -0.504 * 210, label: 'Bottom Bun', wScale: 1.05 },
-                { src: friedChicken, bottom: -0.410 * 210, label: 'Fried Chicken', wScale: 1.15 },
-                { src: cheddarCheese, bottom: -0.127 * 210, label: 'Cheddar Cheese', wScale: 0.95 },
-                { src: lettuce, bottom: -0.047 * 210, label: 'Lettuce', wScale: 1.05 },
-                { src: onionTomato, bottom: 0.228 * 210, label: 'Onion & Tomato', wScale: 0.90 },
-                { src: topBun, bottom: 0.333 * 210, label: 'Top Bun', wScale: 1.00 }
-              ].map((layer, idx) => {
-                const w_mob = 210 * layer.wScale;
+            {/* Assembly Stack for Mobile (Shifted Upwards by 15px) */}
+            <div 
+              style={{ transform: 'translateY(-15px)' }}
+              className="relative w-[200px] h-[300px] select-none pointer-events-none z-10 flex items-end justify-center"
+            >
+              {/* Ground Shadow */}
+              <motion.div
+                style={{
+                  opacity: groundShadowOpacity,
+                  scale: groundShadowScale,
+                }}
+                className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-[85%] h-4 bg-black/20 filter blur-md rounded-full z-0"
+              />
+
+              {layersConfig.map((layer, index) => {
+                const anim = layerTransforms[index];
+                const W_mob = 200;
+                const bottomOffset = layer.offsetFraction * W_mob;
+                const w_layer = W_mob * layer.wScale;
+                const h_layer = w_layer * 1.5;
+
                 return (
-                  <img
-                    key={idx}
-                    src={layer.src}
-                    alt={layer.label}
-                    className="absolute object-contain pointer-events-none"
+                  <div
+                    key={layer.id}
+                    className="absolute left-1/2 -translate-x-1/2 flex items-end justify-center overflow-visible"
                     style={{
-                      bottom: `${layer.bottom}px`,
-                      width: `${w_mob}px`,
-                      height: `${w_mob * 1.5}px`
+                      bottom: `${bottomOffset}px`,
+                      width: `${w_layer}px`,
+                      height: `${h_layer}px`
                     }}
-                  />
+                  >
+                    {/* Intermediate Layer Contact Shadow */}
+                    {index > 0 && (
+                      <motion.div
+                        style={{
+                          y: anim.shadowY,
+                          opacity: anim.shadowOpacity,
+                          scale: anim.shadowScale,
+                          bottom: `${layer.shadowBase * w_layer - 10}px`,
+                          width: `${(index === 1 ? 0.55 : 0.75) * w_layer}px`
+                        }}
+                        className={`absolute left-1/2 -translate-x-1/2 h-4 rounded-full z-0 pointer-events-none ${
+                          index === 1 ? 'bg-black/35 filter blur-md' : 'bg-black/15 filter blur-xl'
+                        }`}
+                      />
+                    )}
+
+                    {/* Ingredient Graphic */}
+                    <motion.img
+                      src={layer.src}
+                      alt={layer.label}
+                      style={{
+                        y: anim.y,
+                        rotate: anim.rotate,
+                        scale: anim.scale,
+                        opacity: anim.opacity,
+                        transformOrigin: 'bottom center',
+                        width: `${w_layer}px`,
+                        height: `${h_layer}px`
+                      }}
+                      className="object-contain relative z-10"
+                    />
+                  </div>
                 );
               })}
             </div>
-
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[9px] font-black tracking-widest px-4 py-1.5 rounded-full uppercase shadow-md z-20">
-              KOKKARAKKO SIGNATURE
-            </div>
           </div>
 
-          {/* Step Timeline */}
-          <div className="space-y-8 relative pl-6 border-l border-white/10 max-w-sm mx-auto">
-            {steps.map((step, idx) => (
-              <div key={idx} className="relative space-y-2">
-                <div className="absolute -left-[31px] top-1 w-4 h-4 bg-neutral-900 border-2 border-[#E50914] rounded-full flex items-center justify-center z-10">
-                  <div className="w-1.5 h-1.5 bg-[#E50914] rounded-full" />
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold text-[#E50914] tracking-wider uppercase">
-                      STEP {idx + 1}
+          {/* Large details card (Shifted up by 16px) */}
+          <div className="relative w-full max-w-[490px] mx-auto select-none translate-y-[-16px]">
+            <div className="overflow-hidden rounded-2xl bg-neutral-900/80 border border-white/10 p-6 shadow-2xl backdrop-blur-sm min-h-[295px] flex flex-col justify-between">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeStep}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.28, ease: 'easeOut' }}
+                  className="space-y-3.5"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-[11px] font-black text-[#E50914] tracking-widest uppercase">
+                      {steps[activeStep].number}
+                    </span>
+                    <span className="text-[10px] font-extrabold text-neutral-400 tracking-wider uppercase">
+                      {steps[activeStep].subtitle}
                     </span>
                   </div>
-                  <h3 className="text-sm font-black text-white uppercase">
-                    {step.title}
-                  </h3>
-                </div>
 
-                <p className="text-gray-300 text-xs font-medium leading-relaxed">
-                  {step.description}
-                </p>
+                  <h3 className="text-2xl font-black text-white uppercase tracking-tight">
+                    {steps[activeStep].title}
+                  </h3>
+
+                  <p className="text-neutral-200 text-[14.5px] leading-relaxed font-medium">
+                    {steps[activeStep].description}
+                  </p>
+
+                  <div className="space-y-1.5 pt-2.5 border-t border-white/10">
+                    <h4 className="text-[10.5px] font-black text-neutral-400 tracking-wider uppercase">
+                      INGREDIENT QUALITY NOTES
+                    </h4>
+                    <p className="text-[13.5px] text-neutral-300 font-semibold leading-relaxed">
+                      {steps[activeStep].qualityNotes.join('  •  ')}
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Progress dots bar */}
+              <div className="flex justify-center items-center gap-1.5 pt-4 mt-2 border-t border-white/10">
+                {steps.map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      idx === activeStep ? 'w-6 bg-[#E50914]' : 'w-1.5 bg-white/20'
+                    }`}
+                  />
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
         </div>

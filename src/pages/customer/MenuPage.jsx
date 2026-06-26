@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { 
   Search, ShoppingCart, Star, PlusCircle, ArrowRight, 
   ChevronDown, Drumstick, Package, Layers, Loader2, ChevronRight, ArrowLeft 
@@ -132,19 +133,21 @@ const MenuPage = () => {
       <header className="flex flex-col sm:flex-row gap-4 justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full">
         <div className="flex justify-between items-center w-full sm:w-auto gap-4">
           {/* Back to Home */}
-          <button
+          <motion.button
             onClick={() => navigate('/')}
+            whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 text-gray-400 hover:text-white font-bold text-sm uppercase tracking-wider transition-colors group"
           >
             <span className="p-2 rounded-full bg-[#1A1A1A] border border-[#2d2d2d] group-hover:bg-[#252525] group-hover:border-[#E50914]/40 transition-all">
               <ArrowLeft className="w-4 h-4" />
             </span>
             <span>Home</span>
-          </button>
+          </motion.button>
 
           {/* Cart */}
-          <button
+          <motion.button
             onClick={() => navigate(`/cart/${slug || 'kokkarakko-fried-chicken'}`)}
+            whileTap={{ scale: 0.95 }}
             className="relative flex items-center gap-2 bg-[#E50914] hover:bg-[#CC0812] text-white font-bold py-2.5 px-4 rounded-full transition-all text-sm shadow-lg shadow-red-500/20"
           >
             <ShoppingCart className="w-4 h-4" />
@@ -154,7 +157,7 @@ const MenuPage = () => {
                 {cartCount}
               </span>
             )}
-          </button>
+          </motion.button>
         </div>
 
         {/* Search Bar */}
@@ -231,8 +234,9 @@ const MenuPage = () => {
       {/* Categories & Filter */}
       <div className="px-6 max-w-[1200px] mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex gap-3 overflow-x-auto w-full md:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <button 
+          <motion.button 
             onClick={() => setActiveCategory('ALL')}
+            whileTap={{ scale: 0.95 }}
             className={`px-6 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap transition-colors border ${
               activeCategory === 'ALL' 
                 ? 'bg-[#E50914] text-white border-[#E50914]' 
@@ -240,7 +244,7 @@ const MenuPage = () => {
             }`}
           >
             ALL
-          </button>
+          </motion.button>
           
           {categories.filter(c => c !== 'ALL').map((cat) => {
             let Icon = Drumstick;
@@ -249,9 +253,10 @@ const MenuPage = () => {
             if (up.includes('COMBO') || up.includes('BUCKET') || up.includes('MEAL')) Icon = Layers;
 
             return (
-              <button 
+              <motion.button 
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
+                whileTap={{ scale: 0.95 }}
                 className={`px-5 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap flex items-center gap-2 transition-colors border ${
                   activeCategory === cat 
                     ? 'bg-[#E50914] text-white border-[#E50914]' 
@@ -259,7 +264,7 @@ const MenuPage = () => {
                 }`}
               >
                 <Icon className="w-4 h-4" /> {cat}
-              </button>
+              </motion.button>
             )
           })}
         </div>
@@ -285,8 +290,12 @@ const MenuPage = () => {
             const imageUrl = item.image ? `${IMAGE_BASE_URL}${item.image}` : null;
             
             return (
-              <div
+              <motion.div
                 key={item._id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                whileTap={{ scale: 0.97 }}
                 className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-black/50 transition-all duration-300 border border-[#222] hover:border-[#333] hover:-translate-y-1"
                 style={{ aspectRatio: '1.2 / 1' }}
               >
@@ -335,18 +344,19 @@ const MenuPage = () => {
 
                   {/* Add button */}
                   <div className="flex justify-end">
-                    <button
+                    <motion.button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleAddToCart(item);
                       }}
+                      whileTap={{ scale: 0.93 }}
                       className="bg-[#E50914] text-white font-bold text-xs uppercase px-5 py-2.5 rounded-lg flex items-center hover:bg-[#CC0812] transition-colors shadow-md shadow-red-500/10"
                     >
                       ADD <PlusCircle className="w-4 h-4 ml-1.5" />
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })
         )}

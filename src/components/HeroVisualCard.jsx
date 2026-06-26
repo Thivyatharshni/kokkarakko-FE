@@ -77,7 +77,7 @@ const HeroVisualCard = ({ bucketRef, originRef }) => {
                 d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
                 fill="none"
               />
-              <text font-size="8.2" font-weight="900" fill="#111111" letter-spacing="1">
+              <text fontSize="8.2" fontWeight="900" fill="#111111" letterSpacing="1">
                 <textPath href="#circlePath">
                   100% REAL CHICKEN • 100% SATISFACTION •
                 </textPath>
