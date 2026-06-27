@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ShoppingCart, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { getFeaturedMenuBySlug } from '../services/menuService';
 import { IMAGE_BASE_URL } from '../config/constants';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 
 // ─── Card 3D Tilt ─────────────────────────────────────────────────────────────
-const FeaturedCard = ({ item, index }) => {
+const FeaturedCard = ({ item, index, slug }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const cardRef = useRef(null);
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkTouch = () => {
@@ -39,7 +41,7 @@ const FeaturedCard = ({ item, index }) => {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     addToCart({ ...item, category: item.category?.name || item.category });
-    toast.success(`${item.name} added to cart!`, { icon: '🍗' });
+    navigate(`/cart/${slug}`);
   };
 
   const imageUrl = item.image ? `${IMAGE_BASE_URL}${item.image}` : null;
@@ -288,7 +290,7 @@ const FeaturedMenuSection = ({ shop }) => {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {items.map((item, index) => (
-                <FeaturedCard key={item._id} item={item} index={index} />
+                <FeaturedCard key={item._id} item={item} index={index} slug={slug} />
               ))}
             </div>
 

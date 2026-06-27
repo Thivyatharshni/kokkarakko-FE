@@ -178,7 +178,7 @@ const Navbar = ({ shop }) => {
           <motion.button 
             onClick={() => scrollToSection('qr-section', 'landing')}
             whileTap={{ scale: 0.95 }}
-            className="premium-btn flex items-center gap-1.5 md:gap-2 bg-[#D90404] hover:bg-[#b80303] text-white font-black px-3.5 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-xs uppercase tracking-widest shadow-lg shadow-red-500/20 whitespace-nowrap"
+            className="premium-btn hidden sm:flex items-center gap-1.5 md:gap-2 bg-[#D90404] hover:bg-[#b80303] text-white font-black px-3.5 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-xs uppercase tracking-widest shadow-lg shadow-red-500/20 whitespace-nowrap"
           >
             <QrCode size={14} className="md:w-4 md:h-4" />
             <span className="hidden sm:inline">Scan QR to Order</span>

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { getMenuBySlug } from '../../services/menuService';
+import { getCategoriesBySlug } from '../../services/categoryService';
 import { getShopBySlug } from '../../services/shopService';
 import { trackQRScan } from '../../services/qrService';
 import { IMAGE_BASE_URL, API_BASE_URL } from '../../config/constants';
@@ -24,6 +25,7 @@ const MenuPage = () => {
   
   const [activeCategory, setActiveCategory] = useState('ALL');
   const [menuItems, setMenuItems] = useState([]);
+  const [dbCategories, setDbCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [hasTracked, setHasTracked] = useState(false);
@@ -43,33 +45,49 @@ const MenuPage = () => {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  // Fetch Menu
+  // Fetch Menu & Categories
 
   useEffect(() => {
-    const fetchMenu = async () => {
+    const fetchMenuAndCategories = async () => {
       try {
         setLoading(true);
-        const menuRes = await getMenuBySlug(slug || 'kokkarakko-fried-chicken');
-        if (menuRes.success) {
-          setMenuItems(menuRes.data);
-          
-          const fetchedCats = [...new Set(menuRes.data.map(item => {
+        const shopSlug = slug || 'kokkarakko-fried-chicken';
+        const [menuRes, catRes] = await Promise.allSettled([
+          getMenuBySlug(shopSlug),
+          getCategoriesBySlug(shopSlug)
+        ]);
+
+        if (menuRes.status === 'fulfilled' && menuRes.value.success) {
+          setMenuItems(menuRes.value.data);
+        }
+
+        if (catRes.status === 'fulfilled' && catRes.value.success) {
+          setDbCategories(catRes.value.data);
+          const catNames = catRes.value.data.map(c => c.name.toUpperCase());
+          if (catNames.includes('BESTSELLERS')) {
+            setActiveCategory('BESTSELLERS');
+          } else {
+            setActiveCategory('ALL');
+          }
+        } else if (menuRes.status === 'fulfilled' && menuRes.value.success) {
+          // Fallback: derive categories from menu items if categories endpoint fails
+          const fetchedCats = [...new Set(menuRes.value.data.map(item => {
             const catName = typeof item.category === 'object' ? item.category?.name : item.category;
             return (catName || 'Uncategorized').toUpperCase();
           }))];
           if (fetchedCats.includes('BESTSELLERS')) {
             setActiveCategory('BESTSELLERS');
-          } else if (fetchedCats.length > 0) {
+          } else {
             setActiveCategory('ALL');
           }
         }
       } catch (err) {
-        console.error('Failed to fetch menu:', err);
+        console.error('Failed to fetch menu/categories:', err);
       } finally {
         setLoading(false);
       }
     };
-    fetchMenu();
+    fetchMenuAndCategories();
   }, [slug]);
 
   // Track QR Visit
@@ -100,8 +118,9 @@ const MenuPage = () => {
     return (raw || 'Uncategorized').toUpperCase();
   };
 
-  const availableCategories = [...new Set(menuItems.map(getCatName))];
-  const categories = ['ALL', ...availableCategories.filter(c => c !== 'ALL')];
+  const categories = dbCategories.length > 0
+    ? ['ALL', ...dbCategories.map(c => c.name.toUpperCase())]
+    : ['ALL', ...[...new Set(menuItems.map(getCatName))].filter(c => c !== 'ALL')];
 
   const filteredItems = menuItems.filter(item => {
     if (item.available === false) return false;
