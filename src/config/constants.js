@@ -34,3 +34,11 @@ const getImageUrl = () => {
 export const API_BASE_URL = getApiBaseUrl();
 export const SOCKET_URL = getSocketUrl();
 export const IMAGE_BASE_URL = getImageUrl();
+
+export const getFullImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  return `${IMAGE_BASE_URL}${imagePath}`;
+};

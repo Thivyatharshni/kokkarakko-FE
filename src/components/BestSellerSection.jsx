@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { IMAGE_BASE_URL } from '../config/constants';
+import { getFullImageUrl } from '../config/constants';
 import toast from 'react-hot-toast';
 import ScrollReveal from './ScrollReveal';
 
@@ -81,7 +81,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
           >
             {bestSellers.map((item) => {
               const imageUrl = item.image
-                ? `${IMAGE_BASE_URL}${item.image}`
+                ? getFullImageUrl(item.image)
                 : '/placeholder-food.svg';
 
               return (

@@ -5,7 +5,7 @@ import { getCategoriesBySlug } from '../../services/categoryService';
 import { DEMO_MODE, DEMO_MENU_DATA, DEMO_CATEGORIES_DATA } from '../../utils/demoData';
 import toast from 'react-hot-toast';
 import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, Search, Package, CheckCircle, XCircle, Star } from 'lucide-react';
-import { IMAGE_BASE_URL } from '../../config/constants';
+import { getFullImageUrl } from '../../config/constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
@@ -327,7 +327,7 @@ const MenuPage = () => {
                   <tr key={item._id} className="hover:bg-gray-50 transition-colors">
                     <td className="p-4 flex items-center gap-4 min-w-[250px]">
                       {item.image ? (
-                        <img src={`${IMAGE_BASE_URL}${item.image}`} alt={item.name} className="w-12 h-12 rounded-lg object-cover shadow-sm" />
+                        <img src={getFullImageUrl(item.image)} alt={item.name} className="w-12 h-12 rounded-lg object-cover shadow-sm" />
                       ) : (
                         <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
                           <ImageIcon size={20} />

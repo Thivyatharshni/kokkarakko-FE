@@ -11,7 +11,7 @@ import { getMenuBySlug } from '../../services/menuService';
 import { getCategoriesBySlug } from '../../services/categoryService';
 import { getShopBySlug } from '../../services/shopService';
 import { trackQRScan } from '../../services/qrService';
-import { IMAGE_BASE_URL, API_BASE_URL } from '../../config/constants';
+import { getFullImageUrl, API_BASE_URL } from '../../config/constants';
 import toast from 'react-hot-toast';
 
 // Import banner images
@@ -306,7 +306,7 @@ const MenuPage = () => {
           </div>
         ) : (
           filteredItems.map((item) => {
-            const imageUrl = item.image ? `${IMAGE_BASE_URL}${item.image}` : null;
+            const imageUrl = item.image ? getFullImageUrl(item.image) : null;
             
             return (
               <motion.div

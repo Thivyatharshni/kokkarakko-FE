@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ShoppingCart, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getFeaturedMenuBySlug } from '../services/menuService';
-import { IMAGE_BASE_URL } from '../config/constants';
+import { getFullImageUrl } from '../config/constants';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 
@@ -44,7 +44,7 @@ const FeaturedCard = ({ item, index, slug }) => {
     navigate(`/cart/${slug}`);
   };
 
-  const imageUrl = item.image ? `${IMAGE_BASE_URL}${item.image}` : null;
+  const imageUrl = item.image ? getFullImageUrl(item.image) : null;
   const categoryName = typeof item.category === 'object' ? item.category?.name : item.category;
 
   return (

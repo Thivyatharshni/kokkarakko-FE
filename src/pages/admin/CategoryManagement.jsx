@@ -4,7 +4,7 @@ import { getCategoriesBySlug, createCategory, updateCategory, deleteCategory } f
 import { DEMO_MODE, DEMO_CATEGORIES_DATA } from '../../utils/demoData';
 import toast from 'react-hot-toast';
 import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon } from 'lucide-react';
-import { IMAGE_BASE_URL } from '../../config/constants';
+import { getFullImageUrl } from '../../config/constants';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
 import EmptyState from '../../components/common/EmptyState';
@@ -165,7 +165,7 @@ const CategoryManagement = () => {
                 <tr key={cat._id} className="hover:bg-gray-50">
                   <td className="p-4">
                     {cat.image ? (
-                      <img src={`${IMAGE_BASE_URL}${cat.image}`} alt={cat.name} className="w-12 h-12 rounded-lg object-cover" />
+                      <img src={getFullImageUrl(cat.image)} alt={cat.name} className="w-12 h-12 rounded-lg object-cover" />
                     ) : (
                       <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
                         <ImageIcon size={20} />
