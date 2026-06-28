@@ -104,90 +104,73 @@ const LandingPage = () => {
       }
     };
 
-    if (!loading && !error) {
-      // Re-measure after initial mount settles and on resize
-      // We run it initially at 100ms, and then at 1500ms to capture the settled state after spring animation
-      const timer1 = setTimeout(measurePositions, 100);
-      const timer2 = setTimeout(measurePositions, 1500);
-      window.addEventListener('resize', measurePositions);
-      
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-        window.removeEventListener('resize', measurePositions);
-      };
-    }
-  }, [loading, error]);
+    const timer1 = setTimeout(measurePositions, 200);
+    const timer2 = setTimeout(measurePositions, 1500);
+    window.addEventListener('resize', measurePositions);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener('resize', measurePositions);
+    };
+  }, []);
+
+  const displayError = error && !shop;
+
+  if (displayError) {
+    return (
+      <div className="bg-white min-h-screen flex flex-col justify-center items-center gap-4 px-6 text-center">
+        <div className="text-[#D90404] text-5xl font-black mb-2">Oops!</div>
+        <h1 className="text-2xl font-black text-[#111111] uppercase tracking-wide">Connection Error</h1>
+        <p className="text-gray-500 max-w-md font-semibold leading-relaxed">
+          Unable to connect to the server right now. Please try again in a moment.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white min-h-screen relative">
-      {!loading && !error && <Navbar shop={shop} />}
+      <Navbar shop={shop} />
       
       {/* Scroll animation container encompassing Hero down to StreetStyleSection */}
       <div ref={containerRef} className="relative z-30">
-        {loading ? (
-          <div className="min-h-screen bg-white flex flex-col justify-center items-center gap-5 px-6 text-center">
-            <Loader2 className="animate-spin text-[#D90404]" size={48} />
-            <div className="space-y-2 max-w-md">
-              <h2 className="text-lg font-black text-gray-900 uppercase tracking-wide">Starting the server...</h2>
-              <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                This may take up to 60 seconds on the first visit because the backend is waking up.
-              </p>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-widest animate-pulse mt-1">Please wait...</p>
-            </div>
-          </div>
-        ) : error ? (
-          <div className="min-h-screen bg-white flex flex-col justify-center items-center gap-4 px-6 text-center">
-            <div className="text-[#D90404] text-5xl font-black mb-2">OOPS!</div>
-            <h1 className="text-2xl font-black text-[#111111] uppercase tracking-wide">Shop Not Found</h1>
-            <p className="text-gray-500 max-w-md font-semibold leading-relaxed">
-              The default shop <strong>{defaultSlug}</strong> could not be loaded. Please check that the backend server is running and the database is seeded.
-            </p>
-          </div>
-        ) : (
-          <>
-            <HeroSection slug={shop?.slug} shop={shop} />
-            
-            <ScrollReveal type="section">
-              <SignaturePreparationSection bucketRef={bucketRef} originRef={originRef} />
-            </ScrollReveal>
-            
-            <ScrollReveal type="section">
-              <FeaturesStrip />
-            </ScrollReveal>
-            
-            <ScrollReveal type="section">
-              <StreetStyleSection slug={shop?.slug} shop={shop} plateRef={destRef} />
-            </ScrollReveal>
-            
-            {coords && (
-              <AnimatedChickenLeg 
-                key={`${Math.round(coords.start.x)}-${Math.round(coords.start.y)}-${Math.round(coords.end.x)}-${Math.round(coords.end.y)}`}
-                coords={coords} 
-                scrollYProgress={scrollYProgress}
-              />
-            )}
-          </>
+        <HeroSection slug={shop?.slug} shop={shop} />
+        
+        <ScrollReveal type="section">
+          <SignaturePreparationSection bucketRef={bucketRef} originRef={originRef} />
+        </ScrollReveal>
+        
+        <ScrollReveal type="section">
+          <FeaturesStrip />
+        </ScrollReveal>
+        
+        <ScrollReveal type="section">
+          <StreetStyleSection slug={shop?.slug} shop={shop} plateRef={destRef} />
+        </ScrollReveal>
+        
+        {coords && (
+          <AnimatedChickenLeg 
+            key={`${Math.round(coords.start.x)}-${Math.round(coords.start.y)}-${Math.round(coords.end.x)}-${Math.round(coords.end.y)}`}
+            coords={coords} 
+            scrollYProgress={scrollYProgress}
+          />
         )}
       </div>
       
-      {!loading && !error && (
-        <>
-          <ScrollReveal type="section">
-            <BurgerAssemblySection />
-          </ScrollReveal>
-          
-          <FeaturedMenuSection shop={shop} />
-          
-          <ScrollReveal type="section">
-            <QROrderingSection slug={shop?.slug} shop={shop} />
-          </ScrollReveal>
-          
-          <ScrollReveal type="section">
-            <Footer shop={shop} />
-          </ScrollReveal>
-        </>
-      )}
+      <ScrollReveal type="section">
+        <BurgerAssemblySection />
+      </ScrollReveal>
+      
+      <FeaturedMenuSection shop={shop} />
+      
+      <ScrollReveal type="section">
+        <QROrderingSection slug={shop?.slug} shop={shop} />
+      </ScrollReveal>
+      
+      <ScrollReveal type="section">
+        <Footer shop={shop} />
+      </ScrollReveal>
     </div>
   );
 };
