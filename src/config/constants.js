@@ -1,32 +1,23 @@
 const getApiBaseUrl = () => {
-  const envUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-  const isLocalhostEnv = envUrl.includes('localhost') || envUrl.includes('127.0.0.1');
-  const isCurrentHostRemote = !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1');
-  
-  if (isLocalhostEnv && isCurrentHostRemote) {
-    return `${window.location.origin}/api`;
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) {
+    throw new Error('VITE_API_URL is required but not defined in environment variables');
   }
   return envUrl;
 };
 
 const getSocketUrl = () => {
-  const envUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
-  const isLocalhostEnv = envUrl.includes('localhost') || envUrl.includes('127.0.0.1');
-  const isCurrentHostRemote = !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1');
-  
-  if (isLocalhostEnv && isCurrentHostRemote) {
-    return window.location.origin;
+  const envUrl = import.meta.env.VITE_SOCKET_URL;
+  if (!envUrl) {
+    throw new Error('VITE_SOCKET_URL is required but not defined in environment variables');
   }
   return envUrl;
 };
 
 const getImageUrl = () => {
-  const envUrl = import.meta.env.VITE_IMAGE_URL || 'http://localhost:5001';
-  const isLocalhostEnv = envUrl.includes('localhost') || envUrl.includes('127.0.0.1');
-  const isCurrentHostRemote = !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1');
-  
-  if (isLocalhostEnv && isCurrentHostRemote) {
-    return window.location.origin;
+  const envUrl = import.meta.env.VITE_IMAGE_URL;
+  if (!envUrl) {
+    throw new Error('VITE_IMAGE_URL is required but not defined in environment variables');
   }
   return envUrl;
 };

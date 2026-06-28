@@ -20,15 +20,38 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor for handling common errors
+// Response interceptor for handling common errors and Render cold start retries
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      // Clear token and redirect to login if unauthorized
-      localStorage.removeItem('adminToken');
-      window.location.href = '/admin/login';
+  async (error) => {
+    const { config, response } = error;
+    
+    // Check if the request is a safe HTTP method
+    const isSafeMethod = config && config.method && ['get', 'head', 'options'].includes(config.method.toLowerCase());
+
+    // Only attempt retry on safe methods for server/network errors (status is 502, 503, 504, or network error / no response)
+    const shouldRetry = isSafeMethod && config && (!response || [502, 503, 504].includes(response.status));
+
+    if (shouldRetry) {
+      config.__retryCount = config.__retryCount || 0;
+      const maxRetries = 5;
+      const retryDelay = 3000; // 3 seconds between retries
+
+      if (config.__retryCount < maxRetries) {
+        config.__retryCount += 1;
+        console.warn(`Render backend might be sleeping. Retrying request (${config.__retryCount}/${maxRetries}) for: ${config.url}`);
+        
+        await new Promise((resolve) => setTimeout(resolve, retryDelay));
+        return api(config);
+      }
     }
+
+    // Handle 401 Unauthorized errors (Redirect to /owner/login instead of /admin/login)
+    if (response && response.status === 401) {
+      localStorage.removeItem('adminToken');
+      window.location.href = '/owner/login';
+    }
+
     return Promise.reject(error);
   }
 );

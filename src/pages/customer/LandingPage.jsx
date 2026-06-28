@@ -117,9 +117,15 @@ const LandingPage = () => {
       {/* Scroll animation container encompassing Hero down to StreetStyleSection */}
       <div ref={containerRef} className="relative z-30">
         {loading ? (
-          <div className="min-h-screen bg-white flex flex-col justify-center items-center gap-4">
-            <Loader2 className="animate-spin text-[#D90404]" size={40} />
-            <p className="text-gray-500 font-bold tracking-wider uppercase text-xs">Loading Kokkarakko Experience...</p>
+          <div className="min-h-screen bg-white flex flex-col justify-center items-center gap-5 px-6 text-center">
+            <Loader2 className="animate-spin text-[#D90404]" size={48} />
+            <div className="space-y-2 max-w-md">
+              <h2 className="text-lg font-black text-gray-900 uppercase tracking-wide">Starting the server...</h2>
+              <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                This may take up to 60 seconds on the first visit because the backend is waking up.
+              </p>
+              <p className="text-xs text-gray-400 font-bold uppercase tracking-widest animate-pulse mt-1">Please wait...</p>
+            </div>
           </div>
         ) : error ? (
           <div className="min-h-screen bg-white flex flex-col justify-center items-center gap-4 px-6 text-center">
