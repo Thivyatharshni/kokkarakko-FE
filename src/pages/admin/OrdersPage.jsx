@@ -96,12 +96,11 @@ const OrdersPage = () => {
     }
   };
 
-
   if (shopLoading || loading) return <LoadingState message="Loading orders..." />;
   if (shopError) return <ErrorState message={shopError} />;
   if (error && !DEMO_MODE) return <ErrorState message={error} onRetry={fetchOrders} />;
 
-  const displayOrders = (DEMO_MODE || orders.length === 0) ? DEMO_ORDERS_DATA : orders;
+  const displayOrders = DEMO_MODE ? DEMO_ORDERS_DATA : orders;
 
   const formatOrderTime = (timestamp) => {
     const date = new Date(timestamp);
@@ -113,21 +112,23 @@ const OrdersPage = () => {
     };
   };
 
-
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <h1 className="text-3xl font-bold text-gray-900">Live Orders</h1>
+    <div className="space-y-5 w-full max-w-full overflow-hidden">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h1 className="text-[28px] md:text-3xl font-bold text-gray-900 tracking-tight leading-tight truncate">Live Orders</h1>
         <Link 
           to="/owner/orders/history"
-          className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-all"
+          className="w-full sm:w-auto h-11 md:h-12 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold text-[15px] px-5 rounded-xl flex items-center justify-center gap-2 transition-all"
         >
           <History size={20} /> Order History
         </Link>
       </div>
       
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Table & Cards Container */}
+      <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 overflow-hidden w-full">
+        {/* Desktop & Tablet Table View */}
+        <div className="hidden lg:block overflow-x-auto w-full">
           <table className="w-full text-left whitespace-nowrap">
             <thead className="bg-gray-50 text-gray-500 text-sm">
               <tr>
@@ -140,53 +141,108 @@ const OrdersPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-            {displayOrders.length === 0 ? (
-              <tr>
-                <td colSpan="5" className="p-10 text-center text-gray-500">No orders yet. Waiting for customers to scan!</td>
-              </tr>
-            ) : (
-              displayOrders.map(order => (
-                <tr key={order._id} className="hover:bg-gray-50">
-                  <td className="p-4 font-bold text-gray-900">{order.orderNumber}</td>
-                  <td className="p-4">
-                    <p className="font-semibold text-gray-900">{order.customerName}</p>
-                    <p className="text-sm text-gray-500">{order.customerMobile || order.customerPhone}</p>
-                  </td>
-                  <td className="p-4 text-sm">
-                    <ul className="list-disc pl-4 text-gray-600">
-                      {order.items.map((item, idx) => (
-                        <li key={idx}>{item.quantity}x {item.name}</li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td className="p-4 font-black text-[#E50914]">₹{order.totalAmount}</td>
-                  <td className="p-4">
-                    {order.createdAt ? (
-                      <>
-                        <p className="font-semibold text-gray-900">{formatOrderTime(order.createdAt).date}</p>
-                        <p className="text-sm text-gray-500">{formatOrderTime(order.createdAt).time}</p>
-                      </>
-                    ) : (
-                      <p className="text-gray-500">-</p>
-                    )}
-                  </td>
-                  <td className="p-4">
-                    <select 
-                      value={order.status}
-                      onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                      className={`px-3 py-2 rounded-xl text-sm font-bold border-0 outline-none cursor-pointer ${STATUS_COLORS[order.status] || 'bg-gray-100 text-gray-700'}`}
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Preparing">Preparing</option>
-                      <option value="Ready">Ready</option>
-                      <option value="Completed">Completed</option>
-                    </select>
-                  </td>
+              {displayOrders.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="p-10 text-center text-gray-500">No orders yet. Waiting for customers to scan!</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                displayOrders.map(order => (
+                  <tr key={order._id} className="hover:bg-gray-50 transition-colors">
+                    <td className="p-4 font-bold text-gray-900">{order.orderNumber}</td>
+                    <td className="p-4">
+                      <p className="font-semibold text-gray-900">{order.customerName}</p>
+                      <p className="text-sm text-gray-500">{order.customerMobile || order.customerPhone}</p>
+                    </td>
+                    <td className="p-4 text-sm whitespace-normal max-w-xs">
+                      <ul className="list-disc pl-4 text-gray-600">
+                        {order.items.map((item, idx) => (
+                          <li key={idx} className="truncate">{item.quantity}x {item.name}</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td className="p-4 font-black text-[#E50914]">₹{order.totalAmount}</td>
+                    <td className="p-4">
+                      {order.createdAt ? (
+                        <>
+                          <p className="font-semibold text-gray-900">{formatOrderTime(order.createdAt).date}</p>
+                          <p className="text-sm text-gray-500">{formatOrderTime(order.createdAt).time}</p>
+                        </>
+                      ) : (
+                        <p className="text-gray-500">-</p>
+                      )}
+                    </td>
+                    <td className="p-4">
+                      <select 
+                        value={order.status}
+                        onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                        className={`min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold border-0 outline-none cursor-pointer ${STATUS_COLORS[order.status] || 'bg-gray-100 text-gray-700'}`}
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Preparing">Preparing</option>
+                        <option value="Ready">Ready</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Cards View (< lg) */}
+        <div className="lg:hidden divide-y divide-gray-100 p-[18px] space-y-3">
+          {displayOrders.length === 0 ? (
+            <p className="p-4 text-center text-gray-500 text-sm">No orders yet. Waiting for customers to scan!</p>
+          ) : (
+            displayOrders.map(order => (
+              <div key={order._id} className="py-3.5 first:pt-0 last:pb-0 flex flex-col gap-2.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                  <span className="font-black text-[#E50914] text-base">₹{order.totalAmount}</span>
+                </div>
+
+                <div className="bg-gray-50 p-2.5 rounded-lg flex justify-between items-center text-sm">
+                  <div>
+                    <p className="font-bold text-gray-900">{order.customerName}</p>
+                    <p className="text-xs text-gray-500">{order.customerMobile || order.customerPhone || 'No Phone'}</p>
+                  </div>
+                  {order.createdAt && (
+                    <div className="text-right text-xs text-gray-500">
+                      <p className="font-semibold text-gray-700">{formatOrderTime(order.createdAt).date}</p>
+                      <p>{formatOrderTime(order.createdAt).time}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Items Ordered:</p>
+                  <ul className="space-y-1 text-sm bg-white border border-gray-100 p-2.5 rounded-lg">
+                    {order.items.map((item, idx) => (
+                      <li key={idx} className="flex justify-between font-medium text-gray-700">
+                        <span>{item.quantity}x {item.name}</span>
+                        {item.price && <span className="text-gray-400">₹{item.price * item.quantity}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="pt-2 border-t border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase">Update Status:</label>
+                  <select 
+                    value={order.status}
+                    onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                    className={`w-full sm:w-auto h-[42px] px-3 rounded-lg text-sm font-bold border-0 outline-none cursor-pointer ${STATUS_COLORS[order.status] || 'bg-gray-100 text-gray-700'}`}
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Preparing">Preparing</option>
+                    <option value="Ready">Ready</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

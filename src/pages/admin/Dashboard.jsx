@@ -12,14 +12,14 @@ import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
 
 const StatCard = ({ title, value, icon: Icon, color, subtitle }) => (
-  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
-    <div>
-      <p className="text-gray-500 text-sm font-semibold mb-1">{title}</p>
-      <h3 className="text-3xl font-black text-gray-900">{value}</h3>
-      {subtitle && <p className="text-xs text-gray-400 mt-1">{subtitle}</p>}
+  <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between w-full overflow-hidden">
+    <div className="overflow-hidden pr-2">
+      <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">{title}</p>
+      <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">{value}</h3>
+      {subtitle && <p className="text-xs text-gray-400 mt-0.5 truncate">{subtitle}</p>}
     </div>
-    <div className={`p-4 rounded-full ${color} bg-opacity-10`}>
-      <Icon className={color.replace('bg-', 'text-')} size={24} />
+    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-full ${color} bg-opacity-10 flex items-center justify-center flex-shrink-0`}>
+      <Icon className={color.replace('bg-', 'text-')} size={22} />
     </div>
   </div>
 );
@@ -44,14 +44,14 @@ const Dashboard = () => {
       }
 
       // Fetch recent orders
-      if (DEMO_MODE || !res.success || !res.data || res.data.totalProducts === 0) {
+      if (DEMO_MODE) {
         setRecentOrders(DEMO_ORDERS_DATA.slice(0, 5));
       } else {
         const ordersRes = await getLiveOrders(shopId);
         if (ordersRes.success) {
           setRecentOrders(ordersRes.data.slice(0, 5));
         } else {
-          setRecentOrders(DEMO_ORDERS_DATA.slice(0, 5));
+          setRecentOrders([]);
         }
       }
     } catch (err) {
@@ -73,92 +73,93 @@ const Dashboard = () => {
   if (shopError) return <ErrorState message={shopError} />;
   if (error && !DEMO_MODE) return <ErrorState message={error} onRetry={fetchDashboardData} />;
   
-  const displayData = (DEMO_MODE || !data || data.totalProducts === 0) ? DEMO_DASHBOARD_DATA : data;
+  const displayData = DEMO_MODE ? DEMO_DASHBOARD_DATA : data;
 
   if (!displayData) return <ErrorState message="No dashboard data found" />;
 
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 md:space-y-6 w-full max-w-full overflow-hidden">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Business Overview</h1>
+        <h1 className="text-[28px] md:text-3xl font-bold text-gray-900 tracking-tight leading-tight truncate">Business Overview</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full">
         <StatCard title="Total Menu Items" value={displayData.totalProducts} icon={UtensilsCrossed} color="bg-red-500" />
         <StatCard title="Total Categories" value={displayData.totalCategories} icon={MenuIcon} color="bg-blue-500" />
         <StatCard title="Today's Orders" value={displayData.todayOrders} icon={ShoppingBag} color="bg-purple-500" />
         <StatCard title="Revenue Today" value={`₹${displayData.todayRevenue}`} icon={DollarSign} color="bg-emerald-500" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Quick Insights */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-center">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Insights</h2>
-          <div className="space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center">
-                <Package className="text-green-500" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Most Viewed Product</p>
-                <p className="font-bold text-gray-900">{displayData.mostViewedProduct || 'N/A'}</p>
-              </div>
+      {/* Quick Insights Row */}
+      <div className="bg-white rounded-[16px] p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 w-full overflow-hidden">
+        <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Quick Insights</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="flex items-center gap-3.5 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center flex-shrink-0">
+              <Package className="text-green-500" size={20} />
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
-                <MenuIcon className="text-blue-500" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Top Category</p>
-                <p className="font-bold text-gray-900">{displayData.topCategory || 'N/A'}</p>
-              </div>
+            <div className="overflow-hidden flex flex-col">
+              <p className="font-bold text-gray-900 text-sm sm:text-base truncate">{displayData.mostViewedProduct || 'N/A'}</p>
+              <p className="text-xs sm:text-sm text-gray-500 truncate mt-0.5">Most Viewed Product</p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center">
-                <Clock className="text-orange-500" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Pending Orders</p>
-                <p className="font-bold text-gray-900">{displayData.pendingOrders}</p>
-              </div>
+          </div>
+          <div className="flex items-center gap-3.5 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
+              <MenuIcon className="text-blue-500" size={20} />
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center">
-                <TrendingUp className="text-purple-500" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Latest Order</p>
-                <p className="font-bold text-gray-900">
-                  {displayData.latestOrder ? `#${displayData.latestOrder.orderNumber}` : 'No orders'}
-                </p>
-              </div>
+            <div className="overflow-hidden flex flex-col">
+              <p className="font-bold text-gray-900 text-sm sm:text-base truncate">{displayData.topCategory || 'N/A'}</p>
+              <p className="text-xs sm:text-sm text-gray-500 truncate mt-0.5">Top Category</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3.5 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0">
+              <Clock className="text-orange-500" size={20} />
+            </div>
+            <div className="overflow-hidden flex flex-col">
+              <p className="font-bold text-gray-900 text-sm sm:text-base truncate">{displayData.pendingOrders}</p>
+              <p className="text-xs sm:text-sm text-gray-500 truncate mt-0.5">Pending Orders</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3.5 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
+              <TrendingUp className="text-purple-500" size={20} />
+            </div>
+            <div className="overflow-hidden flex flex-col">
+              <p className="font-bold text-gray-900 text-sm sm:text-base truncate">
+                {displayData.latestOrder ? `#${displayData.latestOrder.orderNumber}` : 'No orders'}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-500 truncate mt-0.5">Latest Order</p>
             </div>
           </div>
         </div>
+      </div>
 
+      {/* Charts Row (2 per row on desktop, stack vertically on tablet/mobile) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
         {/* Weekly Orders Trend */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Weekly Orders</h2>
-          <div className="w-full min-h-[250px] flex-grow">
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={displayData.weeklyOrdersChart} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+        <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
+          <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Weekly Orders</h2>
+          <div className="w-full h-[220px] md:h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={displayData.weeklyOrdersChart} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dx={-10} allowDecimals={false} />
                 <Tooltip cursor={{ fill: '#f9fafb' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                <Bar dataKey="value" fill="#8b5cf6" radius={[4, 4, 0, 0]} barSize={30} />
+                <Bar dataKey="value" fill="#8b5cf6" radius={[4, 4, 0, 0]} barSize={28} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Weekly Revenue Trend */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Weekly Revenue (₹)</h2>
-          <div className="w-full min-h-[250px] flex-grow">
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={displayData.weeklyRevenueChart} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+        <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
+          <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Weekly Revenue (₹)</h2>
+          <div className="w-full h-[220px] md:h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={displayData.weeklyRevenueChart} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dx={-10} />
@@ -170,13 +171,15 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recent Orders (Full Width) */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-6">
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-gray-900">Recent Orders</h2>
+      {/* Recent Orders */}
+      <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 overflow-hidden w-full">
+        <div className="p-4 sm:p-5 md:p-6 border-b border-gray-100 flex justify-between items-center">
+          <h2 className="text-[22px] font-bold text-gray-900">Recent Orders</h2>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
+
+        {/* Desktop & Tablet Table View */}
+        <div className="hidden md:block overflow-x-auto w-full">
+          <table className="w-full text-left whitespace-nowrap">
             <thead className="bg-gray-50 text-gray-500 text-sm">
               <tr>
                 <th className="p-4 font-semibold">Order ID</th>
@@ -189,13 +192,18 @@ const Dashboard = () => {
             <tbody className="divide-y divide-gray-100">
               {recentOrders.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="p-8 text-center text-gray-500">No recent orders found.</td>
+                  <td colSpan="5" className="p-8">
+                    <div className="flex flex-col items-center justify-center text-center">
+                      <ShoppingBag className="text-gray-300 mb-2" size={32} />
+                      <p className="text-sm text-gray-500 font-semibold">No recent orders found</p>
+                    </div>
+                  </td>
                 </tr>
               ) : (
                 recentOrders.map((order) => (
                   <tr key={order._id} className="hover:bg-gray-50 transition-colors">
                     <td className="p-4 font-medium text-gray-900">{order.orderNumber}</td>
-                    <td className="p-4 text-gray-600">{order.customerName}</td>
+                    <td className="p-4 text-gray-600 truncate max-w-[200px]">{order.customerName}</td>
                     <td className="p-4 font-semibold text-[#E50914]">₹{order.totalAmount}</td>
                     <td className="p-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -214,6 +222,38 @@ const Dashboard = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Cards View (< md) */}
+        <div className="md:hidden divide-y divide-gray-100 p-4 space-y-3.5">
+          {recentOrders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <ShoppingBag className="text-gray-300 mb-2" size={32} />
+              <p className="text-sm text-gray-500 font-semibold">No recent orders found</p>
+            </div>
+          ) : (
+            recentOrders.map((order) => (
+              <div key={order._id} className="pt-3.5 first:pt-0 flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                  <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold ${
+                    order.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                    order.status === 'Pending' ? 'bg-orange-100 text-orange-700' :
+                    'bg-blue-100 text-blue-700'
+                  }`}>
+                    {order.status}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600 truncate max-w-[180px]">{order.customerName}</span>
+                  <span className="font-black text-[#E50914] text-[15px]">₹{order.totalAmount}</span>
+                </div>
+                <div className="text-[11px] text-gray-400">
+                  {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

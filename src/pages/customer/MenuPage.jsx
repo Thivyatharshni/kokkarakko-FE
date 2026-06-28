@@ -11,6 +11,7 @@ import { getMenuBySlug } from '../../services/menuService';
 import { getCategoriesBySlug } from '../../services/categoryService';
 import { getShopBySlug } from '../../services/shopService';
 import { trackQRScan } from '../../services/qrService';
+import { trackProductView, trackProductViewBatch } from '../../services/analyticsService';
 import { getFullImageUrl, API_BASE_URL } from '../../config/constants';
 import toast from 'react-hot-toast';
 
@@ -29,6 +30,7 @@ const MenuPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [hasTracked, setHasTracked] = useState(false);
+  const [hasTrackedViews, setHasTrackedViews] = useState(false);
   
   const { cart, addToCart, getCartCount, getCartTotal } = useCart();
   const cartCount = getCartCount();
@@ -112,6 +114,32 @@ const MenuPage = () => {
       trackVisit();
     }
   }, [slug, hasTracked]);
+
+  // Track Product Views
+  useEffect(() => {
+    const trackAllViews = async () => {
+      if (menuItems.length > 0 && hasTracked && !hasTrackedViews) {
+        try {
+          const res = await getShopBySlug(slug);
+          if (res.success && res.data) {
+            const shopId = res.data._id;
+            // Get or create persistent session ID from localStorage
+            let sessionId = localStorage.getItem('visitor_session_id');
+            if (!sessionId) {
+              sessionId = `session_${Math.random().toString(36).substring(2, 11)}_${Date.now()}`;
+              localStorage.setItem('visitor_session_id', sessionId);
+            }
+            const productIds = menuItems.map(item => item._id);
+            await trackProductViewBatch(shopId, productIds, sessionId);
+            setHasTrackedViews(true);
+          }
+        } catch (err) {
+          console.error("Error tracking views:", err);
+        }
+      }
+    };
+    trackAllViews();
+  }, [menuItems, hasTracked, hasTrackedViews, slug]);
 
   const getCatName = (item) => {
     const raw = typeof item.category === 'object' ? item.category?.name : item.category;

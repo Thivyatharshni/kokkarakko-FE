@@ -106,6 +106,10 @@ export const DEMO_ANALYTICS_DATA = {
       { name: "Combos", value: 15 },
       { name: "Bucket Meals", value: 10 },
       { name: "Beverages", value: 10 }
+    ],
+    scanSource: [
+      { name: "QR Code", value: 75 },
+      { name: "Direct Link", value: 25 }
     ]
   }
 };

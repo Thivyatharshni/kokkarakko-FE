@@ -101,7 +101,7 @@ const OrderHistoryPage = () => {
     fetchHistory({ fromDate: fDate, toDate: tDate });
   };
 
-  const displayOrders = (DEMO_MODE || orders.length === 0) ? DEMO_ORDERS_DATA.filter(o => o.status === 'Completed' || o.status === 'Cancelled' || o.status === 'Ready') : orders;
+  const displayOrders = DEMO_MODE ? DEMO_ORDERS_DATA.filter(o => o.status === 'Completed') : orders;
 
   const filteredOrders = useMemo(() => {
     let result = displayOrders;
@@ -157,76 +157,76 @@ const OrderHistoryPage = () => {
   if (error && !DEMO_MODE) return <ErrorState message={error} onRetry={fetchHistory} />;
 
   return (
-    <div className="space-y-6 pb-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="flex items-center gap-4">
+    <div className="space-y-5 pb-10 w-full max-w-full overflow-hidden">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <Link 
             to="/owner/orders" 
-            className="p-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl transition-colors shadow-sm"
+            className="h-11 w-11 md:h-12 md:w-12 flex items-center justify-center bg-white hover:bg-gray-50 border border-gray-200 rounded-xl transition-colors shadow-sm"
             title="Back to Live Orders"
           >
-            <ArrowLeft className="text-gray-600" size={24} />
+            <ArrowLeft className="text-gray-600" size={22} />
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Order History</h1>
+          <h1 className="text-[28px] md:text-3xl font-bold text-gray-900 tracking-tight leading-tight truncate">Order History</h1>
         </div>
       </div>
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
-          <div>
-            <p className="text-gray-500 text-sm font-semibold mb-1">Total Orders</p>
-            <h3 className="text-3xl font-black text-gray-900">{stats.totalOrders}</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
+        <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
+          <div className="overflow-hidden pr-2">
+            <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">Total Orders</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">{stats.totalOrders}</h3>
           </div>
-          <div className="p-4 rounded-full bg-blue-500 bg-opacity-10">
-            <Hash className="text-blue-500" size={24} />
-          </div>
-        </div>
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
-          <div>
-            <p className="text-gray-500 text-sm font-semibold mb-1">Completed Orders</p>
-            <h3 className="text-3xl font-black text-gray-900">{stats.totalOrders}</h3>
-          </div>
-          <div className="p-4 rounded-full bg-green-500 bg-opacity-10">
-            <CheckCircle className="text-green-500" size={24} />
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-blue-500 bg-opacity-10 flex items-center justify-center flex-shrink-0">
+            <Hash className="text-blue-500" size={22} />
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
-          <div>
-            <p className="text-gray-500 text-sm font-semibold mb-1">Revenue</p>
-            <h3 className="text-3xl font-black text-gray-900">₹{stats.revenue}</h3>
+        <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
+          <div className="overflow-hidden pr-2">
+            <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">Completed Orders</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">{stats.totalOrders}</h3>
           </div>
-          <div className="p-4 rounded-full bg-yellow-500 bg-opacity-10">
-            <IndianRupee className="text-yellow-500" size={24} />
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-500 bg-opacity-10 flex items-center justify-center flex-shrink-0">
+            <CheckCircle className="text-green-500" size={22} />
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
-          <div>
-            <p className="text-gray-500 text-sm font-semibold mb-1">Average Order Value</p>
-            <h3 className="text-3xl font-black text-gray-900">₹{stats.avgValue}</h3>
+        <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
+          <div className="overflow-hidden pr-2">
+            <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">Revenue</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">₹{stats.revenue}</h3>
           </div>
-          <div className="p-4 rounded-full bg-purple-500 bg-opacity-10">
-            <Package className="text-purple-500" size={24} />
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-yellow-500 bg-opacity-10 flex items-center justify-center flex-shrink-0">
+            <IndianRupee className="text-yellow-500" size={22} />
+          </div>
+        </div>
+        <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
+          <div className="overflow-hidden pr-2">
+            <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">Average Value</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">₹{stats.avgValue}</h3>
+          </div>
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-purple-500 bg-opacity-10 flex items-center justify-center flex-shrink-0">
+            <Package className="text-purple-500" size={22} />
           </div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col space-y-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-gray-500 mr-2">Quick Filters:</span>
-          <button onClick={() => applyQuickFilter('today')} className="px-4 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 transition-colors">Today</button>
-          <button onClick={() => applyQuickFilter('yesterday')} className="px-4 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 transition-colors">Yesterday</button>
-          <button onClick={() => applyQuickFilter('last7')} className="px-4 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 transition-colors">Last 7 Days</button>
-          <button onClick={() => applyQuickFilter('last30')} className="px-4 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 transition-colors">Last 30 Days</button>
-          <button onClick={() => applyQuickFilter('thisMonth')} className="px-4 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 transition-colors">This Month</button>
-          <button onClick={() => applyQuickFilter('all')} className="px-4 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 transition-colors">All Orders</button>
+      <div className="bg-white p-[18px] sm:p-5 rounded-[16px] shadow-sm border border-gray-100 flex flex-col space-y-3 w-full">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-xs sm:text-sm font-semibold text-gray-500 mr-2 w-full sm:w-auto mb-1 sm:mb-0">Quick Filters:</span>
+          <button onClick={() => applyQuickFilter('today')} className="h-8 px-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 transition-colors flex items-center justify-center">Today</button>
+          <button onClick={() => applyQuickFilter('yesterday')} className="h-8 px-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 transition-colors flex items-center justify-center">Yesterday</button>
+          <button onClick={() => applyQuickFilter('last7')} className="h-8 px-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 transition-colors flex items-center justify-center">Last 7 Days</button>
+          <button onClick={() => applyQuickFilter('last30')} className="h-8 px-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 transition-colors flex items-center justify-center">Last 30 Days</button>
+          <button onClick={() => applyQuickFilter('thisMonth')} className="h-8 px-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 transition-colors flex items-center justify-center">This Month</button>
+          <button onClick={() => applyQuickFilter('all')} className="h-8 px-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 transition-colors flex items-center justify-center">All Orders</button>
         </div>
         
-        <div className="flex flex-col xl:flex-row gap-4 items-center pt-4 border-t border-gray-100">
-          <div className="flex w-full xl:w-2/3 items-center gap-3">
-            <div className="flex-1 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
-              <Calendar className="text-gray-400" size={18} />
+        <div className="flex flex-col xl:flex-row gap-3 items-stretch xl:items-center pt-3 border-t border-gray-100">
+          <div className="flex flex-col sm:flex-row w-full xl:w-2/3 items-stretch sm:items-center gap-2">
+            <div className="flex-1 h-11 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
+              <Calendar className="text-gray-400 flex-shrink-0" size={18} />
               <input 
                 type="date" 
                 value={fromDate}
@@ -234,9 +234,9 @@ const OrderHistoryPage = () => {
                 className="bg-transparent outline-none w-full text-sm font-medium text-gray-700"
               />
             </div>
-            <span className="text-gray-400 font-bold">To</span>
-            <div className="flex-1 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
-              <Calendar className="text-gray-400" size={18} />
+            <span className="text-gray-400 font-bold text-center text-xs">To</span>
+            <div className="flex-1 h-11 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
+              <Calendar className="text-gray-400 flex-shrink-0" size={18} />
               <input 
                 type="date" 
                 value={toDate}
@@ -246,7 +246,7 @@ const OrderHistoryPage = () => {
             </div>
             <button 
               onClick={handleApplyFilters}
-              className="bg-[#111111] hover:bg-black text-white font-bold py-2 px-6 rounded-xl transition-colors"
+              className="h-11 bg-[#111111] hover:bg-black text-white font-semibold text-[15px] px-6 rounded-xl transition-colors flex justify-center items-center shrink-0"
             >
               Search
             </button>
@@ -258,69 +258,115 @@ const OrderHistoryPage = () => {
               placeholder="Search ID, Customer..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-xl outline-none focus:border-[#E50914] transition-colors bg-gray-50 focus:bg-white text-sm"
+              className="w-full h-11 pl-10 pr-4 py-2 border rounded-xl outline-none focus:border-[#E50914] transition-colors bg-gray-50 focus:bg-white text-sm"
             />
           </div>
         </div>
       </div>
 
-      {/* History Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* History Table & Cards Container */}
+      <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 overflow-hidden w-full">
         {loading ? (
           <div className="p-10 flex justify-center"><LoadingState /></div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left whitespace-nowrap">
-              <thead className="bg-gray-50 text-gray-500 text-sm">
-                <tr>
-                  <th className="p-4 font-semibold">Order ID</th>
-                  <th className="p-4 font-semibold">Customer Details</th>
-                  <th className="p-4 font-semibold">Products</th>
-                  <th className="p-4 font-semibold text-center">Quantity</th>
-                  <th className="p-4 font-semibold">Total Amount</th>
-                  <th className="p-4 font-semibold">Completed Time</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredOrders.length === 0 ? (
+          <>
+            {/* Desktop & Tablet Table View */}
+            <div className="hidden md:block overflow-x-auto w-full">
+              <table className="w-full text-left whitespace-nowrap">
+                <thead className="bg-gray-50 text-gray-500 text-sm">
                   <tr>
-                    <td colSpan="6" className="p-10 text-center text-gray-500">No historical orders found.</td>
+                    <th className="p-4 font-semibold">Order ID</th>
+                    <th className="p-4 font-semibold">Customer Details</th>
+                    <th className="p-4 font-semibold">Products</th>
+                    <th className="p-4 font-semibold text-center">Quantity</th>
+                    <th className="p-4 font-semibold">Total Amount</th>
+                    <th className="p-4 font-semibold">Completed Time</th>
                   </tr>
-                ) : (
-                  filteredOrders.map(order => (
-                    <tr key={order._id} className="hover:bg-gray-50">
-                      <td className="p-4 font-bold text-gray-900">{order.orderNumber}</td>
-                      <td className="p-4">
-                        <p className="font-semibold text-gray-900">{order.customerName}</p>
-                        <p className="text-sm text-gray-500">{order.customerMobile || order.customerPhone || '-'}</p>
-                      </td>
-                      <td className="p-4 text-sm">
-                        <ul className="list-disc pl-4 text-gray-600">
-                          {order.items.map((item, idx) => (
-                            <li key={idx}>{item.name}</li>
-                          ))}
-                        </ul>
-                      </td>
-                      <td className="p-4 text-sm font-semibold text-center text-gray-700">
-                        {order.items.reduce((sum, item) => sum + item.quantity, 0)}
-                      </td>
-                      <td className="p-4 font-black text-green-600">₹{order.totalAmount}</td>
-                      <td className="p-4">
-                        {order.createdAt ? (
-                          <>
-                            <p className="font-semibold text-gray-900">{formatCompletedTime(order.createdAt).date}</p>
-                            <p className="text-sm text-gray-500">{formatCompletedTime(order.createdAt).time}</p>
-                          </>
-                        ) : (
-                          <p className="text-gray-500">-</p>
-                        )}
-                      </td>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {filteredOrders.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="p-10 text-center text-gray-500">No historical orders found.</td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                  ) : (
+                    filteredOrders.map(order => (
+                      <tr key={order._id} className="hover:bg-gray-50 transition-colors">
+                        <td className="p-4 font-bold text-gray-900">{order.orderNumber}</td>
+                        <td className="p-4">
+                          <p className="font-semibold text-gray-900">{order.customerName}</p>
+                          <p className="text-sm text-gray-500">{order.customerMobile || order.customerPhone || '-'}</p>
+                        </td>
+                        <td className="p-4 text-sm whitespace-normal max-w-xs">
+                          <ul className="list-disc pl-4 text-gray-600">
+                            {order.items.map((item, idx) => (
+                              <li key={idx} className="truncate">{item.name}</li>
+                            ))}
+                          </ul>
+                        </td>
+                        <td className="p-4 text-sm font-semibold text-center text-gray-700">
+                          {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                        </td>
+                        <td className="p-4 font-black text-green-600">₹{order.totalAmount}</td>
+                        <td className="p-4">
+                          {order.createdAt ? (
+                            <>
+                              <p className="font-semibold text-gray-900">{formatCompletedTime(order.createdAt).date}</p>
+                              <p className="text-sm text-gray-500">{formatCompletedTime(order.createdAt).time}</p>
+                            </>
+                          ) : (
+                            <p className="text-gray-500">-</p>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards View (< md) */}
+            <div className="md:hidden divide-y divide-gray-100 p-[18px] space-y-3">
+              {filteredOrders.length === 0 ? (
+                <p className="p-4 text-center text-gray-500 text-sm">No historical orders found.</p>
+              ) : (
+                filteredOrders.map(order => (
+                  <div key={order._id} className="py-3.5 first:pt-0 last:pb-0 flex flex-col gap-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                      <span className="font-black text-green-600 text-base">₹{order.totalAmount}</span>
+                    </div>
+
+                    <div className="bg-gray-50 p-2.5 rounded-lg flex justify-between items-center text-sm">
+                      <div>
+                        <p className="font-bold text-gray-900">{order.customerName}</p>
+                        <p className="text-xs text-gray-500">{order.customerMobile || order.customerPhone || '-'}</p>
+                      </div>
+                      {order.createdAt && (
+                        <div className="text-right text-xs text-gray-500">
+                          <p className="font-semibold text-gray-700">{formatCompletedTime(order.createdAt).date}</p>
+                          <p>{formatCompletedTime(order.createdAt).time}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Products:</span>
+                        <span className="text-xs font-semibold text-gray-600">Total Qty: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</span>
+                      </div>
+                      <ul className="space-y-1 text-sm bg-white border border-gray-100 p-2.5 rounded-lg">
+                        {order.items.map((item, idx) => (
+                          <li key={idx} className="flex justify-between font-medium text-gray-700">
+                            <span>{item.quantity}x {item.name}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>
