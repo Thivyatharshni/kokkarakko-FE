@@ -3,22 +3,39 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  Search, ShoppingCart, Star, PlusCircle, ArrowRight, 
-  ChevronDown, Drumstick, Package, Layers, Loader2, ChevronRight, ArrowLeft 
+  Search, ShoppingCart, PlusCircle, ArrowRight, 
+  Drumstick, Package, Layers, ChevronRight, ArrowLeft 
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { getMenuBySlug } from '../../services/menuService';
 import { getCategoriesBySlug } from '../../services/categoryService';
 import { getShopBySlug } from '../../services/shopService';
 import { trackQRScan } from '../../services/qrService';
-import { trackProductView, trackProductViewBatch } from '../../services/analyticsService';
+import { trackProductViewBatch } from '../../services/analyticsService';
 import { getFullImageUrl, API_BASE_URL } from '../../config/constants';
-import toast from 'react-hot-toast';
+import { clientCache } from '../../utils/cache';
 
 // Import banner images
 import bucketImg from '../../assets/images/bucket_chicken.png';
 import burgerImg from '../../assets/images/burger.png';
 import popcornImg from '../../assets/images/popcorn_chicken.png';
+
+const SkeletonCategoryButton = () => (
+  <div className="h-10 bg-[#1A1A1A] border border-[#222] animate-pulse rounded-xl w-24"></div>
+);
+
+const SkeletonMenuCard = () => (
+  <div className="relative rounded-2xl overflow-hidden bg-[#121212] border border-[#222] animate-pulse" style={{ aspectRatio: '1.2 / 1' }}>
+    <div className="absolute inset-0 bg-[#1A1A1A]"></div>
+    <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
+      <div className="h-5 bg-[#252525] rounded w-2/3"></div>
+      <div className="h-3 bg-[#252525] rounded w-1/2"></div>
+      <div className="flex justify-end pt-2">
+        <div className="h-8 bg-[#252525] rounded w-16"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const MenuPage = () => {
   const { slug } = useParams();
@@ -32,10 +49,8 @@ const MenuPage = () => {
   const [hasTracked, setHasTracked] = useState(false);
   const [hasTrackedViews, setHasTrackedViews] = useState(false);
   
-  const { cart, addToCart, getCartCount, getCartTotal } = useCart();
+  const { addToCart, getCartCount } = useCart();
   const cartCount = getCartCount();
-  const cartTotal = getCartTotal();
-
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [bucketImg, burgerImg, popcornImg];
@@ -47,41 +62,70 @@ const MenuPage = () => {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  // Fetch Menu & Categories
-
+  // Fetch Menu & Categories with SWR Caching
   useEffect(() => {
     const fetchMenuAndCategories = async () => {
-      try {
+      const shopSlug = slug || 'kokkarakko-fried-chicken';
+      const cacheKeyMenu = `menu_${shopSlug}`;
+      const cacheKeyCategories = `categories_${shopSlug}`;
+
+      const cachedMenu = clientCache.get(cacheKeyMenu);
+      const cachedCats = clientCache.get(cacheKeyCategories);
+
+      if (cachedMenu) {
+        setMenuItems(cachedMenu);
+      }
+      if (cachedCats) {
+        setDbCategories(cachedCats);
+        const catNames = cachedCats.map(c => c.name.toUpperCase());
+        if (catNames.includes('BESTSELLERS')) {
+          setActiveCategory('BESTSELLERS');
+        } else {
+          setActiveCategory('ALL');
+        }
+      }
+
+      if (cachedMenu && cachedCats) {
+        setLoading(false);
+      } else {
         setLoading(true);
-        const shopSlug = slug || 'kokkarakko-fried-chicken';
+      }
+
+      try {
         const [menuRes, catRes] = await Promise.allSettled([
           getMenuBySlug(shopSlug),
           getCategoriesBySlug(shopSlug)
         ]);
 
+        let freshMenu = null;
+        let freshCats = null;
+
         if (menuRes.status === 'fulfilled' && menuRes.value.success) {
-          setMenuItems(menuRes.value.data);
+          freshMenu = menuRes.value.data;
+          setMenuItems(freshMenu);
+          clientCache.set(cacheKeyMenu, freshMenu);
         }
 
         if (catRes.status === 'fulfilled' && catRes.value.success) {
-          setDbCategories(catRes.value.data);
-          const catNames = catRes.value.data.map(c => c.name.toUpperCase());
+          freshCats = catRes.value.data;
+          setDbCategories(freshCats);
+          clientCache.set(cacheKeyCategories, freshCats);
+          
+          const catNames = freshCats.map(c => c.name.toUpperCase());
           if (catNames.includes('BESTSELLERS')) {
             setActiveCategory('BESTSELLERS');
           } else {
             setActiveCategory('ALL');
           }
         } else if (menuRes.status === 'fulfilled' && menuRes.value.success) {
-          // Fallback: derive categories from menu items if categories endpoint fails
-          const fetchedCats = [...new Set(menuRes.value.data.map(item => {
+          // Fallback: derive categories from menu items
+          const derivedCats = [...new Set(menuRes.value.data.map(item => {
             const catName = typeof item.category === 'object' ? item.category?.name : item.category;
             return (catName || 'Uncategorized').toUpperCase();
-          }))];
-          if (fetchedCats.includes('BESTSELLERS')) {
-            setActiveCategory('BESTSELLERS');
-          } else {
-            setActiveCategory('ALL');
-          }
+          }))].map(name => ({ name }));
+          
+          setDbCategories(derivedCats);
+          clientCache.set(cacheKeyCategories, derivedCats);
         }
       } catch (err) {
         console.error('Failed to fetch menu/categories:', err);
@@ -89,6 +133,7 @@ const MenuPage = () => {
         setLoading(false);
       }
     };
+    
     fetchMenuAndCategories();
   }, [slug]);
 
@@ -96,10 +141,7 @@ const MenuPage = () => {
   useEffect(() => {
     const trackVisit = async () => {
       try {
-        console.log("Current API URL:", API_BASE_URL);
-        console.log("Requested Shop:", slug);
         const res = await getShopBySlug(slug);
-        console.log("Shop Response:", res);
         if (res.success && res.data && !hasTracked) {
           const shopId = res.data._id;
           await trackQRScan(shopId);
@@ -123,7 +165,6 @@ const MenuPage = () => {
           const res = await getShopBySlug(slug);
           if (res.success && res.data) {
             const shopId = res.data._id;
-            // Get or create persistent session ID from localStorage
             let sessionId = localStorage.getItem('visitor_session_id');
             if (!sessionId) {
               sessionId = `session_${Math.random().toString(36).substring(2, 11)}_${Date.now()}`;
@@ -164,17 +205,9 @@ const MenuPage = () => {
     navigate(`/cart/${slug || 'kokkarakko-fried-chicken'}`);
   };
 
-  if (loading) {
-    return (
-      <div className="bg-[#0A0A0A] min-h-screen flex flex-col items-center justify-center font-sans">
-         <Loader2 className="animate-spin text-[#E50914] mb-4" size={40} />
-         <p className="text-white font-bold tracking-widest uppercase text-sm">Loading Menu...</p>
-      </div>
-    );
-  }
+  const isInitialLoading = loading && menuItems.length === 0;
 
   return (
-
     <div className="bg-[#0A0A0A] min-h-screen font-sans text-white pb-20">
       {/* Header */}
       <header className="flex flex-col sm:flex-row gap-4 justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full">
@@ -224,21 +257,20 @@ const MenuPage = () => {
       <div className="px-6 max-w-[1400px] mx-auto mb-10 mt-2">
         <div className="relative w-full rounded-[2rem] overflow-hidden bg-gradient-to-r from-[#111] to-[#222] border border-[#222] flex flex-col md:flex-row h-[240px] sm:h-[290px] md:h-[350px] shadow-2xl">
           
-          {/* Banner Image (Background/Right) */}
+          {/* Banner Image */}
           <div className="absolute inset-0 md:left-1/3 md:w-2/3 h-full z-0 opacity-40 md:opacity-100">
-            {/* Gradient mask to blend the image seamlessly on desktop */}
             <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#111] via-[#111]/80 to-transparent z-10 w-1/2"></div>
-            {/* Mobile dark overlay */}
             <div className="block md:hidden absolute inset-0 bg-black/60 z-10"></div>
             <img 
               src={slides[currentSlide]} 
               alt="Hot Fried Chicken" 
+              loading="eager"
               className="w-full h-full object-cover object-center transition-all duration-700 ease-in-out" 
               onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder-food.svg'; }} 
             />
           </div>
 
-          {/* Banner Content (Left) */}
+          {/* Banner Content */}
           <div className="relative z-20 w-full md:w-3/5 p-6 sm:p-8 md:p-14 flex flex-col justify-center h-full">
             <p className="text-[#E50914] text-[10px] sm:text-xs font-black tracking-widest uppercase mb-1 sm:mb-3 drop-shadow-md">Crispy. Juicy. Irresistible.</p>
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-none mb-0.5 sm:mb-1 drop-shadow-md tracking-tight">
@@ -275,48 +307,56 @@ const MenuPage = () => {
             <ChevronRight className="w-5 h-5 text-white" />
           </div>
         </div>
-
       </div>
 
       {/* Categories & Filter */}
       <div className="px-6 max-w-[1200px] mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex gap-3 overflow-x-auto w-full md:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <motion.button 
-            onClick={() => setActiveCategory('ALL')}
-            whileTap={{ scale: 0.95 }}
-            className={`px-6 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap transition-colors border ${
-              activeCategory === 'ALL' 
-                ? 'bg-[#E50914] text-white border-[#E50914]' 
-                : 'bg-[#1A1A1A] text-gray-300 border-[#222] hover:bg-[#222]'
-            }`}
-          >
-            ALL
-          </motion.button>
-          
-          {categories.filter(c => c !== 'ALL').map((cat) => {
-            let Icon = Drumstick;
-            const up = cat.toUpperCase();
-            if (up.includes('SNACK') || up.includes('POPCORN') || up.includes('STRIP')) Icon = Package;
-            if (up.includes('COMBO') || up.includes('BUCKET') || up.includes('MEAL')) Icon = Layers;
-
-            return (
+          {isInitialLoading ? (
+            <>
+              <SkeletonCategoryButton />
+              <SkeletonCategoryButton />
+              <SkeletonCategoryButton />
+              <SkeletonCategoryButton />
+            </>
+          ) : (
+            <>
               <motion.button 
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => setActiveCategory('ALL')}
                 whileTap={{ scale: 0.95 }}
-                className={`px-5 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap flex items-center gap-2 transition-colors border ${
-                  activeCategory === cat 
+                className={`px-6 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap transition-colors border ${
+                  activeCategory === 'ALL' 
                     ? 'bg-[#E50914] text-white border-[#E50914]' 
                     : 'bg-[#1A1A1A] text-gray-300 border-[#222] hover:bg-[#222]'
                 }`}
               >
-                <Icon className="w-4 h-4" /> {cat}
+                ALL
               </motion.button>
-            )
-          })}
-        </div>
+              
+              {categories.filter(c => c !== 'ALL').map((cat) => {
+                let Icon = Drumstick;
+                const up = cat.toUpperCase();
+                if (up.includes('SNACK') || up.includes('POPCORN') || up.includes('STRIP')) Icon = Package;
+                if (up.includes('COMBO') || up.includes('BUCKET') || up.includes('MEAL')) Icon = Layers;
 
-        {/* Sort Dropdown (Removed) */}
+                return (
+                  <motion.button 
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    whileTap={{ scale: 0.95 }}
+                    className={`px-5 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap flex items-center gap-2 transition-colors border ${
+                      activeCategory === cat 
+                        ? 'bg-[#E50914] text-white border-[#E50914]' 
+                        : 'bg-[#1A1A1A] text-gray-300 border-[#222] hover:bg-[#222]'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" /> {cat}
+                  </motion.button>
+                )
+              })}
+            </>
+          )}
+        </div>
       </div>
 
       {/* Section Title */}
@@ -328,7 +368,18 @@ const MenuPage = () => {
 
       {/* Menu List */}
       <div className="px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 max-w-[1200px] mx-auto pb-12">
-        {filteredItems.length === 0 ? (
+        {isInitialLoading ? (
+          <>
+            <SkeletonMenuCard />
+            <SkeletonMenuCard />
+            <SkeletonMenuCard />
+            <SkeletonMenuCard />
+            <SkeletonMenuCard />
+            <SkeletonMenuCard />
+            <SkeletonMenuCard />
+            <SkeletonMenuCard />
+          </>
+        ) : filteredItems.length === 0 ? (
           <div className="col-span-full text-center py-20 text-gray-500 font-bold uppercase tracking-wider text-sm">
             No items found.
           </div>
@@ -351,6 +402,7 @@ const MenuPage = () => {
                   <img
                     src={imageUrl}
                     alt={item.name}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
                   />
@@ -360,19 +412,18 @@ const MenuPage = () => {
                   </div>
                 )}
 
-                {/* Bottom gradient overlay — softer and limited to bottom half for maximum image visibility */}
+                {/* Bottom gradient overlay */}
                 <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
 
-                {/* Category badge — top left */}
+                {/* Category badge */}
                 {item.category && (
                   <span className="absolute top-3 left-3 z-10 text-[10px] font-black tracking-widest uppercase text-white bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
                     {getCatName(item)}
                   </span>
                 )}
 
-                {/* Text content — sits over gradient */}
+                {/* Text content */}
                 <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-                  {/* Name + Price row */}
                   <div className="flex items-end justify-between gap-2 mb-1.5">
                     <h3 className="text-white font-black text-base leading-tight tracking-tight drop-shadow-md group-hover:text-[#E50914] transition-colors">
                       {item.name}
@@ -382,7 +433,6 @@ const MenuPage = () => {
                     </span>
                   </div>
 
-                  {/* Description */}
                   {item.description && (
                     <p className="text-gray-300 text-xs font-medium leading-snug mb-3 line-clamp-1 drop-shadow">
                       {item.description}
@@ -408,7 +458,6 @@ const MenuPage = () => {
           })
         )}
       </div>
-
     </div>
   );
 };

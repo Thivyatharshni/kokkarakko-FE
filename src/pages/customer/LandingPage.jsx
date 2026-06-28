@@ -14,6 +14,7 @@ import { getShopBySlug } from '../../services/shopService';
 import { API_BASE_URL } from '../../config/constants';
 import { Loader2 } from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal';
+import { clientCache } from '../../utils/cache';
 
 const LandingPage = () => {
   const [coords, setCoords] = useState(null);
@@ -36,21 +37,29 @@ const LandingPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        setLoading(true);
-        console.log("Current API URL:", API_BASE_URL);
-        console.log("Requested Shop:", defaultSlug);
-        const shopRes = await getShopBySlug(defaultSlug);
-        console.log("Shop Response:", shopRes);
+      const cacheKey = `shop_${defaultSlug}`;
+      const cached = clientCache.get(cacheKey);
 
+      if (cached) {
+        setShop(cached);
+        setLoading(false);
+      } else {
+        setLoading(true);
+      }
+
+      try {
+        const shopRes = await getShopBySlug(defaultSlug);
         if (shopRes.success) {
           setShop(shopRes.data);
+          clientCache.set(cacheKey, shopRes.data);
         } else {
-          throw new Error(shopRes.message || 'Failed to fetch shop info');
+          if (!cached) throw new Error(shopRes.message || 'Failed to fetch shop info');
         }
       } catch (err) {
         console.error('Landing page fetch error:', err);
-        setError(err.message || 'Something went wrong while loading the page.');
+        if (!cached) {
+          setError(err.message || 'Something went wrong while loading the page.');
+        }
       } finally {
         setLoading(false);
       }

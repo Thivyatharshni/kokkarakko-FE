@@ -3,45 +3,74 @@ import { useAuth } from '../context/AuthContext';
 
 export const useCurrentShop = () => {
   const { shop, loading: authLoading } = useAuth();
-  const [shopData, setShopData] = useState({
-    shopId: null,
-    shopSlug: null,
-    shopName: null,
-    loading: true,
-    error: null,
-  });
-
-  useEffect(() => {
-    if (authLoading) return;
-
-    try {
-      // 1. Auth Context (Primary)
-      if (shop) {
-        setShopData({
-          shopId: shop._id,
-          shopSlug: shop.slug,
-          shopName: shop.shopName,
-          loading: false,
-          error: null,
-        });
-        return;
-      }
-
-      // 2. Local Storage (Fallback)
-      const cachedShop = localStorage.getItem('currentShop');
-      if (cachedShop) {
+  
+  // Resolve initial state immediately to prevent initial render flash
+  const getInitialState = () => {
+    if (shop) {
+      return {
+        shopId: shop._id,
+        shopSlug: shop.slug,
+        shopName: shop.shopName,
+        loading: false,
+        error: null,
+      };
+    }
+    
+    const cachedShop = localStorage.getItem('currentShop');
+    if (cachedShop) {
+      try {
         const parsed = JSON.parse(cachedShop);
-        setShopData({
+        return {
           shopId: parsed._id,
           shopSlug: parsed.slug,
           shopName: parsed.shopName,
           loading: false,
           error: null,
-        });
-        return;
+        };
+      } catch (e) {
+        // Ignore JSON error
       }
+    }
 
-      // 3. Not Found safely
+    return {
+      shopId: null,
+      shopSlug: null,
+      shopName: null,
+      loading: authLoading,
+      error: authLoading ? null : 'Shop data not found',
+    };
+  };
+
+  const [shopData, setShopData] = useState(getInitialState);
+
+  useEffect(() => {
+    if (authLoading) return;
+
+    if (shop) {
+      setShopData({
+        shopId: shop._id,
+        shopSlug: shop.slug,
+        shopName: shop.shopName,
+        loading: false,
+        error: null,
+      });
+    } else {
+      const cachedShop = localStorage.getItem('currentShop');
+      if (cachedShop) {
+        try {
+          const parsed = JSON.parse(cachedShop);
+          setShopData({
+            shopId: parsed._id,
+            shopSlug: parsed.slug,
+            shopName: parsed.shopName,
+            loading: false,
+            error: null,
+          });
+          return;
+        } catch (e) {
+          // Ignore
+        }
+      }
       setShopData({
         shopId: null,
         shopSlug: null,
@@ -49,9 +78,6 @@ export const useCurrentShop = () => {
         loading: false,
         error: 'Shop data not found',
       });
-
-    } catch (err) {
-      setShopData(prev => ({ ...prev, loading: false, error: 'Failed to resolve shop context' }));
     }
   }, [shop, authLoading]);
 
