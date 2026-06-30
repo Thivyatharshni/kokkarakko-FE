@@ -69,7 +69,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-neutral-800 bg-[#1a1a1a] text-white focus:border-[#D90404] focus:ring-2 focus:ring-red-900/30 outline-none transition-all placeholder-gray-600"
-              placeholder="admin@kokkarakko.com"
+              placeholder="Enter your email"
             />
           </div>
 

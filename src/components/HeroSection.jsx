@@ -121,46 +121,7 @@ const HeroSection = ({ slug, shop }) => {
             </button>
           </motion.div>
 
-          {/* Customer Trust Row / Rating */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3 lg:gap-4 pt-4 lg:pt-5 border-t border-white/10 w-full"
-          >
-            {/* Avatar Group */}
-            <div className="flex -space-x-3 overflow-hidden">
-              <img
-                className="inline-block h-8 w-8 lg:h-9 lg:w-9 rounded-full ring-2 ring-white"
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
-                alt="Customer 1"
-              />
-              <img
-                className="inline-block h-8 w-8 lg:h-9 lg:w-9 rounded-full ring-2 ring-white"
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
-                alt="Customer 2"
-              />
-              <img
-                className="inline-block h-8 w-8 lg:h-9 lg:w-9 rounded-full ring-2 ring-white"
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop"
-                alt="Customer 3"
-              />
-              <img
-                className="inline-block h-8 w-8 lg:h-9 lg:w-9 rounded-full ring-2 ring-white"
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
-                alt="Customer 4"
-              />
-            </div>
-            
-            <div className="text-center lg:text-left leading-none [text-shadow:_0_2px_8px_rgba(0,0,0,0.6)]">
-              <div className="flex justify-center lg:justify-start text-yellow-500 mb-1">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-              </div>
-              <p className="text-[10px] lg:text-xs font-black text-gray-300 uppercase tracking-wider">
-                4.9k+ Happy Customers
-              </p>
-            </div>
-          </motion.div>
+
         </div>
       </div>
     </section>

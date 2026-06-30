@@ -78,10 +78,13 @@ const Navbar = ({ shop }) => {
   };
 
   const getBrandText = () => {
-    if (!shop?.shopName) return { main: 'Kokkarakko', sub: 'Fried Chicken ★★★' };
+    if (!shop?.shopName) return { main: 'Kokkarakko', sub: 'Crispy Chicken ★★★' };
     const words = shop.shopName.split(' ');
     const main = words[0];
-    const sub = words.slice(1).join(' ');
+    let sub = words.slice(1).join(' ');
+    if (sub.toLowerCase() === 'fried chicken') {
+      sub = 'Crispy Chicken';
+    }
     return { main, sub };
   };
 
@@ -142,7 +145,7 @@ const Navbar = ({ shop }) => {
             <img src="/logo.png" alt="Logo" className="h-16 md:h-20 w-auto object-contain rounded-full shadow-md border border-white/10" />
             <div className="leading-tight">
               <span className={`block text-lg md:text-xl font-black ${textColorClass} tracking-tight uppercase transition-colors duration-500`}>{brandMain}</span>
-              <span className={`block text-[8px] md:text-[9px] font-bold ${subTextColorClass} uppercase tracking-widest transition-colors duration-500`}>{brandSub || 'Fried Chicken'}</span>
+              <span className={`block text-[8px] md:text-[9px] font-bold ${subTextColorClass} uppercase tracking-widest transition-colors duration-500`}>{brandSub || 'Crispy Chicken'}</span>
             </div>
           </motion.div>
         </div>

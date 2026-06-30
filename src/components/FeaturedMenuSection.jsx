@@ -47,6 +47,10 @@ const FeaturedCard = ({ item, index, slug }) => {
   const imageUrl = item.image ? getFullImageUrl(item.image) : null;
   const categoryName = typeof item.category === 'object' ? item.category?.name : item.category;
 
+  // Suppress hex ObjectID showing up
+  const isHexId = /^[0-9a-fA-F]{24}$/.test(categoryName || '');
+  const displayCategory = categoryName && !isHexId ? categoryName : '';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50, scale: 0.95 }}
@@ -79,7 +83,7 @@ const FeaturedCard = ({ item, index, slug }) => {
         </div>
 
         {/* Image */}
-        <div className="relative h-52 overflow-hidden bg-[#1A1A1A] shrink-0">
+        <div className="relative h-40 overflow-hidden bg-[#1A1A1A] shrink-0">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -97,10 +101,10 @@ const FeaturedCard = ({ item, index, slug }) => {
         </div>
 
         {/* Content */}
-        <div className="flex flex-col flex-grow p-5 gap-3">
-          {categoryName && (
+        <div className="flex flex-col flex-grow p-4 gap-2">
+          {displayCategory && (
             <span className="text-[10px] font-black text-[#E50914] tracking-widest uppercase">
-              {categoryName}
+              {displayCategory}
             </span>
           )}
 
@@ -114,7 +118,7 @@ const FeaturedCard = ({ item, index, slug }) => {
             </p>
           )}
 
-          <div className="flex items-center justify-between pt-3 mt-auto border-t border-[#252525]">
+          <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-[#252525]">
             <span className="text-[#E50914] font-black text-xl">
               ₹{item.price}
             </span>

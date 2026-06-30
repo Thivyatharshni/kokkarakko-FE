@@ -14,9 +14,82 @@ const CartPage = () => {
 
   const [shop, setShop] = useState(null);
   const [loadingShop, setLoadingShop] = useState(true);
-  const [customerName, setCustomerName] = useState('');
-  const [customerMobile, setCustomerMobile] = useState('');
+  const [customerName, setCustomerName] = useState(() => localStorage.getItem('customerName') || '');
+  const [customerMobile, setCustomerMobile] = useState(() => localStorage.getItem('customerMobile') || '');
+  const [nameError, setNameError] = useState('');
+  const [mobileError, setMobileError] = useState('');
+  const [nameTouched, setNameTouched] = useState(false);
+  const [mobileTouched, setMobileTouched] = useState(false);
   const [placingOrder, setPlacingOrder] = useState(false);
+
+  const validateName = (name) => {
+    const trimmed = name.trim();
+    if (!trimmed) {
+      return "Please enter your name.";
+    }
+    if (trimmed.length < 3) {
+      return "Name must be at least 3 characters.";
+    }
+    if (trimmed.length > 50) {
+      return "Name must be at most 50 characters.";
+    }
+    const lettersAndSpaces = /^[a-zA-Z\s]+$/;
+    if (!lettersAndSpaces.test(trimmed)) {
+      return "Name must contain only letters and spaces.";
+    }
+    return "";
+  };
+
+  const validateMobile = (mobile) => {
+    if (!mobile) {
+      return "Please enter your mobile number.";
+    }
+    const digitsOnly = /^\d+$/;
+    if (!digitsOnly.test(mobile)) {
+      return "Only numbers are allowed.";
+    }
+    if (mobile.length !== 10) {
+      return "Mobile number must contain exactly 10 digits.";
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    if (customerName) {
+      setNameError(validateName(customerName));
+    }
+    if (customerMobile) {
+      setMobileError(validateMobile(customerMobile));
+    }
+  }, []);
+
+  const handleNameChange = (e) => {
+    const val = e.target.value;
+    setCustomerName(val);
+    localStorage.setItem('customerName', val);
+    setNameTouched(true);
+    setNameError(validateName(val));
+  };
+
+  const handleMobileChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setCustomerMobile(val);
+    localStorage.setItem('customerMobile', val);
+    setMobileTouched(true);
+    setMobileError(validateMobile(val));
+  };
+
+  const isNameValid = customerName.trim().length >= 3 && !validateName(customerName);
+  const isMobileValid = customerMobile.length === 10 && !validateMobile(customerMobile);
+  const isFormValid = isNameValid && isMobileValid && cart.length > 0;
+
+  const nameBorderClass = (nameTouched || customerName)
+    ? (nameError ? 'border-red-500 focus:border-red-500' : 'border-green-500 focus:border-green-500')
+    : 'border-[#2d2d2d] focus:border-[#E50914]';
+
+  const mobileBorderClass = (mobileTouched || customerMobile)
+    ? (mobileError ? 'border-red-500 focus:border-red-500' : 'border-green-500 focus:border-green-500')
+    : 'border-[#2d2d2d] focus:border-[#E50914]';
 
   useEffect(() => {
     const fetchShopInfo = async () => {
@@ -39,16 +112,20 @@ const CartPage = () => {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    const finalNameError = validateName(customerName);
+    const finalMobileError = validateMobile(customerMobile);
+
+    if (finalNameError || finalMobileError) {
+      setNameError(finalNameError);
+      setMobileError(finalMobileError);
+      setNameTouched(true);
+      setMobileTouched(true);
+      toast.error('Please fix the validation errors before placing the order.');
+      return;
+    }
+
     if (cart.length === 0) {
       toast.error('Your cart is empty!');
-      return;
-    }
-    if (!customerName.trim()) {
-      toast.error('Please enter your name');
-      return;
-    }
-    if (!customerMobile.trim() || customerMobile.length < 10) {
-      toast.error('Please enter a valid 10-digit mobile number');
       return;
     }
     if (!shop?._id) {
@@ -75,6 +152,8 @@ const CartPage = () => {
       if (res.success && res.data) {
         toast.success('Order placed successfully!', { icon: '🍗' });
         clearCart();
+        localStorage.removeItem('customerName');
+        localStorage.removeItem('customerMobile');
         navigate(`/order-success/${res.data.orderNumber}`);
       } else {
         toast.error(res.message || 'Failed to place order');
@@ -192,11 +271,17 @@ const CartPage = () => {
                     type="text"
                     id="customerName"
                     value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    onChange={handleNameChange}
                     placeholder="Enter full name"
-                    className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 border border-[#2d2d2d] focus:border-[#E50914] rounded-xl py-3 px-4 outline-none transition-colors text-sm font-semibold"
+                    className={`w-full bg-[#1A1A1A] text-white placeholder-gray-500 border rounded-xl py-3 px-4 outline-none transition-colors text-sm font-semibold ${nameBorderClass}`}
                     required
                   />
+                  {nameError && (nameTouched || customerName) && (
+                    <p className="text-red-500 text-xs font-semibold mt-1.5">{nameError}</p>
+                  )}
+                  {!nameError && (nameTouched || customerName) && customerName.trim() && (
+                    <p className="text-green-500 text-xs font-semibold mt-1.5">✓ Name looks good</p>
+                  )}
                 </div>
 
                 <div>
@@ -205,11 +290,17 @@ const CartPage = () => {
                     type="tel"
                     id="customerMobile"
                     value={customerMobile}
-                    onChange={(e) => setCustomerMobile(e.target.value)}
+                    onChange={handleMobileChange}
                     placeholder="10-digit mobile number"
-                    className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 border border-[#2d2d2d] focus:border-[#E50914] rounded-xl py-3 px-4 outline-none transition-colors text-sm font-semibold"
+                    className={`w-full bg-[#1A1A1A] text-white placeholder-gray-500 border rounded-xl py-3 px-4 outline-none transition-colors text-sm font-semibold ${mobileBorderClass}`}
                     required
                   />
+                  {mobileError && (mobileTouched || customerMobile) && (
+                    <p className="text-red-500 text-xs font-semibold mt-1.5">{mobileError}</p>
+                  )}
+                  {!mobileError && (mobileTouched || customerMobile) && customerMobile.length === 10 && (
+                    <p className="text-green-500 text-xs font-semibold mt-1.5">✓ Mobile number is valid</p>
+                  )}
                 </div>
 
                 {/* Bill Summary */}
@@ -230,9 +321,9 @@ const CartPage = () => {
 
                 <motion.button
                   type="submit"
-                  disabled={placingOrder}
-                  whileTap={{ scale: 0.96 }}
-                  className="w-full bg-[#E50914] hover:bg-[#CC0812] disabled:bg-red-800 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-red-500/10 flex items-center justify-center gap-2 mt-4 text-sm uppercase tracking-wider"
+                  disabled={!isFormValid || placingOrder}
+                  whileTap={isFormValid && !placingOrder ? { scale: 0.96 } : {}}
+                  className="w-full bg-[#E50914] hover:bg-[#CC0812] disabled:bg-neutral-800 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-red-500/10 flex items-center justify-center gap-2 mt-4 text-sm uppercase tracking-wider"
                 >
                   {placingOrder ? (
                     <>

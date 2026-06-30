@@ -37,6 +37,7 @@ const MenuPage = () => {
     price: '',
     status: 'Available',
     featured: false,
+    quantity: 0,
     image: null,
   });
 
@@ -90,6 +91,7 @@ const MenuPage = () => {
         price: item.price,
         status: item.status || 'Available',
         featured: item.featured || false,
+        quantity: item.quantity !== undefined ? item.quantity : 0,
         image: null,
       });
     } else {
@@ -101,6 +103,7 @@ const MenuPage = () => {
         price: '',
         status: 'Available',
         featured: false,
+        quantity: 0,
         image: null,
       });
     }
@@ -186,8 +189,8 @@ const MenuPage = () => {
 
   const displayStats = DEMO_MODE ? DEMO_MENU_DATA.stats : {
     total: menu.length,
-    available: menu.filter(m => m.status === 'Available').length,
-    outOfStock: menu.filter(m => m.status === 'Out Of Stock').length,
+    available: menu.filter(m => m.status === 'Available' && (m.quantity === undefined || m.quantity > 0)).length,
+    outOfStock: menu.filter(m => m.status === 'Out Of Stock' || m.quantity === 0).length,
     featured: menu.filter(m => m.featured).length,
   };
 
@@ -311,6 +314,7 @@ const MenuPage = () => {
                 <th className="p-4 font-semibold">Item</th>
                 <th className="p-4 font-semibold">Category</th>
                 <th className="p-4 font-semibold">Price</th>
+                <th className="p-4 font-semibold">Quantity</th>
                 <th className="p-4 font-semibold">Status</th>
                 <th className="p-4 font-semibold">Featured</th>
                 <th className="p-4 font-semibold text-right">Actions</th>
@@ -344,9 +348,18 @@ const MenuPage = () => {
                     </td>
                     <td className="p-4 font-bold text-[#E50914] whitespace-nowrap">₹{item.price}</td>
                     <td className="p-4 whitespace-nowrap">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                        item.quantity === 0 ? 'bg-red-100 text-red-700' :
+                        item.quantity <= 5 ? 'bg-orange-100 text-orange-700' :
+                        'bg-green-100 text-green-700'
+                      }`}>
+                        {item.quantity !== undefined ? item.quantity : 0}
+                      </span>
+                    </td>
+                    <td className="p-4 whitespace-nowrap">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                         item.status === 'Available' ? 'bg-green-100 text-green-700' : 
-                        item.status === 'Out Of Stock' ? 'bg-orange-100 text-orange-700' : 
+                        item.status === 'Out Of Stock' ? 'bg-red-100 text-red-700' : 
                         'bg-gray-100 text-gray-700'
                       }`}>
                         {item.status || 'Available'}
@@ -402,8 +415,15 @@ const MenuPage = () => {
                         {item.category?.name || 'Uncategorized'}
                       </span>
                       <span className={`px-2 py-0.5 rounded-md text-xs font-bold ${
+                        item.quantity === 0 ? 'bg-red-100 text-red-700' :
+                        item.quantity <= 5 ? 'bg-orange-100 text-orange-700' :
+                        'bg-green-100 text-green-700'
+                      }`}>
+                        Qty: {item.quantity !== undefined ? item.quantity : 0}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-md text-xs font-bold ${
                         item.status === 'Available' ? 'bg-green-100 text-green-700' : 
-                        item.status === 'Out Of Stock' ? 'bg-orange-100 text-orange-700' : 
+                        item.status === 'Out Of Stock' ? 'bg-red-100 text-red-700' : 
                         'bg-gray-100 text-gray-700'
                       }`}>
                         {item.status || 'Available'}
@@ -482,7 +502,23 @@ const MenuPage = () => {
                   <textarea rows="3" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border rounded-xl outline-none focus:border-[#E50914] resize-none bg-gray-50 focus:bg-white transition-colors text-sm" placeholder="Brief description of the item..."></textarea>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-sm font-semibold mb-1 text-gray-700">Quantity (Stock)</label>
+                    <input 
+                      required 
+                      type="number" 
+                      min="0" 
+                      step="1"
+                      value={formData.quantity} 
+                      onChange={e => {
+                        const val = e.target.value;
+                        setFormData({...formData, quantity: val === '' ? '' : Math.max(0, parseInt(val, 10) || 0)});
+                      }} 
+                      className="w-full h-11 px-4 py-2 border rounded-xl outline-none focus:border-[#E50914] bg-gray-50 focus:bg-white transition-colors text-sm" 
+                      placeholder="0" 
+                    />
+                  </div>
                   <div>
                     <label className="block text-sm font-semibold mb-1 text-gray-700">Status</label>
                     <select required value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full h-11 px-4 py-2 border rounded-xl outline-none focus:border-[#E50914] bg-gray-50 focus:bg-white transition-colors text-sm">

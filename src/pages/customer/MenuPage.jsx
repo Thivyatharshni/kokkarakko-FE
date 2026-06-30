@@ -282,9 +282,7 @@ const MenuPage = () => {
             <p className="text-gray-300 text-xs sm:text-sm md:text-base font-medium mb-4 sm:mb-8 max-w-xs sm:max-w-sm leading-relaxed text-shadow-sm line-clamp-2 sm:line-clamp-none">
               Freshly prepared with the finest ingredients. Flavors you'll love, every single time.
             </p>
-            <button className="bg-[#E50914] hover:bg-[#CC0812] text-white font-bold py-2 sm:py-3 px-5 sm:px-7 rounded-full w-max flex items-center gap-2 transition-all shadow-lg shadow-red-500/20 text-xs sm:text-sm">
-              Order Now <ArrowRight className="w-4 h-4 ml-1" />
-            </button>
+
           </div>
 
           {/* Carousel Controls */}
@@ -394,62 +392,80 @@ const MenuPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
                 whileTap={{ scale: 0.97 }}
-                className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-black/50 transition-all duration-300 border border-[#222] hover:border-[#333] hover:-translate-y-1"
-                style={{ aspectRatio: '1.2 / 1' }}
+                className="flex flex-col rounded-2xl overflow-hidden bg-[#141414] border border-[#222] hover:border-[#333] hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-black/50 group cursor-pointer h-full"
               >
-                {/* Full-bleed image */}
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt={item.name}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center text-7xl select-none">
-                    🍗
-                  </div>
-                )}
-
-                {/* Bottom gradient overlay */}
-                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
-
-                {/* Category badge */}
-                {item.category && (
-                  <span className="absolute top-3 left-3 z-10 text-[10px] font-black tracking-widest uppercase text-white bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
-                    {getCatName(item)}
-                  </span>
-                )}
-
-                {/* Text content */}
-                <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-                  <div className="flex items-end justify-between gap-2 mb-1.5">
-                    <h3 className="text-white font-black text-base leading-tight tracking-tight drop-shadow-md group-hover:text-[#E50914] transition-colors">
-                      {item.name}
-                    </h3>
-                    <span className="text-[#E50914] font-black text-lg shrink-0 drop-shadow-md">
-                      ₹{item.price}
-                    </span>
-                  </div>
-
-                  {item.description && (
-                    <p className="text-gray-300 text-xs font-medium leading-snug mb-3 line-clamp-1 drop-shadow">
-                      {item.description}
-                    </p>
+                {/* Product Image at Top */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-[#1A1A1A] shrink-0">
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={item.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-5xl bg-[#1a1a1a] select-none">
+                      🍗
+                    </div>
                   )}
 
-                  {/* Add button */}
-                  <div className="flex justify-end">
+                  {/* Category badge */}
+                  {item.category && (
+                    <span className="absolute top-3 left-3 z-10 text-[9px] font-black tracking-widest uppercase text-white bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
+                      {getCatName(item)}
+                    </span>
+                  )}
+                </div>
+
+                {/* Product Details below the image */}
+                <div className="flex flex-col flex-grow p-3 gap-2 justify-between bg-[#141414]">
+                  {/* Name */}
+                  <div>
+                    <h3 className="text-white font-black text-sm md:text-base leading-tight tracking-tight group-hover:text-[#E50914] transition-colors line-clamp-1">
+                      {item.name}
+                    </h3>
+                  </div>
+
+                  {/* Price & Add Button Row */}
+                  <div className="flex items-center justify-between mt-auto">
+                    {/* Price & Stock info */}
+                    <div className="flex flex-col">
+                      <span className="text-[#E50914] font-black text-base md:text-lg leading-none">
+                        ₹{item.price}
+                      </span>
+                      
+                      {/* Stock Status text */}
+                      <span className={`text-[8px] md:text-[9px] font-bold tracking-wider uppercase mt-1 ${
+                        item.quantity === undefined || item.quantity > 0 
+                          ? 'text-green-500' 
+                          : 'text-red-500'
+                      }`}>
+                        {item.quantity === undefined || item.quantity > 0 ? 'In Stock' : 'Out of Stock'}
+                      </span>
+                    </div>
+
+                    {/* Add button */}
                     <motion.button
+                      disabled={item.quantity === 0}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleAddToCart(item);
+                        if (item.quantity === undefined || item.quantity > 0) {
+                          handleAddToCart(item);
+                        }
                       }}
-                      whileTap={{ scale: 0.93 }}
-                      className="bg-[#E50914] text-white font-bold text-xs uppercase px-5 py-2.5 rounded-lg flex items-center hover:bg-[#CC0812] transition-colors shadow-md shadow-red-500/10"
+                      whileTap={item.quantity === 0 ? {} : { scale: 0.93 }}
+                      className={`font-black text-[10px] md:text-xs uppercase px-3.5 py-2 rounded-lg flex items-center transition-all ${
+                        item.quantity === undefined || item.quantity > 0
+                          ? 'bg-[#E50914] text-white hover:bg-[#CC0812] shadow-md shadow-red-500/10'
+                          : 'bg-[#222] text-gray-500 cursor-not-allowed border border-white/5'
+                      }`}
                     >
-                      ADD <PlusCircle className="w-4 h-4 ml-1.5" />
+                      {item.quantity === undefined || item.quantity > 0 ? (
+                        <>ADD <PlusCircle className="w-3.5 h-3.5 ml-1" /></>
+                      ) : (
+                        'Unavailable'
+                      )}
                     </motion.button>
                   </div>
                 </div>
