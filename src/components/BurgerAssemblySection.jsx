@@ -573,7 +573,7 @@ const BurgerAssemblySection = () => {
         className="sticky top-0 left-0 w-full h-[100dvh] overflow-hidden block md:hidden bg-cover bg-center"
         style={{ backgroundImage: `url(${bgImage})` }}
       >
-        <div className="px-3.5 pb-4 pt-16 w-full h-full flex flex-col items-center justify-between relative">
+        <div className="px-3.5 pb-4 pt-24 w-full h-full flex flex-col items-center justify-center gap-y-5 relative">
           
           <div className="space-y-0.5 text-center">
             <span className="text-[9px] font-black text-[#E50914] tracking-widest uppercase bg-red-950/40 border border-[#E50914]/20 px-2 py-0.5 rounded-full">
@@ -585,7 +585,7 @@ const BurgerAssemblySection = () => {
           </div>
 
           {/* Mobile Visual Stack Container (No Background Card) */}
-          <div className="relative w-full h-[170px] flex items-end justify-center pb-2">
+          <div className="relative w-full h-[190px] flex items-end justify-center pb-2">
             <div 
               className="absolute inset-0 transition-opacity duration-500 pointer-events-none" 
               style={{
@@ -596,7 +596,7 @@ const BurgerAssemblySection = () => {
             
             {/* Assembly Stack for Mobile */}
             <div 
-              className="relative w-[150px] h-[190px] select-none pointer-events-none z-10 flex items-end justify-center"
+              className="relative w-[170px] h-[210px] select-none pointer-events-none z-10 flex items-end justify-center"
             >
               {/* Ground Shadow */}
               <motion.div
@@ -609,7 +609,7 @@ const BurgerAssemblySection = () => {
 
               {layersConfig.map((layer, index) => {
                 const anim = layerTransforms[index];
-                const W_mob = 150;
+                const W_mob = 170;
                 const bottomOffset = layer.offsetFraction * W_mob;
                 const w_layer = W_mob * layer.wScale;
                 const h_layer = w_layer * 1.5;

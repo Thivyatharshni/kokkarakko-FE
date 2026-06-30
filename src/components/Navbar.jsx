@@ -38,10 +38,13 @@ const Navbar = ({ shop }) => {
 
     const observer = new IntersectionObserver(handleIntersect, observerOptions);
 
-    sectionIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    // Small delay to ensure all dynamically mounted child elements exist in DOM
+    const observerTimer = setTimeout(() => {
+      sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }, 150);
 
     const handleScroll = () => {
       if (window.scrollY < 20) {
@@ -51,6 +54,7 @@ const Navbar = ({ shop }) => {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
+      clearTimeout(observerTimer);
       observer.disconnect();
       window.removeEventListener('scroll', handleScroll);
     };
