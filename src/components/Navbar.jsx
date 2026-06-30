@@ -105,7 +105,7 @@ const Navbar = ({ shop }) => {
   }
 
   // Padding adjustment based on transparent vs. sticky state
-  const paddingClass = activeTheme === 'transparent' ? 'py-2.5 md:py-5' : 'py-1.5 md:py-3';
+  const paddingClass = activeTheme === 'transparent' ? 'py-3.5 md:py-5' : 'py-2.5 md:py-3';
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${paddingClass}`}>
@@ -142,10 +142,10 @@ const Navbar = ({ shop }) => {
             className="flex items-center gap-3 cursor-pointer" 
             onClick={() => scrollToSection('top', 'landing')}
           >
-            <img src="/logo.png" alt="Logo" className="h-11 md:h-20 w-auto object-contain rounded-full shadow-md border border-white/10" />
+            <img src="/logo.png" alt="Logo" className="h-14 md:h-20 w-auto object-contain rounded-full shadow-md border border-white/10" />
             <div className="leading-tight">
-              <span className={`block text-sm md:text-xl font-black ${textColorClass} tracking-tight uppercase transition-colors duration-500`}>{brandMain}</span>
-              <span className={`block text-[7px] md:text-[9px] font-bold ${subTextColorClass} uppercase tracking-widest transition-colors duration-500`}>{brandSub || 'Crispy Chicken'}</span>
+              <span className={`block text-base md:text-xl font-black ${textColorClass} tracking-tight uppercase transition-colors duration-500`}>{brandMain}</span>
+              <span className={`block text-[9px] md:text-[9px] font-bold ${subTextColorClass} uppercase tracking-widest transition-colors duration-500`}>{brandSub || 'Crispy Chicken'}</span>
             </div>
           </motion.div>
         </div>
@@ -194,7 +194,7 @@ const Navbar = ({ shop }) => {
             className={`md:hidden p-2 rounded-lg ${textColorClass} hover:bg-gray-100/10 transition-colors duration-500`}
             aria-label="Toggle Menu"
           >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </motion.button>
         </div>
 
