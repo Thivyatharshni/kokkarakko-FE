@@ -261,61 +261,61 @@ const CartPage = () => {
             </div>
 
             {/* Customer Details & Checkout Form */}
-            <div className="lg:col-span-5 bg-[#141414] border border-[#222] rounded-3xl p-6 space-y-6">
-              <h2 className="text-lg font-bold text-white border-b border-[#222] pb-3">Checkout Details</h2>
+            <div className="lg:col-span-5 bg-[#141414] border border-[#222] rounded-3xl p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <h2 className="text-base sm:text-lg font-bold text-white border-b border-[#222] pb-2 sm:pb-3">Checkout Details</h2>
               
-              <form onSubmit={handlePlaceOrder} className="space-y-4">
+              <form onSubmit={handlePlaceOrder} className="space-y-3.5 sm:space-y-4">
                 <div>
-                  <label htmlFor="customerName" className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Your Name</label>
+                  <label htmlFor="customerName" className="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 sm:mb-2">Your Name</label>
                   <input
                     type="text"
                     id="customerName"
                     value={customerName}
                     onChange={handleNameChange}
                     placeholder="Enter full name"
-                    className={`w-full bg-[#1A1A1A] text-white placeholder-gray-500 border rounded-xl py-3 px-4 outline-none transition-colors text-sm font-semibold ${nameBorderClass}`}
+                    className={`w-full bg-[#1A1A1A] text-white placeholder-gray-500 border rounded-xl py-2.5 sm:py-3 px-4 outline-none transition-colors text-sm font-semibold ${nameBorderClass}`}
                     required
                   />
                   {nameError && (nameTouched || customerName) && (
-                    <p className="text-red-500 text-xs font-semibold mt-1.5">{nameError}</p>
+                    <p className="text-red-500 text-xs font-semibold mt-1">{nameError}</p>
                   )}
                   {!nameError && (nameTouched || customerName) && customerName.trim() && (
-                    <p className="text-green-500 text-xs font-semibold mt-1.5">✓ Name looks good</p>
+                    <p className="text-green-500 text-xs font-semibold mt-1">✓ Name looks good</p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="customerMobile" className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Mobile Number</label>
+                  <label htmlFor="customerMobile" className="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 sm:mb-2">Mobile Number</label>
                   <input
                     type="tel"
                     id="customerMobile"
                     value={customerMobile}
                     onChange={handleMobileChange}
                     placeholder="10-digit mobile number"
-                    className={`w-full bg-[#1A1A1A] text-white placeholder-gray-500 border rounded-xl py-3 px-4 outline-none transition-colors text-sm font-semibold ${mobileBorderClass}`}
+                    className={`w-full bg-[#1A1A1A] text-white placeholder-gray-500 border rounded-xl py-2.5 sm:py-3 px-4 outline-none transition-colors text-sm font-semibold ${mobileBorderClass}`}
                     required
                   />
                   {mobileError && (mobileTouched || customerMobile) && (
-                    <p className="text-red-500 text-xs font-semibold mt-1.5">{mobileError}</p>
+                    <p className="text-red-500 text-xs font-semibold mt-1">{mobileError}</p>
                   )}
                   {!mobileError && (mobileTouched || customerMobile) && customerMobile.length === 10 && (
-                    <p className="text-green-500 text-xs font-semibold mt-1.5">✓ Mobile number is valid</p>
+                    <p className="text-green-500 text-xs font-semibold mt-1">✓ Mobile number is valid</p>
                   )}
                 </div>
 
                 {/* Bill Summary */}
-                <div className="bg-[#1A1A1A] rounded-2xl p-4 mt-6 space-y-2 border border-[#2d2d2d]">
-                  <div className="flex justify-between items-center text-sm font-bold text-gray-400">
+                <div className="bg-[#1A1A1A] rounded-2xl p-3 sm:p-4 mt-4 sm:mt-6 space-y-1.5 sm:space-y-2 border border-[#2d2d2d]">
+                  <div className="flex justify-between items-center text-xs sm:text-sm font-bold text-gray-400">
                     <span>Subtotal</span>
                     <span>₹{getCartTotal().toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm font-bold text-gray-400">
+                  <div className="flex justify-between items-center text-xs sm:text-sm font-bold text-gray-400">
                     <span>Delivery / Table Service</span>
                     <span className="text-green-500 font-extrabold">FREE</span>
                   </div>
-                  <div className="border-t border-[#2d2d2d] my-2 pt-2 flex justify-between items-center">
-                    <span className="text-base font-extrabold text-white">Grand Total</span>
-                    <span className="text-xl font-black text-[#E50914]">₹{getCartTotal().toFixed(2)}</span>
+                  <div className="border-t border-[#2d2d2d] my-1.5 pt-1.5 sm:my-2 sm:pt-2 flex justify-between items-center">
+                    <span className="text-sm sm:text-base font-extrabold text-white">Grand Total</span>
+                    <span className="text-lg sm:text-xl font-black text-[#E50914]">₹{getCartTotal().toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -323,15 +323,15 @@ const CartPage = () => {
                   type="submit"
                   disabled={!isFormValid || placingOrder}
                   whileTap={isFormValid && !placingOrder ? { scale: 0.96 } : {}}
-                  className="w-full bg-[#E50914] hover:bg-[#CC0812] disabled:bg-neutral-800 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-red-500/10 flex items-center justify-center gap-2 mt-4 text-sm uppercase tracking-wider"
+                  className="w-full bg-[#E50914] hover:bg-[#CC0812] disabled:bg-neutral-800 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 sm:py-4 rounded-xl transition-all shadow-lg shadow-red-500/10 flex items-center justify-center gap-2 mt-3 sm:mt-4 text-xs sm:text-sm uppercase tracking-wider"
                 >
                   {placingOrder ? (
                     <>
-                      <Loader2 className="animate-spin w-5 h-5" /> Placing Order...
+                      <Loader2 className="animate-spin w-4 h-4" /> Placing Order...
                     </>
                   ) : (
                     <>
-                      Place Order <ArrowRight className="w-5 h-5" />
+                      Place Order <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </>
                   )}
                 </motion.button>

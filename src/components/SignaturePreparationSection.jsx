@@ -91,7 +91,7 @@ const SignaturePreparationSection = ({ bucketRef, originRef }) => {
       id="signature-prep"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-screen py-24 overflow-hidden z-10 border-b border-gray-100 flex items-center"
+      className="relative min-h-[50vh] lg:min-h-screen py-12 sm:py-24 overflow-hidden z-10 border-b border-gray-100 flex items-center"
       style={{ background: 'radial-gradient(ellipse at 20% 50%, #fff7f0 0%, #fef9f5 35%, #f9f9f9 70%, #f5f5f5 100%)' }}
     >
       {/* Subtle dot texture overlay */}
@@ -123,7 +123,7 @@ const SignaturePreparationSection = ({ bucketRef, originRef }) => {
               variants={headingLineNormalVariants(0)}
               whileHover={{ x: 5, color: '#000000' }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              className="text-4xl md:text-5xl font-black text-[#111111] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
+              className="text-2xl md:text-5xl font-black text-[#111111] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
             >
               HAND SELECTED.
             </motion.h2>
@@ -131,7 +131,7 @@ const SignaturePreparationSection = ({ bucketRef, originRef }) => {
               variants={headingLineEmphasisVariants(1)}
               whileHover={{ x: 5, color: '#ff1a1a' }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              className="text-4xl md:text-5xl font-black text-[#D90404] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
+              className="text-2xl md:text-5xl font-black text-[#D90404] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
             >
               SEASONED TO PERFECTION.
             </motion.h2>
@@ -139,7 +139,7 @@ const SignaturePreparationSection = ({ bucketRef, originRef }) => {
               variants={headingLineNormalVariants(2)}
               whileHover={{ x: 5, color: '#000000' }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              className="text-4xl md:text-5xl font-black text-[#111111] leading-none uppercase tracking-tight italic cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
+              className="text-2xl md:text-5xl font-black text-[#111111] leading-none uppercase tracking-tight italic cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
             >
               CRAFTED FOR CRUNCH.
             </motion.h2>

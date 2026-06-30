@@ -178,7 +178,7 @@ const FeaturedMenuSection = ({ shop }) => {
     <section
       id="featured-menu"
       ref={sectionRef}
-      className="relative py-24 bg-[#0d0d0d] overflow-hidden border-b border-neutral-900"
+      className="relative py-12 sm:py-24 bg-[#0d0d0d] overflow-hidden border-b border-neutral-900"
     >
       {/* Background glows */}
       <div className="absolute inset-0 pointer-events-none">
@@ -211,7 +211,7 @@ const FeaturedMenuSection = ({ shop }) => {
           </motion.span>
 
           {/* Heading — each word clips up individually */}
-          <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tight leading-none mb-5 flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <h2 className="text-3xl md:text-6xl font-black uppercase tracking-tight leading-none mb-5 flex flex-wrap justify-center gap-x-4 gap-y-1">
             {/* FEATURED */}
             <span className="overflow-hidden inline-block">
               <motion.span
@@ -303,7 +303,7 @@ const FeaturedMenuSection = ({ shop }) => {
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.8 }}
-              className="mt-10 text-center"
+              className="mt-10 text-center hidden sm:block"
             >
               <span className="text-gray-600 text-xs font-semibold uppercase tracking-widest">
                 {items.length} Featured Item{items.length !== 1 ? 's' : ''} Available

@@ -39,7 +39,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
   };
 
   return (
-    <section id="bestsellers" className="relative py-20 bg-white overflow-hidden">
+    <section id="bestsellers" className="relative py-10 sm:py-20 bg-white overflow-hidden">
       
       {/* Delicious Background Watermark Text */}
       <div className="absolute right-0 top-1/4 translate-x-1/4 select-none pointer-events-none opacity-5 font-black text-[120px] md:text-[200px] text-gray-900 uppercase tracking-widest italic">
@@ -55,7 +55,7 @@ const BestSellerSection = ({ menuItems, slug }) => {
             <span className="italic uppercase tracking-widest font-black">Our Bestsellers</span>
             <span>←</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-[#111111] tracking-tight uppercase">
+          <h2 className="text-3xl md:text-5xl font-black text-[#111111] tracking-tight uppercase">
             PURE <span className="text-[#D90404]">FRIED.</span> PURE LOVE.
           </h2>
         </ScrollReveal>

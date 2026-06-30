@@ -162,28 +162,6 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Inventory Overview */}
-      <div className="space-y-3">
-        <h2 className="text-xl font-extrabold text-gray-900 leading-none">Inventory Status</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full">
-          {isInitialLoading ? (
-            <>
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-            </>
-          ) : (
-            <>
-              <StatCard title="Total Products" value={displayData.totalProducts} icon={UtensilsCrossed} color="bg-blue-500" />
-              <StatCard title="Total Stock Units" value={displayData.totalStockUnits ?? 0} icon={Package} color="bg-indigo-500" />
-              <StatCard title="Low Stock Items" value={displayData.lowStockItems ?? 0} icon={Clock} color="bg-orange-500" />
-              <StatCard title="Out of Stock Items" value={displayData.outOfStockItems ?? 0} icon={XCircle} color="bg-red-500" />
-            </>
-          )}
-        </div>
-      </div>
-
       {/* Quick Insights Row */}
       {!isInitialLoading && (
         <div className="bg-white rounded-[16px] p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 w-full overflow-hidden">

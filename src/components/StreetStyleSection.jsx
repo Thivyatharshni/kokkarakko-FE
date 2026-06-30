@@ -123,7 +123,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
       ref={sectionRef} 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative py-24 bg-white overflow-hidden z-10 border-b border-gray-100"
+      className="relative py-12 sm:py-24 bg-white overflow-hidden z-10 border-b border-gray-100"
     >
       {/* Urban skyline background */}
       <UrbanBackground />
@@ -150,7 +150,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               variants={headingLineNormalVariants(0)}
               whileHover={{ x: 5, color: '#000000' }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              className="text-5xl md:text-6xl font-black text-[#111111] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
+              className="text-3xl md:text-6xl font-black text-[#111111] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
             >
               BOLD FLAVOUR.
             </motion.h2>
@@ -158,7 +158,7 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
               variants={headingLineEmphasisVariants(1)}
               whileHover={{ x: 5, color: '#ff1a1a' }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              className="text-5xl md:text-6xl font-black text-[#D90404] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
+              className="text-3xl md:text-6xl font-black text-[#D90404] leading-none uppercase tracking-tight cursor-pointer origin-left transition-[letter-spacing] duration-300 hover:tracking-wide"
             >
               STREET CRUNCH.
             </motion.h2>

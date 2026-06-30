@@ -187,7 +187,7 @@ const QROrderingSection = ({ slug, shop }) => {
   ];
 
   return (
-    <section id="qr-section" className="relative py-20 bg-gradient-to-b from-[#181818] via-[#111111] to-[#0b0b0b] overflow-hidden text-white">
+    <section id="qr-section" className="relative py-10 sm:py-20 bg-gradient-to-b from-[#181818] via-[#111111] to-[#0b0b0b] overflow-hidden text-white">
       
       {/* Street Light Background Glow */}
       <div className="absolute top-1/2 left-1/3 -translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-yellow-500/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
@@ -206,7 +206,7 @@ const QROrderingSection = ({ slug, shop }) => {
             
             {/* Header */}
             <div className="space-y-3">
-              <h2 className="text-5xl md:text-6xl font-black tracking-tight uppercase leading-none flex flex-wrap justify-center lg:justify-start gap-x-4">
+              <h2 className="text-xl sm:text-3xl md:text-6xl font-black tracking-tight uppercase leading-none flex flex-wrap justify-center lg:justify-start gap-x-2 sm:gap-x-4">
                 <motion.span variants={scanVariants} className="inline-block">SCAN.</motion.span>{' '}
                 <motion.span variants={orderVariants} className="inline-block">ORDER.</motion.span>{' '}
                 <motion.span variants={enjoyVariants} className="inline-block">ENJOY.</motion.span>
@@ -259,7 +259,7 @@ const QROrderingSection = ({ slug, shop }) => {
                   target="_blank" 
                   rel="noreferrer" 
                   whileTap={{ scale: 0.98 }}
-                  className="block text-[#D90404] hover:underline font-bold text-sm truncate"
+                  className="block text-[#D90404] hover:underline font-bold text-xs sm:text-sm break-all whitespace-normal"
                 >
                   {fullShopUrl}
                 </motion.a>
@@ -269,7 +269,7 @@ const QROrderingSection = ({ slug, shop }) => {
 
             {/* Step-by-Step Flow */}
             <div className="pt-6 border-t border-white/5">
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center lg:justify-start w-fit mx-auto lg:mx-0 gap-4 sm:gap-6">
                 {steps.map((step, idx) => (
                   <React.Fragment key={idx}>
                     <motion.div 

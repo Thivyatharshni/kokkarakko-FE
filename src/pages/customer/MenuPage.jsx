@@ -320,7 +320,10 @@ const MenuPage = () => {
           ) : (
             <>
               <motion.button 
-                onClick={() => setActiveCategory('ALL')}
+                onClick={() => {
+                  setActiveCategory('ALL');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 whileTap={{ scale: 0.95 }}
                 className={`px-6 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap transition-colors border ${
                   activeCategory === 'ALL' 
@@ -340,7 +343,10 @@ const MenuPage = () => {
                 return (
                   <motion.button 
                     key={cat}
-                    onClick={() => setActiveCategory(cat)}
+                    onClick={() => {
+                      setActiveCategory(cat);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     whileTap={{ scale: 0.95 }}
                     className={`px-5 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap flex items-center gap-2 transition-colors border ${
                       activeCategory === cat 
@@ -392,10 +398,10 @@ const MenuPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex flex-col rounded-2xl overflow-hidden bg-[#141414] border border-[#222] hover:border-[#333] hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-black/50 group cursor-pointer h-full"
+                className="flex flex-col rounded-2xl overflow-hidden bg-[#141414] border border-[#222] hover:border-[#333] hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-black/50 group cursor-pointer h-full w-full max-w-[340px] sm:max-w-none mx-auto"
               >
                 {/* Product Image at Top */}
-                <div className="relative aspect-[4/3] overflow-hidden bg-[#1A1A1A] shrink-0">
+                <div className="relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden bg-[#1A1A1A] shrink-0">
                   {imageUrl ? (
                     <img
                       src={imageUrl}
@@ -419,7 +425,7 @@ const MenuPage = () => {
                 </div>
 
                 {/* Product Details below the image */}
-                <div className="flex flex-col flex-grow p-3 gap-2 justify-between bg-[#141414]">
+                <div className="flex flex-col flex-grow p-2.5 sm:p-3 gap-1.5 sm:gap-2 justify-between bg-[#141414]">
                   {/* Name */}
                   <div>
                     <h3 className="text-white font-black text-sm md:text-base leading-tight tracking-tight group-hover:text-[#E50914] transition-colors line-clamp-1">
@@ -436,7 +442,7 @@ const MenuPage = () => {
                       </span>
                       
                       {/* Stock Status text */}
-                      <span className={`text-[8px] md:text-[9px] font-bold tracking-wider uppercase mt-1 ${
+                      <span className={`text-[8px] md:text-[9px] font-bold tracking-wider uppercase mt-0.5 sm:mt-1 ${
                         item.quantity === undefined || item.quantity > 0 
                           ? 'text-green-500' 
                           : 'text-red-500'
@@ -455,7 +461,7 @@ const MenuPage = () => {
                         }
                       }}
                       whileTap={item.quantity === 0 ? {} : { scale: 0.93 }}
-                      className={`font-black text-[10px] md:text-xs uppercase px-3.5 py-2 rounded-lg flex items-center transition-all ${
+                      className={`font-black text-[9px] sm:text-xs uppercase px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg flex items-center transition-all ${
                         item.quantity === undefined || item.quantity > 0
                           ? 'bg-[#E50914] text-white hover:bg-[#CC0812] shadow-md shadow-red-500/10'
                           : 'bg-[#222] text-gray-500 cursor-not-allowed border border-white/5'
