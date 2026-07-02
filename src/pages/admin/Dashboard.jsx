@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getDashboardAnalytics } from '../../services/analyticsService';
 import { getLiveOrders } from '../../services/orderService';
-import { DEMO_MODE, DEMO_DASHBOARD_DATA, DEMO_ORDERS_DATA } from '../../utils/demoData';
 import { UtensilsCrossed, MenuIcon, DollarSign, ShoppingBag, Package, Clock, TrendingUp, XCircle } from 'lucide-react';
 import { 
   LineChart, Line, BarChart, Bar,
@@ -90,9 +89,7 @@ const Dashboard = () => {
       // Parallelize independent analytics and orders API calls
       const [res, ordersRes] = await Promise.all([
         getDashboardAnalytics(shopId),
-        DEMO_MODE 
-          ? Promise.resolve({ success: true, data: DEMO_ORDERS_DATA.slice(0, 5) }) 
-          : getLiveOrders(shopId)
+        getLiveOrders(shopId)
       ]);
 
       if (res.success) {
@@ -130,10 +127,10 @@ const Dashboard = () => {
   if (shopLoading) return <LoadingState message="Loading dashboard..." />;
   if (shopError) return <ErrorState message={shopError} />;
   
-  const displayData = DEMO_MODE ? DEMO_DASHBOARD_DATA : data;
+  const displayData = data;
   const isInitialLoading = loading && !displayData;
 
-  if (error && !DEMO_MODE && !displayData) {
+  if (error && !displayData) {
     return <ErrorState message={error} onRetry={() => fetchDashboardData(true)} />;
   }
 

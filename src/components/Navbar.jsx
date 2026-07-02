@@ -170,13 +170,6 @@ const Navbar = ({ shop }) => {
             >
               Menu
             </button>
-
-            <button 
-              onClick={() => navigate('/owner/login')}
-              className={`nav-link relative py-2 ${textColorClass} hover:text-[#D90404] transition-colors duration-500 ${activeTab === 'admin' ? 'active' : ''}`}
-            >
-              Admin
-            </button>
           </div>
         </div>
 
@@ -231,20 +224,9 @@ const Navbar = ({ shop }) => {
                 setIsMobileMenuOpen(false);
               }}
               whileTap={{ scale: 0.98, x: 4 }}
-              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors w-full"
-            >
-              Menu
-            </motion.button>
-
-            <motion.button 
-              onClick={() => {
-                navigate('/owner/login');
-                setIsMobileMenuOpen(false);
-              }}
-              whileTap={{ scale: 0.98, x: 4 }}
               className="text-left py-2 hover:text-[#D90404] transition-colors w-full"
             >
-              Admin
+              Menu
             </motion.button>
           </motion.div>
         )}

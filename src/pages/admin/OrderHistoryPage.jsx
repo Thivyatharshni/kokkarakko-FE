@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getHistoryOrders } from '../../services/orderService';
-import { DEMO_MODE, DEMO_ORDERS_DATA } from '../../utils/demoData';
 import { Search, Calendar, Package, IndianRupee, CheckCircle, Hash, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import LoadingState from '../../components/common/LoadingState';
@@ -101,7 +100,7 @@ const OrderHistoryPage = () => {
     fetchHistory({ fromDate: fDate, toDate: tDate });
   };
 
-  const displayOrders = DEMO_MODE ? DEMO_ORDERS_DATA.filter(o => o.status === 'Completed') : orders;
+  const displayOrders = orders;
 
   const filteredOrders = useMemo(() => {
     let result = displayOrders;
@@ -116,28 +115,14 @@ const OrderHistoryPage = () => {
       );
     }
     
-    if (DEMO_MODE || orders.length === 0) {
-      if (fromDate || toDate) {
-        result = result.filter(o => {
-          const orderDate = new Date(o.createdAt);
-          if (fromDate && orderDate < new Date(fromDate)) return false;
-          if (toDate) {
-            const endTo = new Date(toDate);
-            endTo.setHours(23, 59, 59, 999);
-            if (orderDate > endTo) return false;
-          }
-          return true;
-        });
-      }
-    }
-
     return result;
-  }, [displayOrders, searchTerm, fromDate, toDate, orders.length]);
+  }, [displayOrders, searchTerm]);
 
   const stats = useMemo(() => {
+    const completedOrders = filteredOrders.filter(o => o.status !== 'Cancelled');
     const totalOrders = filteredOrders.length;
-    const revenue = filteredOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
-    const avgValue = totalOrders > 0 ? Math.round(revenue / totalOrders) : 0;
+    const revenue = completedOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const avgValue = completedOrders.length > 0 ? Math.round(revenue / completedOrders.length) : 0;
 
     return { totalOrders, revenue, avgValue };
   }, [filteredOrders]);
@@ -154,7 +139,7 @@ const OrderHistoryPage = () => {
 
   if (shopLoading || loading) return <LoadingState message="Loading history..." />;
   if (shopError) return <ErrorState message={shopError} />;
-  if (error && !DEMO_MODE) return <ErrorState message={error} onRetry={fetchHistory} />;
+  if (error) return <ErrorState message={error} onRetry={fetchHistory} />;
 
   return (
     <div className="space-y-5 pb-10 w-full max-w-full overflow-hidden">
@@ -280,13 +265,14 @@ const OrderHistoryPage = () => {
                     <th className="p-4 font-semibold">Products</th>
                     <th className="p-4 font-semibold text-center">Quantity</th>
                     <th className="p-4 font-semibold">Total Amount</th>
+                    <th className="p-4 font-semibold">Status</th>
                     <th className="p-4 font-semibold">Completed Time</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {filteredOrders.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="p-10 text-center text-gray-500">No historical orders found.</td>
+                      <td colSpan="6" className="p-10 text-center text-gray-500">No orders found.</td>
                     </tr>
                   ) : (
                     filteredOrders.map(order => (
@@ -308,6 +294,13 @@ const OrderHistoryPage = () => {
                         </td>
                         <td className="p-4 font-black text-green-600">₹{order.totalAmount}</td>
                         <td className="p-4">
+                          <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-bold ${
+                            order.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                          }`}>
+                            {order.status || 'Completed'}
+                          </span>
+                        </td>
+                        <td className="p-4">
                           {order.createdAt ? (
                             <>
                               <p className="font-semibold text-gray-900">{formatCompletedTime(order.createdAt).date}</p>
@@ -327,12 +320,19 @@ const OrderHistoryPage = () => {
             {/* Mobile Cards View (< md) */}
             <div className="md:hidden divide-y divide-gray-100 p-[18px] space-y-3">
               {filteredOrders.length === 0 ? (
-                <p className="p-4 text-center text-gray-500 text-sm">No historical orders found.</p>
+                <p className="p-4 text-center text-gray-500 text-sm">No orders found.</p>
               ) : (
                 filteredOrders.map(order => (
                   <div key={order._id} className="py-3.5 first:pt-0 last:pb-0 flex flex-col gap-2.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                        <span className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                          order.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                        }`}>
+                          {order.status || 'Completed'}
+                        </span>
+                      </div>
                       <span className="font-black text-green-600 text-base">₹{order.totalAmount}</span>
                     </div>
 

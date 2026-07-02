@@ -15,15 +15,13 @@ export const getDashboardStats = async (slug) => {
       totalCategories = categories.size;
     }
 
-    // Mock API response for QR Scans
-    // In a real scenario, this would come from a dedicated backend endpoint
     return {
       success: true,
       data: {
         totalProducts,
         totalCategories,
-        dailyScans: 145, // Mock data
-        weeklyScans: 840, // Mock data
+        dailyScans: 0,
+        weeklyScans: 0,
       }
     };
   } catch (error) {

@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getMenuBySlug, createMenuItem, updateMenuItem, deleteMenuItem } from '../../services/menuService';
 import { getCategoriesBySlug } from '../../services/categoryService';
-import { DEMO_MODE, DEMO_MENU_DATA, DEMO_CATEGORIES_DATA } from '../../utils/demoData';
 import toast from 'react-hot-toast';
 import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, Search, Package, CheckCircle, XCircle, Star, X } from 'lucide-react';
 import { getFullImageUrl } from '../../config/constants';
@@ -152,11 +151,6 @@ const MenuPage = () => {
 
   const confirmDelete = async () => {
     if (!deleteId) return;
-    if (deleteId.startsWith('demo-')) {
-      toast.error("Cannot delete demo data. Please add real products.");
-      setDeleteId(null);
-      return;
-    }
     try {
       const res = await deleteMenuItem(deleteId);
       if (res.success) {
@@ -171,10 +165,10 @@ const MenuPage = () => {
 
   if (shopLoading || loading) return <LoadingState message="Loading menu items..." />;
   if (shopError) return <ErrorState message={shopError} />;
-  if (error && !DEMO_MODE) return <ErrorState message={error} onRetry={fetchData} />;
+  if (error) return <ErrorState message={error} onRetry={fetchData} />;
 
-  const displayMenu = DEMO_MODE ? DEMO_MENU_DATA.products : menu;
-  const displayCategories = DEMO_MODE ? DEMO_CATEGORIES_DATA : categories;
+  const displayMenu = menu;
+  const displayCategories = categories;
 
   const displayFilteredMenu = displayMenu.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -187,7 +181,7 @@ const MenuPage = () => {
     return matchesSearch && matchesCategory && matchesStatus && matchesMinPrice && matchesMaxPrice;
   });
 
-  const displayStats = DEMO_MODE ? DEMO_MENU_DATA.stats : {
+  const displayStats = {
     total: menu.length,
     available: menu.filter(m => m.status === 'Available').length,
     outOfStock: menu.filter(m => m.status === 'Out Of Stock').length,

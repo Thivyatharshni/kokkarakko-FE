@@ -14,6 +14,8 @@ import { trackQRScan } from '../../services/qrService';
 import { trackProductViewBatch } from '../../services/analyticsService';
 import { getFullImageUrl, API_BASE_URL } from '../../config/constants';
 import { clientCache } from '../../utils/cache';
+import Footer from '../../components/Footer';
+import ScrollReveal from '../../components/ScrollReveal';
 
 // Import banner images
 import bucketImg from '../../assets/images/bucket_chicken.png';
@@ -48,6 +50,7 @@ const MenuPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [hasTracked, setHasTracked] = useState(false);
   const [hasTrackedViews, setHasTrackedViews] = useState(false);
+  const [shop, setShop] = useState(null);
   
   const { addToCart, getCartCount } = useCart();
   const cartCount = getCartCount();
@@ -61,6 +64,31 @@ const MenuPage = () => {
     }, 4000);
     return () => clearInterval(timer);
   }, [slides.length]);
+
+  // Fetch Shop Details for Footer
+  useEffect(() => {
+    const fetchShopDetails = async () => {
+      const shopSlug = slug || 'kokkarakko-fried-chicken';
+      const cacheKey = `shop_${shopSlug}`;
+      const cached = clientCache.get(cacheKey);
+
+      if (cached) {
+        setShop(cached);
+      }
+
+      try {
+        const res = await getShopBySlug(shopSlug);
+        if (res.success && res.data) {
+          setShop(res.data);
+          clientCache.set(cacheKey, res.data);
+        }
+      } catch (err) {
+        console.error('Menu page shop fetch error:', err);
+      }
+    };
+
+    fetchShopDetails();
+  }, [slug]);
 
   // Fetch Menu & Categories with SWR Caching
   useEffect(() => {
@@ -208,7 +236,7 @@ const MenuPage = () => {
   const isInitialLoading = loading && menuItems.length === 0;
 
   return (
-    <div className="bg-[#0A0A0A] min-h-screen font-sans text-white pb-20">
+    <div className="bg-[#0A0A0A] min-h-screen font-sans text-white">
       {/* Header */}
       <header className="flex flex-col sm:flex-row gap-4 justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full">
         <div className="flex justify-between items-center w-full sm:w-auto gap-4">
@@ -385,7 +413,7 @@ const MenuPage = () => {
           </>
         ) : filteredItems.length === 0 ? (
           <div className="col-span-full text-center py-20 text-gray-500 font-bold uppercase tracking-wider text-sm">
-            No items found.
+            No products available.
           </div>
         ) : (
           filteredItems.map((item) => {
@@ -447,7 +475,7 @@ const MenuPage = () => {
                           ? 'text-green-500' 
                           : 'text-red-500'
                       }`}>
-                        {item.quantity === undefined || item.quantity > 0 ? 'In Stock' : 'Out of Stock'}
+                        {item.quantity === undefined || item.quantity > 0 ? 'AVAILABLE' : 'Out of Stock'}
                       </span>
                     </div>
 
@@ -480,6 +508,25 @@ const MenuPage = () => {
           })
         )}
       </div>
+
+      {/* Cancel Order Helper Section */}
+      <div className="max-w-[1200px] mx-auto px-6 pb-12 pt-6 text-center border-t border-white/5 mt-4">
+        <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-3">
+          Need to cancel an order?
+        </p>
+        <motion.button
+          onClick={() => navigate('/cancel-order')}
+          whileTap={{ scale: 0.95 }}
+          className="px-6 py-2.5 rounded-full border border-gray-600 hover:border-gray-400 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition-all duration-200"
+        >
+          Cancel Existing Order
+        </motion.button>
+      </div>
+
+      {/* Footer */}
+      <ScrollReveal type="section">
+        <Footer shop={shop} />
+      </ScrollReveal>
     </div>
   );
 };

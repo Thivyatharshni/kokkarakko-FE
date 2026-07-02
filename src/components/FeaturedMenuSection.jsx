@@ -41,7 +41,7 @@ const FeaturedCard = ({ item, index, slug }) => {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     addToCart({ ...item, category: item.category?.name || item.category });
-    navigate(`/cart/${slug}`);
+    toast.success(`${item.name} added to cart!`, { icon: '🍗' });
   };
 
   const imageUrl = item.image ? getFullImageUrl(item.image) : null;

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getShopAnalytics } from '../../services/analyticsService';
 import { getQRAnalytics } from '../../services/qrService';
-import { DEMO_MODE, DEMO_ANALYTICS_DATA, DEMO_QR_ANALYTICS_DATA } from '../../utils/demoData';
 import { ScanLine, Clock, Activity, Target } from 'lucide-react';
 import { 
   BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell, LineChart, Line,
@@ -139,11 +138,11 @@ const Analytics = () => {
   if (shopLoading) return <LoadingState message="Loading analytics data..." />;
   if (shopError) return <ErrorState message={shopError} />;
 
-  const displayData = DEMO_MODE ? DEMO_ANALYTICS_DATA : data;
-  const displayQrData = DEMO_MODE ? DEMO_QR_ANALYTICS_DATA : qrData;
+  const displayData = data;
+  const displayQrData = qrData;
   const isInitialLoading = loading && !displayData;
 
-  if (error && !DEMO_MODE && !displayData) {
+  if (error && !displayData) {
     return <ErrorState message={error} onRetry={() => fetchAnalytics(true)} />;
   }
 

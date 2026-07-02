@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import GlobalStickyCart from '../components/GlobalStickyCart';
 
 const MainLayout = () => {
   return (
@@ -7,6 +8,7 @@ const MainLayout = () => {
       <main className="flex-grow">
         <Outlet />
       </main>
+      <GlobalStickyCart />
       {/* Footer will go here */}
     </div>
   );

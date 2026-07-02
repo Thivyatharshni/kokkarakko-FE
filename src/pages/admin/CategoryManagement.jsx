@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getCategoriesBySlug, createCategory, updateCategory, deleteCategory } from '../../services/categoryService';
-import { DEMO_MODE, DEMO_CATEGORIES_DATA } from '../../utils/demoData';
 import toast from 'react-hot-toast';
 import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, X } from 'lucide-react';
 import { getFullImageUrl } from '../../config/constants';
@@ -127,9 +126,9 @@ const CategoryManagement = () => {
 
   if (shopLoading || loading) return <LoadingState message="Loading categories..." />;
   if (shopError) return <ErrorState message={shopError} />;
-  if (error && !DEMO_MODE) return <ErrorState message={error} onRetry={fetchCategories} />;
+  if (error) return <ErrorState message={error} onRetry={fetchCategories} />;
 
-  const displayCategories = DEMO_MODE ? DEMO_CATEGORIES_DATA : categories;
+  const displayCategories = categories;
 
   return (
     <div className="space-y-5 w-full max-w-full overflow-hidden">

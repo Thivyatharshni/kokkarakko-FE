@@ -1,10 +1,19 @@
 import React from 'react';
 import { Facebook, Instagram, PhoneCall } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCart } from '../context/CartContext';
 
 const Footer = ({ shop }) => {
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount();
+  const hasItems = cartCount > 0;
+
   return (
-    <footer className="bg-[#D90404] text-white py-12 border-t border-white/10">
+    <footer className={`bg-[#D90404] text-white pt-12 border-t border-white/10 transition-all duration-300 ${
+      hasItems 
+        ? 'pb-[calc(7.5rem+env(safe-area-inset-bottom))] sm:pb-28' 
+        : 'pb-12'
+    }`}>
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6">
         
         {/* Social Icons Row */}
@@ -20,9 +29,9 @@ const Footer = ({ shop }) => {
             <Facebook size={22} fill="currentColor" stroke="none" />
           </motion.a>
           <motion.a
-            href="https://instagram.com"
+            href="https://www.instagram.com/__kokkarakoo_crispy_chicken__?utm_source=qr"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             whileTap={{ scale: 0.9 }}
             className="hover:scale-125 hover:text-red-100 transition-all duration-200"
             aria-label="Instagram"

@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getQRAnalytics } from '../../services/qrService';
-import { DEMO_MODE, DEMO_QR_ANALYTICS_DATA } from '../../utils/demoData';
 import QRCode from 'react-qr-code';
 import toast from 'react-hot-toast';
 import { Download, Copy, Link as LinkIcon, Clock } from 'lucide-react';
@@ -39,7 +38,13 @@ const QRPage = () => {
   if (shopLoading || loadingAnalytics) return <LoadingState message="Loading QR Dashboard..." />;
   if (shopError) return <ErrorState message={shopError} />;
   
-  const displayAnalytics = (DEMO_MODE || !analytics) ? DEMO_QR_ANALYTICS_DATA : analytics;
+  const displayAnalytics = analytics || {
+    totalScans: 0,
+    dailyScans: 0,
+    weeklyScans: 0,
+    lastScannedAt: null,
+    scansPerDay: []
+  };
 
   if (!shopSlug || !displayAnalytics) return null;
 

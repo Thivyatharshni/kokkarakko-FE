@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getLiveOrders, updateOrderStatus } from '../../services/orderService';
-import { DEMO_MODE, DEMO_ORDERS_DATA } from '../../utils/demoData';
 import { Link } from 'react-router-dom';
 import socket, { connectSocket, disconnectSocket } from '../../sockets/socket';
 import toast from 'react-hot-toast';
@@ -15,6 +14,7 @@ const STATUS_COLORS = {
   Preparing: 'bg-blue-100 text-blue-700',
   Ready: 'bg-purple-100 text-purple-700',
   Completed: 'bg-green-100 text-green-700',
+  Cancelled: 'bg-red-100 text-red-700',
 };
 
 const SkeletonOrdersTable = () => (
@@ -103,21 +103,31 @@ const OrdersPage = () => {
           return updated;
         });
       });
+
+      socket.on('order-status-updated', (updatedOrder) => {
+        setOrders(prev => {
+          if (updatedOrder.status === 'Cancelled' || updatedOrder.status === 'Completed') {
+            const updated = prev.filter(o => o._id !== updatedOrder._id);
+            clientCache.set(`live_orders_${shopId}`, updated);
+            return updated;
+          }
+          const updated = prev.map(o => o._id === updatedOrder._id ? updatedOrder : o);
+          clientCache.set(`live_orders_${shopId}`, updated);
+          return updated;
+        });
+      });
     } else if (!shopLoading && !shopId) {
       setLoading(false);
     }
 
     return () => {
       socket.off('new-order');
+      socket.off('order-status-updated');
       disconnectSocket();
     };
   }, [shopId, shopLoading]);
 
   const handleStatusChange = async (orderId, newStatus) => {
-    if (orderId.startsWith('demo-')) {
-      toast.error("Cannot modify demo orders. Please add real orders.");
-      return;
-    }
     try {
       const res = await updateOrderStatus(orderId, newStatus);
       if (res.success) {
@@ -136,10 +146,10 @@ const OrdersPage = () => {
   if (shopLoading) return <LoadingState message="Loading orders..." />;
   if (shopError) return <ErrorState message={shopError} />;
 
-  const displayOrders = DEMO_MODE ? DEMO_ORDERS_DATA : orders;
+  const displayOrders = orders;
   const isInitialLoading = loading && displayOrders.length === 0;
 
-  if (error && !DEMO_MODE && !displayOrders.length) {
+  if (error && !displayOrders.length) {
     return <ErrorState message={error} onRetry={() => fetchOrders(true)} />;
   }
 
@@ -187,7 +197,7 @@ const OrdersPage = () => {
               <tbody className="divide-y divide-gray-100">
                 {displayOrders.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="p-10 text-center text-gray-500">No orders yet. Waiting for customers to scan!</td>
+                    <td colSpan="6" className="p-10 text-center text-gray-500">No live orders</td>
                   </tr>
                 ) : (
                   displayOrders.map(order => (
@@ -225,6 +235,7 @@ const OrdersPage = () => {
                           <option value="Preparing">Preparing</option>
                           <option value="Ready">Ready</option>
                           <option value="Completed">Completed</option>
+                          <option value="Cancelled">Cancelled</option>
                         </select>
                       </td>
                     </tr>
@@ -237,7 +248,7 @@ const OrdersPage = () => {
           {/* Mobile Cards View (< lg) */}
           <div className="lg:hidden divide-y divide-gray-100 p-[18px] space-y-3">
             {displayOrders.length === 0 ? (
-              <p className="p-4 text-center text-gray-500 text-sm">No orders yet. Waiting for customers to scan!</p>
+              <p className="p-4 text-center text-gray-500 text-sm">No live orders</p>
             ) : (
               displayOrders.map(order => (
                 <div key={order._id} className="py-3.5 first:pt-0 last:pb-0 flex flex-col gap-2.5">
@@ -282,6 +293,7 @@ const OrdersPage = () => {
                       <option value="Preparing">Preparing</option>
                       <option value="Ready">Ready</option>
                       <option value="Completed">Completed</option>
+                      <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
                 </div>
