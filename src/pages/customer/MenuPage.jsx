@@ -40,6 +40,51 @@ const SkeletonMenuCard = () => (
   </div>
 );
 
+const MenuCardDescription = ({ description }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (!description) return null;
+
+  const previewText = description.replace(/\r?\n/g, ', ');
+
+  return (
+    <div 
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsExpanded(!isExpanded);
+      }}
+      className="mt-1 mb-1 text-left cursor-pointer"
+    >
+      {!isExpanded && (
+        <p className="text-gray-400 text-[11px] font-medium line-clamp-1 mb-1">
+          {previewText}
+        </p>
+      )}
+      
+      <motion.div
+        initial={false}
+        animate={{ 
+          opacity: isExpanded ? 1 : 0, 
+          height: isExpanded ? 'auto' : 0,
+          marginTop: isExpanded ? 4 : 0,
+          marginBottom: isExpanded ? 4 : 0
+        }}
+        transition={{ duration: 0.25, ease: 'easeInOut' }}
+        className="text-gray-400 text-[11px] font-medium leading-relaxed whitespace-pre-line border-l-2 border-[#E50914]/40 pl-2 overflow-hidden"
+      >
+        {description}
+      </motion.div>
+      
+      <button className="text-[#E50914] text-[9px] font-black tracking-wider uppercase flex items-center gap-0.5 hover:text-white transition-colors mt-1">
+        <span>{isExpanded ? 'Hide Details' : 'Show Details'}</span>
+        <span className={`inline-block transition-transform duration-200 text-[8px] ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
+          ▼
+        </span>
+      </button>
+    </div>
+  );
+};
+
 const MenuPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -461,6 +506,11 @@ const MenuPage = () => {
                       {item.name}
                     </h3>
                   </div>
+
+                  {/* Description (if exists) */}
+                  {item.description && (
+                    <MenuCardDescription description={item.description} />
+                  )}
 
                   {/* Price & Add Button Row */}
                   <div className="flex items-center justify-between mt-auto">

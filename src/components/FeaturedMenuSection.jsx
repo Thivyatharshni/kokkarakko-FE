@@ -7,6 +7,52 @@ import { getFullImageUrl } from '../config/constants';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 
+// ─── Description Component ───────────────────────────────────────────────────
+const MenuCardDescription = ({ description }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (!description) return null;
+
+  const previewText = description.replace(/\r?\n/g, ', ');
+
+  return (
+    <div 
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsExpanded(!isExpanded);
+      }}
+      className="mt-1 mb-1 text-left cursor-pointer flex-grow"
+    >
+      {!isExpanded && (
+        <p className="text-gray-400 text-[11px] font-medium line-clamp-1 mb-1">
+          {previewText}
+        </p>
+      )}
+      
+      <motion.div
+        initial={false}
+        animate={{ 
+          opacity: isExpanded ? 1 : 0, 
+          height: isExpanded ? 'auto' : 0,
+          marginTop: isExpanded ? 4 : 0,
+          marginBottom: isExpanded ? 4 : 0
+        }}
+        transition={{ duration: 0.25, ease: 'easeInOut' }}
+        className="text-gray-400 text-[11px] font-medium leading-relaxed whitespace-pre-line border-l-2 border-[#E50914]/40 pl-2 overflow-hidden"
+      >
+        {description}
+      </motion.div>
+      
+      <button className="text-[#E50914] text-[9px] font-black tracking-wider uppercase flex items-center gap-0.5 hover:text-white transition-colors mt-1">
+        <span>{isExpanded ? 'Hide Details' : 'Show Details'}</span>
+        <span className={`inline-block transition-transform duration-200 text-[8px] ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
+          ▼
+        </span>
+      </button>
+    </div>
+  );
+};
+
 // ─── Card 3D Tilt ─────────────────────────────────────────────────────────────
 const FeaturedCard = ({ item, index, slug }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -111,9 +157,7 @@ const FeaturedCard = ({ item, index, slug }) => {
           </h3>
 
           {item.description && (
-            <p className="text-gray-400 text-xs font-medium leading-relaxed line-clamp-2 flex-grow">
-              {item.description}
-            </p>
+            <MenuCardDescription description={item.description} />
           )}
 
           <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-[#252525]">
