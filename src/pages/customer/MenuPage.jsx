@@ -24,7 +24,7 @@ import burgerImg from '../../assets/images/burger.png';
 import popcornImg from '../../assets/images/popcorn_chicken.png';
 
 const SkeletonCategoryButton = () => (
-  <div className="h-10 bg-[#1A1A1A] border border-[#222] animate-pulse rounded-xl w-24"></div>
+  <div className="h-10 bg-[#1A1A1A] border border-[#222] animate-pulse rounded-xl w-24 shrink-0"></div>
 );
 
 const SkeletonMenuCard = () => (
@@ -256,6 +256,7 @@ const MenuPage = () => {
     trackAllViews();
   }, [menuItems, hasTracked, hasTrackedViews, slug]);
 
+
   const getCatName = (item) => {
     const raw = typeof item.category === 'object' ? item.category?.name : item.category;
     return (raw || 'Uncategorized').toUpperCase();
@@ -383,7 +384,7 @@ const MenuPage = () => {
 
       {/* Categories & Filter */}
       <div className="px-6 max-w-[1200px] mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex gap-3 overflow-x-auto w-full md:w-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="category-scroll-container flex gap-3 overflow-x-auto w-full md:w-auto pb-2.5">
           {isInitialLoading ? (
             <>
               <SkeletonCategoryButton />
@@ -399,7 +400,7 @@ const MenuPage = () => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 whileTap={{ scale: 0.95 }}
-                className={`px-6 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap transition-colors border ${
+                className={`px-6 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap transition-colors border shrink-0 ${
                   activeCategory === 'ALL' 
                     ? 'bg-[#E50914] text-white border-[#E50914]' 
                     : 'bg-[#1A1A1A] text-gray-300 border-[#222] hover:bg-[#222]'
@@ -422,7 +423,7 @@ const MenuPage = () => {
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     whileTap={{ scale: 0.95 }}
-                    className={`px-5 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap flex items-center gap-2 transition-colors border ${
+                    className={`px-5 py-2.5 rounded-xl font-bold text-[13px] tracking-wider whitespace-nowrap flex items-center gap-2 transition-colors border shrink-0 ${
                       activeCategory === cat 
                         ? 'bg-[#E50914] text-white border-[#E50914]' 
                         : 'bg-[#1A1A1A] text-gray-300 border-[#222] hover:bg-[#222]'

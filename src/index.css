@@ -373,3 +373,28 @@
   .hero-seasoning-particle:nth-child(15) { left: 83%; width: 2px;   height: 2px;   background-color: #E7B45A; --particle-opacity: 0.30; --drift-x: 40px;  animation-delay: 18s;  animation-duration: 26s; }
   .hero-seasoning-particle:nth-child(16) { left: 91%; width: 1.2px; height: 1.2px; background-color: #D18F2A; --particle-opacity: 0.38; --drift-x: -10px; animation-delay: 10s;  animation-duration: 21s; }
 }
+
+/* Custom category scroll indicator for mobile view only */
+@media (max-width: 767px) {
+  .category-scroll-container::-webkit-scrollbar {
+    height: 3px !important;
+    display: block !important;
+  }
+  .category-scroll-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 9999px !important;
+  }
+  .category-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #E50914 !important;
+    border-radius: 9999px !important;
+  }
+}
+@media (min-width: 768px) {
+  .category-scroll-container {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  .category-scroll-container::-webkit-scrollbar {
+    display: none !important;
+  }
+}
