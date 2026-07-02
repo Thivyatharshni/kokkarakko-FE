@@ -22,19 +22,19 @@ const GlobalStickyCart = () => {
 
   const activeSlug = urlSlug || localStorage.getItem('customer_shop_slug') || 'kokkarakko-fried-chicken';
 
-  // Visibility criteria: Hide on Cart, Order Success, and Owner/Admin routes
-  const hidePaths = ['/cart/', '/order-success/', '/owner/'];
-  const shouldHide = hidePaths.some(path => pathname.includes(path));
-
-  if (shouldHide || cartCount === 0) {
-    return null;
-  }
+  // Visibility criteria: Show ONLY on Home (/), Menu (/menu/:slug), and Shop (/shop/:slug) routes.
+  // This robustly hides the sticky cart on Cart (/cart/:slug), Order Success (/order-success/:orderNumber),
+  // Cancel Order (/cancel-order), Login (/owner/login), and Owner Dashboard (/owner/*).
+  const isHome = pathname === '/';
+  const isMenu = pathname.startsWith('/menu/');
+  const isShop = pathname.startsWith('/shop/');
+  const shouldShow = (isHome || isMenu || isShop) && cartCount > 0;
 
   return (
     <AnimatePresence>
-      <div className="relative z-50">
-        {/* Desktop / Tablet Floating Cart Card */}
+      {shouldShow && (
         <motion.div
+          key="desktop-sticky-cart"
           initial={{ opacity: 0, y: 50, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.95 }}
@@ -59,9 +59,11 @@ const GlobalStickyCart = () => {
             <ArrowRight className="w-3.5 h-3.5" />
           </motion.button>
         </motion.div>
+      )}
 
-        {/* Mobile Sticky Bottom Bar */}
+      {shouldShow && (
         <motion.div
+          key="mobile-sticky-cart"
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 80 }}
@@ -87,7 +89,7 @@ const GlobalStickyCart = () => {
             <ArrowRight className="w-3.5 h-3.5" />
           </motion.button>
         </motion.div>
-      </div>
+      )}
     </AnimatePresence>
   );
 };

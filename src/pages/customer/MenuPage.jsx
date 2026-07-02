@@ -16,6 +16,7 @@ import { getFullImageUrl, API_BASE_URL } from '../../config/constants';
 import { clientCache } from '../../utils/cache';
 import Footer from '../../components/Footer';
 import ScrollReveal from '../../components/ScrollReveal';
+import toast from 'react-hot-toast';
 
 // Import banner images
 import bucketImg from '../../assets/images/bucket_chicken.png';
@@ -229,8 +230,8 @@ const MenuPage = () => {
   });
 
   const handleAddToCart = (item) => {
-    addToCart(item);
-    navigate(`/cart/${slug || 'kokkarakko-fried-chicken'}`);
+    addToCart({ ...item, category: item.category?.name || item.category });
+    toast.success(`${item.name} added to cart!`, { icon: '🍗' });
   };
 
   const isInitialLoading = loading && menuItems.length === 0;

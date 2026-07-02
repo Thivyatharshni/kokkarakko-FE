@@ -20,9 +20,13 @@ const OrderSuccess = () => {
         </div>
 
         <div className="bg-[#111111] text-white p-4 rounded-2xl">
-          <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">Order Number</p>
+          <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">Token Number</p>
           <p className="text-2xl font-black mt-1 text-[#D90404]">{orderNumber || 'KKR-1001'}</p>
         </div>
+
+        <p className="text-xs text-gray-500 font-semibold leading-relaxed max-w-xs mx-auto">
+          Please remember your token number. You will need to present it while collecting your order.
+        </p>
 
         <div className="pt-2">
           <Link
