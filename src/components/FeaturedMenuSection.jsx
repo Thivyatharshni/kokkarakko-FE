@@ -83,7 +83,7 @@ const FeaturedCard = ({ item, index, slug }) => {
         </div>
 
         {/* Image */}
-        <div className="relative h-40 overflow-hidden bg-[#1A1A1A] shrink-0">
+        <div className="relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden bg-[#1A1A1A] shrink-0">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -96,8 +96,6 @@ const FeaturedCard = ({ item, index, slug }) => {
               <span className="text-6xl select-none">🍗</span>
             </div>
           )}
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent opacity-70" />
         </div>
 
         {/* Content */}
@@ -273,7 +271,7 @@ const FeaturedMenuSection = ({ shop }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map(i => (
               <div key={i} className="bg-[#141414] border border-[#252525] rounded-2xl overflow-hidden animate-pulse">
-                <div className="h-52 bg-[#1e1e1e]" />
+                <div className="aspect-[16/10] sm:aspect-[4/3] bg-[#1e1e1e] shrink-0" />
                 <div className="p-5 space-y-3">
                   <div className="h-3 bg-[#1e1e1e] rounded w-1/3" />
                   <div className="h-5 bg-[#1e1e1e] rounded w-2/3" />
