@@ -573,19 +573,19 @@ const BurgerAssemblySection = () => {
         className="sticky top-0 left-0 w-full h-[100dvh] overflow-hidden block md:hidden bg-cover bg-center"
         style={{ backgroundImage: `url(${bgImage})` }}
       >
-        <div className="px-3.5 pb-4 pt-20 w-full h-full flex flex-col items-center justify-center gap-y-4 relative">
+        <div className="px-3.5 pb-3 pt-16 w-full h-full flex flex-col items-center justify-center gap-y-3 relative">
           
           <div className="space-y-0.5 text-center relative z-20">
-            <span className="text-[9px] font-black text-[#E50914] tracking-widest uppercase bg-red-950/40 border border-[#E50914]/20 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-black text-[#E50914] tracking-widest uppercase bg-red-950/40 border border-[#E50914]/20 px-2.5 py-0.5 rounded-full">
               ASSEMBLY STORY
             </span>
-            <h2 className="text-lg font-black text-white uppercase tracking-tight">
+            <h2 className="text-2xl font-black text-white uppercase tracking-tight">
               Crafting The Legend
             </h2>
           </div>
 
           {/* Mobile Visual Stack Container (No Background Card) */}
-          <div className="relative w-full h-[155px] flex items-end justify-center pb-2 mt-2">
+          <div className="relative w-full h-[220px] flex items-end justify-center pb-2 mt-2">
             <div 
               className="absolute inset-0 transition-opacity duration-500 pointer-events-none" 
               style={{
@@ -596,7 +596,7 @@ const BurgerAssemblySection = () => {
             
             {/* Assembly Stack for Mobile */}
             <div 
-              className="relative w-[130px] h-[170px] select-none pointer-events-none z-10 flex items-end justify-center"
+              className="relative w-[185px] h-[230px] select-none pointer-events-none z-10 flex items-end justify-center"
             >
               {/* Ground Shadow */}
               <motion.div
@@ -609,7 +609,7 @@ const BurgerAssemblySection = () => {
 
               {layersConfig.map((layer, index) => {
                 const anim = layerTransforms[index];
-                const W_mob = 130;
+                const W_mob = 185;
                 const bottomOffset = layer.offsetFraction * W_mob;
                 const w_layer = W_mob * layer.wScale;
                 const h_layer = w_layer * 1.5;
@@ -674,19 +674,19 @@ const BurgerAssemblySection = () => {
                   className="space-y-1.5"
                 >
                   <div className="flex justify-between items-center">
-                    <span className="text-[9px] font-black text-[#E50914] tracking-widest uppercase">
+                    <span className="text-[10px] font-black text-[#E50914] tracking-widest uppercase">
                       {steps[activeStep].number}
                     </span>
-                    <span className="text-[8px] font-extrabold text-neutral-400 tracking-wider uppercase">
+                    <span className="text-[9px] font-extrabold text-neutral-400 tracking-wider uppercase">
                       {steps[activeStep].subtitle}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-black text-white uppercase tracking-tight">
+                  <h3 className="text-xl font-black text-white uppercase tracking-tight">
                     {steps[activeStep].title}
                   </h3>
 
-                  <p className="text-neutral-200 text-xs leading-relaxed font-medium">
+                  <p className="text-neutral-200 text-[13px] leading-relaxed font-medium">
                     {steps[activeStep].description}
                   </p>
 

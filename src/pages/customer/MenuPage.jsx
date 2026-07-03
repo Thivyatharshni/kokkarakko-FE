@@ -541,14 +541,14 @@ const MenuPage = () => {
                         }
                       }}
                       whileTap={item.quantity === 0 ? {} : { scale: 0.93 }}
-                      className={`font-black text-[9px] sm:text-xs uppercase px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg flex items-center transition-all ${
+                      className={`font-black text-xs sm:text-[13px] uppercase px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg flex items-center transition-all ${
                         item.quantity === undefined || item.quantity > 0
                           ? 'bg-[#E50914] text-white hover:bg-[#CC0812] shadow-md shadow-red-500/10'
                           : 'bg-[#222] text-gray-500 cursor-not-allowed border border-white/5'
                       }`}
                     >
                       {item.quantity === undefined || item.quantity > 0 ? (
-                        <>ADD <PlusCircle className="w-3.5 h-3.5 ml-1" /></>
+                        <>ADD <PlusCircle className="w-4 h-4 ml-1.5" /></>
                       ) : (
                         'Unavailable'
                       )}
