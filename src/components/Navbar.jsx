@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QrCode, Menu, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import bgImage from '../assets/images/bg.png';
 
@@ -8,7 +8,26 @@ const Navbar = ({ shop }) => {
   const [activeTab, setActiveTab] = useState('landing');
   const [activeTheme, setActiveTheme] = useState('transparent');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleHomeClick = () => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const heroEl = document.getElementById('hero');
+        if (heroEl) {
+          heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        setActiveTab('landing');
+      }, 150);
+    } else {
+      scrollToSection('top', 'landing');
+    }
+  };
 
   useEffect(() => {
     const sectionIds = ['hero', 'signature-prep', 'street-style', 'burger-assembly', 'qr-section'];
@@ -49,8 +68,15 @@ const Navbar = ({ shop }) => {
     const handleScroll = () => {
       if (window.scrollY < 20) {
         setActiveTheme('transparent');
+        setIsScrolled(false);
+      } else {
+        setIsScrolled(true);
       }
     };
+
+    // Initial check
+    handleScroll();
+
     window.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -63,7 +89,12 @@ const Navbar = ({ shop }) => {
   const scrollToSection = (id, tabName) => {
     setActiveTab(tabName);
     if (id === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const heroEl = document.getElementById('hero');
+      if (heroEl) {
+        heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } else {
       const el = document.getElementById(id);
       if (el) {
@@ -101,15 +132,15 @@ const Navbar = ({ shop }) => {
   // Mobile drawer container classes based on active theme
   let drawerBgClass = 'bg-[#070707]/95 backdrop-blur-md border-white/5 text-white';
   if (activeTheme === 'light') {
-    drawerBgClass = 'bg-white/98 border-gray-100 text-[#111111]';
+    drawerBgClass = 'bg-white border-gray-100 text-[#111111]';
   } else if (activeTheme === 'dark-slate') {
-    drawerBgClass = 'bg-[#0d0d0d]/98 border-white/5 text-white';
+    drawerBgClass = 'bg-[#0d0d0d] border-white/5 text-white';
   } else if (activeTheme === 'smoky') {
-    drawerBgClass = 'bg-[#141414]/98 border-red-950/20 text-white';
+    drawerBgClass = 'bg-[#141414] border-red-950/20 text-white';
   }
 
   // Padding adjustment based on transparent vs. sticky state
-  const paddingClass = activeTheme === 'transparent' ? 'py-3.5 md:py-5' : 'py-2.5 md:py-3';
+  const paddingClass = (activeTheme === 'transparent' && !isScrolled) ? 'py-3.5 md:py-5' : 'py-2.5 md:py-3';
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${paddingClass}`}>
@@ -137,6 +168,12 @@ const Navbar = ({ shop }) => {
         style={{ opacity: activeTheme === 'smoky' ? 1 : 0 }}
       />
 
+      {/* 4. Scrolled Transparent Layer (Dark Backdrop Blur when scrolling in hero) */}
+      <div 
+        className="absolute inset-0 bg-[#070707]/90 backdrop-blur-md border-b border-white/5 transition-opacity duration-500 ease-in-out -z-10"
+        style={{ opacity: (activeTheme === 'transparent' && isScrolled) ? 1 : 0 }}
+      />
+
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between w-full relative z-10">
         
         {/* Left: Logo and Tagline - Anchored to Left */}
@@ -144,7 +181,7 @@ const Navbar = ({ shop }) => {
           <motion.div 
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-3 cursor-pointer" 
-            onClick={() => scrollToSection('top', 'landing')}
+            onClick={handleHomeClick}
           >
             <img src="/logo.png" alt="Logo" className="h-14 md:h-20 w-auto object-contain rounded-full shadow-md border border-white/10" />
             <div className="leading-tight">
@@ -158,7 +195,7 @@ const Navbar = ({ shop }) => {
         <div className="flex-1 flex justify-center">
           <div className="hidden md:flex items-center gap-8 font-black text-sm uppercase tracking-wider">
             <button 
-              onClick={() => scrollToSection('top', 'landing')}
+              onClick={handleHomeClick}
               className={`nav-link relative py-2 ${textColorClass} hover:text-[#D90404] transition-colors duration-500 ${activeTab === 'landing' ? 'active' : ''}`}
             >
               Home
@@ -209,8 +246,10 @@ const Navbar = ({ shop }) => {
           >
             <motion.button 
               onClick={() => {
-                scrollToSection('top', 'landing');
                 setIsMobileMenuOpen(false);
+                setTimeout(() => {
+                  handleHomeClick();
+                }, 150);
               }}
               whileTap={{ scale: 0.98, x: 4 }}
               className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors w-full"
@@ -220,8 +259,10 @@ const Navbar = ({ shop }) => {
             
             <motion.button 
               onClick={() => {
-                navigate(`/menu/${shop?.slug || 'kokkarakko-fried-chicken'}`);
                 setIsMobileMenuOpen(false);
+                setTimeout(() => {
+                  navigate(`/menu/${shop?.slug || 'kokkarakko-fried-chicken'}`);
+                }, 150);
               }}
               whileTap={{ scale: 0.98, x: 4 }}
               className="text-left py-2 hover:text-[#D90404] transition-colors w-full"

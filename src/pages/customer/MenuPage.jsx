@@ -267,7 +267,7 @@ const MenuPage = () => {
     : ['ALL', ...[...new Set(menuItems.map(getCatName))].filter(c => c !== 'ALL')];
 
   const filteredItems = menuItems.filter(item => {
-    if (item.available === false) return false;
+    if (item.status === 'Hidden') return false;
     
     const matchesCategory = activeCategory === 'ALL' || getCatName(item) === activeCategory;
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -523,31 +523,31 @@ const MenuPage = () => {
                       
                       {/* Stock Status text */}
                       <span className={`text-[8px] md:text-[9px] font-bold tracking-wider uppercase mt-0.5 sm:mt-1 ${
-                        item.quantity === undefined || item.quantity > 0 
+                        item.status !== 'Out Of Stock' && (item.quantity === undefined || item.quantity > 0)
                           ? 'text-green-500' 
                           : 'text-red-500'
                       }`}>
-                        {item.quantity === undefined || item.quantity > 0 ? 'AVAILABLE' : 'Out of Stock'}
+                        {item.status !== 'Out Of Stock' && (item.quantity === undefined || item.quantity > 0) ? 'AVAILABLE' : 'Out of Stock'}
                       </span>
                     </div>
 
                     {/* Add button */}
                     <motion.button
-                      disabled={item.quantity === 0}
+                      disabled={item.status === 'Out Of Stock' || item.quantity === 0}
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (item.quantity === undefined || item.quantity > 0) {
+                        if (item.status !== 'Out Of Stock' && (item.quantity === undefined || item.quantity > 0)) {
                           handleAddToCart(item);
                         }
                       }}
-                      whileTap={item.quantity === 0 ? {} : { scale: 0.93 }}
+                      whileTap={item.status === 'Out Of Stock' || item.quantity === 0 ? {} : { scale: 0.93 }}
                       className={`font-black text-xs sm:text-[13px] uppercase px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg flex items-center transition-all ${
-                        item.quantity === undefined || item.quantity > 0
+                        item.status !== 'Out Of Stock' && (item.quantity === undefined || item.quantity > 0)
                           ? 'bg-[#E50914] text-white hover:bg-[#CC0812] shadow-md shadow-red-500/10'
                           : 'bg-[#222] text-gray-500 cursor-not-allowed border border-white/5'
                       }`}
                     >
-                      {item.quantity === undefined || item.quantity > 0 ? (
+                      {item.status !== 'Out Of Stock' && (item.quantity === undefined || item.quantity > 0) ? (
                         <>ADD <PlusCircle className="w-4 h-4 ml-1.5" /></>
                       ) : (
                         'Unavailable'

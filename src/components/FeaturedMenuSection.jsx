@@ -165,12 +165,17 @@ const FeaturedCard = ({ item, index, slug }) => {
               ₹{item.price}
             </span>
             <motion.button
+              disabled={item.status === 'Out Of Stock' || item.quantity === 0}
               onClick={handleAddToCart}
-              whileTap={{ scale: 0.95 }}
-              className="premium-btn flex items-center gap-2 bg-[#E50914] hover:bg-[#CC0812] text-white font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-lg shadow-red-500/20 transition-all"
+              whileTap={item.status === 'Out Of Stock' || item.quantity === 0 ? {} : { scale: 0.95 }}
+              className={`premium-btn flex items-center gap-2 font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all ${
+                item.status === 'Out Of Stock' || item.quantity === 0
+                  ? 'bg-[#222] text-gray-500 cursor-not-allowed border border-white/5 shadow-none'
+                  : 'bg-[#E50914] hover:bg-[#CC0812] text-white shadow-lg shadow-red-500/20'
+              }`}
             >
               <ShoppingCart size={13} />
-              Add
+              {item.status === 'Out Of Stock' || item.quantity === 0 ? 'Sold Out' : 'Add'}
             </motion.button>
           </div>
         </div>
