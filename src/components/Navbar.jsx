@@ -190,7 +190,7 @@ const Navbar = ({ shop }) => {
             </div>
           </motion.div>
         </div>
-
+        
         {/* Center: Nav Links - Centered in Navbar */}
         <div className="flex-1 flex justify-center">
           <div className="hidden md:flex items-center gap-8 font-black text-sm uppercase tracking-wider">
@@ -206,6 +206,13 @@ const Navbar = ({ shop }) => {
               className={`nav-link relative py-2 ${textColorClass} hover:text-[#D90404] transition-colors duration-500 ${activeTab === 'menu' ? 'active' : ''}`}
             >
               Menu
+            </button>
+
+            <button 
+              onClick={() => navigate('/orders')}
+              className={`nav-link relative py-2 ${textColorClass} hover:text-[#D90404] transition-colors duration-500 ${activeTab === 'orders' ? 'active' : ''}`}
+            >
+              Orders
             </button>
           </div>
         </div>
@@ -228,7 +235,7 @@ const Navbar = ({ shop }) => {
             className={`md:hidden p-2 rounded-lg ${textColorClass} hover:bg-gray-100/10 transition-colors duration-500`}
             aria-label="Toggle Menu"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </motion.button>
         </div>
 
@@ -265,9 +272,22 @@ const Navbar = ({ shop }) => {
                 }, 150);
               }}
               whileTap={{ scale: 0.98, x: 4 }}
-              className="text-left py-2 hover:text-[#D90404] transition-colors w-full"
+              className="text-left py-2 hover:text-[#D90404] border-b border-gray-100/10 transition-colors w-full"
             >
               Menu
+            </motion.button>
+
+            <motion.button 
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setTimeout(() => {
+                  navigate('/orders');
+                }, 150);
+              }}
+              whileTap={{ scale: 0.98, x: 4 }}
+              className="text-left py-2 hover:text-[#D90404] transition-colors w-full"
+            >
+              Orders
             </motion.button>
           </motion.div>
         )}

@@ -561,20 +561,6 @@ const MenuPage = () => {
         )}
       </div>
 
-      {/* Cancel Order Helper Section */}
-      <div className="max-w-[1200px] mx-auto px-6 pb-12 pt-6 text-center border-t border-white/5 mt-4">
-        <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-3">
-          Need to cancel an order?
-        </p>
-        <motion.button
-          onClick={() => navigate('/cancel-order')}
-          whileTap={{ scale: 0.95 }}
-          className="px-6 py-2.5 rounded-full border border-gray-600 hover:border-gray-400 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition-all duration-200"
-        >
-          Cancel Existing Order
-        </motion.button>
-      </div>
-
       {/* Footer */}
       <ScrollReveal type="section">
         <Footer shop={shop} />
