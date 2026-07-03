@@ -151,6 +151,26 @@ const CartPage = () => {
       const res = await createOrder(orderData);
       if (res.success && res.data) {
         toast.success('Order placed successfully!', { icon: '🍗' });
+
+        // Save order info to customer_orders in localStorage
+        const storedOrders = localStorage.getItem('customer_orders');
+        let customerOrders = [];
+        if (storedOrders) {
+          try {
+            customerOrders = JSON.parse(storedOrders);
+          } catch (e) {
+            customerOrders = [];
+          }
+        }
+        if (!Array.isArray(customerOrders)) {
+          customerOrders = [];
+        }
+        customerOrders.push({
+          orderNumber: res.data.orderNumber,
+          mobile: customerMobile.trim()
+        });
+        localStorage.setItem('customer_orders', JSON.stringify(customerOrders));
+
         clearCart();
         localStorage.removeItem('customerName');
         localStorage.removeItem('customerMobile');

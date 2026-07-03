@@ -22,7 +22,7 @@ import CustomerLandingPage from '../pages/customer/LandingPage';
 import CustomerMenuPage from '../pages/customer/MenuPage';
 import CustomerOrderSuccess from '../pages/customer/OrderSuccess';
 import CartPage from '../pages/customer/CartPage';
-import CancelOrderPage from '../pages/customer/CancelOrderPage';
+import CustomerOrdersPage from '../pages/customer/OrdersPage';
 
 const RequireShop = ({ children }) => {
   const { shop, loading } = useAuth();
@@ -41,7 +41,7 @@ const AppRoutes = () => {
         <Route path="/shop/:slug" element={<CustomerMenuPage />} />
         <Route path="/cart/:slug" element={<CartPage />} />
         <Route path="/order-success/:orderNumber" element={<CustomerOrderSuccess />} />
-        <Route path="/cancel-order" element={<CancelOrderPage />} />
+        <Route path="/orders" element={<CustomerOrdersPage />} />
       </Route>
 
       {/* Admin Auth Route */}
