@@ -75,10 +75,8 @@ const OrdersPage = () => {
       fetchOrders();
       connectSocket();
       
-      // Join the shop room immediately if already connected
-      if (socket.connected) {
-        socket.emit('join-shop', shopId.toString());
-      }
+      // Always queue/send join-shop immediately on mount (Socket.io handles buffering if not connected yet)
+      socket.emit('join-shop', shopId.toString());
 
       // Ensure we rejoin the room and sync missed orders on any connection/reconnection event
       socket.on('connect', () => {
@@ -87,8 +85,12 @@ const OrdersPage = () => {
       });
 
       socket.on('new-order', (newOrder) => {
-        const audio = new Audio('/notification.mp3');
-        audio.play().catch(e => console.log('Audio play failed', e));
+        try {
+          const audio = new Audio('/notification.mp3');
+          audio.play().catch(e => console.log('Audio play failed', e));
+        } catch (audioError) {
+          console.log('Audio playback failed synchronously', audioError);
+        }
         
         toast.custom((t) => (
           <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white shadow-lg rounded-xl pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
