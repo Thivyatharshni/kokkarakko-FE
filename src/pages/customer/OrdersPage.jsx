@@ -225,7 +225,10 @@ const OrdersPage = () => {
       <div className="px-6 py-5 max-w-[1100px] mx-auto border-b border-[#222] flex items-center gap-4">
         <motion.div whileTap={{ scale: 0.9 }} className="inline-block">
           <button 
-            onClick={() => navigate(-1)} 
+            onClick={() => {
+              const activeSlug = localStorage.getItem('customer_shop_slug') || 'kokkarakko-fried-chicken';
+              navigate(`/menu/${activeSlug}`);
+            }} 
             className="p-2 hover:bg-[#1A1A1A] rounded-full transition-colors text-gray-400 hover:text-white block"
           >
             <ArrowLeft className="w-5 h-5" />

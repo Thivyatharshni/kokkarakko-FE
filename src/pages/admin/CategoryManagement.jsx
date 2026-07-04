@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getCategoriesBySlug, createCategory, updateCategory, deleteCategory } from '../../services/categoryService';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, X } from 'lucide-react';
-import { getFullImageUrl } from '../../config/constants';
+import { Plus, Trash2, Edit2, Loader2, X } from 'lucide-react';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
 import EmptyState from '../../components/common/EmptyState';
@@ -20,7 +19,6 @@ const CategoryManagement = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    image: null,
   });
 
   const fetchCategories = async () => {
@@ -113,7 +111,6 @@ const CategoryManagement = () => {
     setFormData({
       name: cat.name,
       description: cat.description || '',
-      image: null,
     });
     setIsModalOpen(true);
   };
@@ -121,7 +118,7 @@ const CategoryManagement = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingId(null);
-    setFormData({ name: '', description: '', image: null });
+    setFormData({ name: '', description: '' });
   };
 
   if (shopLoading || loading) return <LoadingState message="Loading categories..." />;
@@ -150,7 +147,6 @@ const CategoryManagement = () => {
           <table className="w-full text-left whitespace-nowrap">
             <thead className="bg-gray-50 text-gray-500 text-sm">
               <tr>
-                <th className="p-4 font-semibold">Image</th>
                 <th className="p-4 font-semibold">Name</th>
                 <th className="p-4 font-semibold">Description</th>
                 <th className="p-4 font-semibold">Product Count</th>
@@ -160,20 +156,11 @@ const CategoryManagement = () => {
             <tbody className="divide-y divide-gray-100">
               {displayCategories.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="p-10 text-center text-gray-500">No categories found.</td>
+                  <td colSpan="4" className="p-10 text-center text-gray-500">No categories found.</td>
                 </tr>
               ) : (
                 displayCategories.map(cat => (
                   <tr key={cat._id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
-                      {cat.image ? (
-                        <img src={getFullImageUrl(cat.image)} alt={cat.name} className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
-                      ) : (
-                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 flex-shrink-0">
-                          <ImageIcon size={20} />
-                        </div>
-                      )}
-                    </td>
                     <td className="p-4 font-bold text-gray-900">{cat.name}</td>
                     <td className="p-4 text-sm text-gray-500 max-w-[200px] truncate">{cat.description || '-'}</td>
                     <td className="p-4 font-semibold text-blue-600">
@@ -202,13 +189,6 @@ const CategoryManagement = () => {
             displayCategories.map(cat => (
                <div key={cat._id} className="py-3 first:pt-0 last:pb-0 flex flex-col gap-2.5">
                 <div className="flex items-center gap-2.5">
-                  {cat.image ? (
-                    <img src={getFullImageUrl(cat.image)} alt={cat.name} className="w-12 h-12 rounded-lg object-cover shadow-sm flex-shrink-0" />
-                  ) : (
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 flex-shrink-0">
-                      <ImageIcon size={20} />
-                    </div>
-                  )}
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-gray-900 text-[15px] truncate">{cat.name}</h4>
                     <p className="text-xs text-gray-500 mt-0.5 truncate">{cat.description || 'No description'}</p>
@@ -261,10 +241,6 @@ const CategoryManagement = () => {
               <div>
                 <label className="block text-sm font-semibold mb-1 text-gray-700">Description</label>
                 <textarea rows="3" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border rounded-xl outline-none focus:border-[#E50914] resize-none bg-gray-50 focus:bg-white transition-colors text-sm" placeholder="Description..."></textarea>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1 text-gray-700">Image {editingId && <span className="text-xs font-normal text-gray-400">(Optional)</span>}</label>
-                <input type="file" accept="image/*" onChange={e => setFormData({...formData, image: e.target.files[0]})} className="w-full h-11 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 flex items-center" />
               </div>
               <div className="flex flex-col sm:flex-row gap-3 pt-4 mt-4 border-t border-gray-100">
                 <button type="button" onClick={closeModal} className="w-full sm:flex-1 h-[46px] rounded-xl border border-gray-300 bg-white text-gray-700 font-semibold text-[15px] hover:bg-gray-50 transition-colors">Cancel</button>

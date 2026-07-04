@@ -82,10 +82,10 @@ const OrderSuccess = () => {
 
         <div className="pt-1">
           <Link
-            to="/"
+            to="/orders"
             className="block w-full bg-[#D90404] hover:bg-[#b80303] text-white font-bold py-3 sm:py-3.5 px-4 rounded-2xl transition-colors text-center uppercase tracking-wider text-[10px] sm:text-xs"
           >
-            Back to Home
+            View Orders
           </Link>
         </div>
       </div>
