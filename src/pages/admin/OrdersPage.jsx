@@ -4,7 +4,7 @@ import { getLiveOrders, updateOrderStatus } from '../../services/orderService';
 import { Link } from 'react-router-dom';
 import socket, { connectSocket, disconnectSocket } from '../../sockets/socket';
 import toast from 'react-hot-toast';
-import { BellRing, History } from 'lucide-react';
+import { BellRing, History, ChevronDown, ChevronUp } from 'lucide-react';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
 import { clientCache } from '../../utils/cache';
@@ -36,6 +36,7 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [expandedOrders, setExpandedOrders] = useState({});
 
   const fetchOrders = async (forceLoad = false) => {
     if (!shopId) return;
@@ -73,7 +74,17 @@ const OrdersPage = () => {
     if (!shopLoading && shopId) {
       fetchOrders();
       connectSocket();
-      socket.emit('join-shop', shopId.toString());
+      
+      // Join the shop room immediately if already connected
+      if (socket.connected) {
+        socket.emit('join-shop', shopId.toString());
+      }
+
+      // Ensure we rejoin the room and sync missed orders on any connection/reconnection event
+      socket.on('connect', () => {
+        socket.emit('join-shop', shopId.toString());
+        fetchOrders(true); // Automatically sync any orders missed during disconnection
+      });
 
       socket.on('new-order', (newOrder) => {
         const audio = new Audio('/notification.mp3');
@@ -121,6 +132,7 @@ const OrdersPage = () => {
     }
 
     return () => {
+      socket.off('connect');
       socket.off('new-order');
       socket.off('order-status-updated');
       disconnectSocket();
@@ -252,50 +264,64 @@ const OrdersPage = () => {
             ) : (
               displayOrders.map(order => (
                 <div key={order._id} className="py-3.5 first:pt-0 last:pb-0 flex flex-col gap-2.5">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                  <div 
+                    onClick={() => setExpandedOrders(prev => ({ ...prev, [order._id]: !prev[order._id] }))}
+                    className="flex items-center justify-between gap-2 cursor-pointer select-none py-1 hover:opacity-80 transition-opacity"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                      {expandedOrders[order._id] ? (
+                        <ChevronUp size={16} className="text-gray-400" />
+                      ) : (
+                        <ChevronDown size={16} className="text-gray-400" />
+                      )}
+                    </div>
                     <span className="font-black text-[#E50914] text-base">₹{order.totalAmount}</span>
                   </div>
 
-                  <div className="bg-gray-50 p-2.5 rounded-lg flex justify-between items-center text-sm">
-                    <div>
-                      <p className="font-bold text-gray-900">{order.customerName}</p>
-                      <p className="text-xs text-gray-500">{order.customerMobile || order.customerPhone || 'No Phone'}</p>
-                    </div>
-                    {order.createdAt && (
-                      <div className="text-right text-xs text-gray-500">
-                        <p className="font-semibold text-gray-700">{formatOrderTime(order.createdAt).date}</p>
-                        <p>{formatOrderTime(order.createdAt).time}</p>
+                  {expandedOrders[order._id] && (
+                    <div className="flex flex-col gap-2.5 animate-fadeIn">
+                      <div className="bg-gray-50 p-2.5 rounded-lg flex justify-between items-center text-sm">
+                        <div>
+                          <p className="font-bold text-gray-900">{order.customerName}</p>
+                          <p className="text-xs text-gray-500">{order.customerMobile || order.customerPhone || 'No Phone'}</p>
+                        </div>
+                        {order.createdAt && (
+                          <div className="text-right text-xs text-gray-500">
+                            <p className="font-semibold text-gray-700">{formatOrderTime(order.createdAt).date}</p>
+                            <p>{formatOrderTime(order.createdAt).time}</p>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
 
-                  <div>
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Items Ordered:</p>
-                    <ul className="space-y-1 text-sm bg-white border border-gray-100 p-2.5 rounded-lg">
-                      {order.items.map((item, idx) => (
-                        <li key={idx} className="flex justify-between font-medium text-gray-700">
-                          <span>{item.quantity}x {item.name}</span>
-                          {item.price && <span className="text-gray-400">₹{item.price * item.quantity}</span>}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                      <div>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Items Ordered:</p>
+                        <ul className="space-y-1 text-sm bg-white border border-gray-100 p-2.5 rounded-lg">
+                          {order.items.map((item, idx) => (
+                            <li key={idx} className="flex justify-between font-medium text-gray-700">
+                              <span>{item.quantity}x {item.name}</span>
+                              {item.price && <span className="text-gray-400">₹{item.price * item.quantity}</span>}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                  <div className="pt-2 border-t border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <label className="text-xs font-bold text-gray-500 uppercase">Update Status:</label>
-                    <select 
-                      value={order.status}
-                      onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                      className={`w-full sm:w-auto h-[42px] px-3 rounded-lg text-sm font-bold border-0 outline-none cursor-pointer ${STATUS_COLORS[order.status] || 'bg-gray-100 text-gray-700'}`}
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Preparing">Preparing</option>
-                      <option value="Ready">Ready</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
-                  </div>
+                      <div className="pt-2 border-t border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <label className="text-xs font-bold text-gray-500 uppercase">Update Status:</label>
+                        <select 
+                          value={order.status}
+                          onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                          className={`w-full sm:w-auto h-[42px] px-3 rounded-lg text-sm font-bold border-0 outline-none cursor-pointer ${STATUS_COLORS[order.status] || 'bg-gray-100 text-gray-700'}`}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Preparing">Preparing</option>
+                          <option value="Ready">Ready</option>
+                          <option value="Completed">Completed</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             )}
