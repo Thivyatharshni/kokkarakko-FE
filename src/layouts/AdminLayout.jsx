@@ -15,86 +15,91 @@ const SidebarContent = ({
   setIsMobileOpen, 
   setIsTabletExpanded,
   navigate
-}) => (
-  <div className="flex flex-col h-full bg-[#111111] text-white overflow-hidden">
-    <div className="p-4 md:p-6 flex flex-col transition-all">
-      <div className={`flex items-start justify-between w-full ${isCollapsed ? 'justify-center' : ''}`}>
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          <img src="/logo.webp" alt="Logo" className="w-11 h-11 md:w-12 md:h-12 object-cover rounded-full shadow-md border border-white/5 flex-shrink-0" />
-          {!isCollapsed && (
-            <div className="flex-1 min-w-0">
-              <h2 className="text-[20px] font-bold text-[#D90404] uppercase tracking-wider truncate leading-tight w-full max-w-[180px]">Kokkarakko</h2>
-              <p className="text-[13px] font-medium text-gray-400 mt-0 truncate leading-normal">{shop ? shop.shopName : 'Admin Panel'}</p>
-            </div>
+}) => {
+  console.log('SidebarContent Render - pathname:', location?.pathname);
+  
+  return (
+    <div className="flex flex-col h-full bg-[#111111] text-white overflow-hidden">
+      <div className="p-4 md:p-6 flex flex-col transition-all">
+        <div className={`flex items-start justify-between w-full ${isCollapsed ? 'justify-center' : ''}`}>
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <img src="/logo.webp" alt="Logo" className="w-11 h-11 md:w-12 md:h-12 object-cover rounded-full shadow-md border border-white/5 flex-shrink-0" />
+            {!isCollapsed && (
+              <div className="flex-1 min-w-0">
+                <h2 className="text-[20px] font-bold text-[#D90404] uppercase tracking-wider truncate leading-tight w-full max-w-[180px]">Kokkarakko</h2>
+                <p className="text-[13px] font-medium text-gray-400 mt-0 truncate leading-normal">{shop ? shop.shopName : 'Admin Panel'}</p>
+              </div>
+            )}
+          </div>
+          {onClose && !isCollapsed && (
+            <button 
+              onClick={onClose}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:bg-white/20 transition-all duration-200 ml-4 flex-shrink-0 text-gray-400 hover:text-white"
+              aria-label="Close sidebar"
+            >
+              <X size={18} />
+            </button>
           )}
         </div>
-        {onClose && !isCollapsed && (
-          <button 
-            onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:bg-white/20 transition-all duration-200 ml-4 flex-shrink-0 text-gray-400 hover:text-white"
-            aria-label="Close sidebar"
-          >
-            <X size={18} />
-          </button>
-        )}
+        <div className="border-b border-gray-800 mt-3 w-full" />
       </div>
-      <div className="border-b border-gray-800 mt-3 w-full" />
-    </div>
-    
-    <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-      {navItems.map((item) => {
-        const isActive = location.pathname.startsWith(item.path);
-        return (
-          <Link 
-            key={item.name}
-            to={item.path} 
-            onClick={() => {
-              setTimeout(() => {
-                setIsMobileOpen(false);
-                setIsTabletExpanded(false);
-              }, 100);
-            }}
-            title={isCollapsed ? item.name : undefined}
-            className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] rounded-lg md:rounded-xl transition-all duration-200 ${
-              isActive 
-                ? 'bg-[#D90404] text-white shadow-md shadow-red-500/20' 
-                : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-            }`}
-          >
-            <span className="flex-shrink-0">{item.icon}</span>
-            {!isCollapsed && <span className="font-semibold truncate text-[15px]">{item.name}</span>}
-          </Link>
-        );
-      })}
-    </nav>
+      
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        {navItems.map((item) => {
+          const isActive = location.pathname.startsWith(item.path);
+          console.log(`  Nav item: ${item.name}, path: ${item.path}, isActive: ${isActive}`);
+          return (
+            <Link 
+              key={item.name}
+              to={item.path} 
+              onClick={() => {
+                setTimeout(() => {
+                  setIsMobileOpen(false);
+                  setIsTabletExpanded(false);
+                }, 100);
+              }}
+              title={isCollapsed ? item.name : undefined}
+              className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] rounded-lg md:rounded-xl transition-all duration-200 ${
+                isActive 
+                  ? 'bg-[#D90404] text-white shadow-md shadow-red-500/20' 
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+              }`}
+            >
+              <span className="flex-shrink-0">{item.icon}</span>
+              {!isCollapsed && <span className="font-semibold truncate text-[15px]">{item.name}</span>}
+            </Link>
+          );
+        })}
+      </nav>
 
-    <div className="p-3 border-t border-gray-800 space-y-1">
-      <Link 
-        to="/" 
-        onClick={() => {
-          setTimeout(() => {
-            setIsMobileOpen(false);
-            setIsTabletExpanded(false);
-          }, 100);
-        }}
-        title={isCollapsed ? 'Back to Home' : undefined}
-        className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg md:rounded-xl transition-colors duration-200`}
-      >
-        <span className="flex-shrink-0"><Home size={20} /></span>
-        {!isCollapsed && <span className="font-semibold truncate text-[15px]">Back to Home</span>}
-      </Link>
+      <div className="p-3 border-t border-gray-800 space-y-1">
+        <Link 
+          to="/" 
+          onClick={() => {
+            setTimeout(() => {
+              setIsMobileOpen(false);
+              setIsTabletExpanded(false);
+            }, 100);
+          }}
+          title={isCollapsed ? 'Back to Home' : undefined}
+          className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg md:rounded-xl transition-colors duration-200`}
+        >
+          <span className="flex-shrink-0"><Home size={20} /></span>
+          {!isCollapsed && <span className="font-semibold truncate text-[15px]">Back to Home</span>}
+        </Link>
 
-      <button 
-        onClick={handleLogout}
-        title={isCollapsed ? 'Logout' : undefined}
-        className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} w-full h-[52px] text-gray-400 hover:bg-gray-800 hover:text-[#D90404] rounded-lg md:rounded-xl transition-colors duration-200`}
-      >
-        <span className="flex-shrink-0"><LogOut size={20} /></span>
-        {!isCollapsed && <span className="font-semibold truncate text-[15px]">Logout</span>}
-      </button>
+        <button 
+          onClick={handleLogout}
+          title={isCollapsed ? 'Logout' : undefined}
+          className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} w-full h-[52px] text-gray-400 hover:bg-gray-800 hover:text-[#D90404] rounded-lg md:rounded-xl transition-colors duration-200`}
+        >
+          <span className="flex-shrink-0"><LogOut size={20} /></span>
+          {!isCollapsed && <span className="font-semibold truncate text-[15px]">Logout</span>}
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const AdminLayout = () => {
   const { logoutContext, shop } = useAuth();
