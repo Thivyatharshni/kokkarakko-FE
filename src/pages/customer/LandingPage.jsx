@@ -137,17 +137,17 @@ const LandingPage = () => {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://kokkarakko.shop/#organization",
+        "@id": "https://www.kokkarakko.shop/#organization",
         "name": "Kokkarakko Crispy Chicken",
-        "url": "https://kokkarakko.shop",
-        "logo": "https://kokkarakko.shop/logo.webp"
+        "url": "https://www.kokkarakko.shop",
+        "logo": "https://www.kokkarakko.shop/logo.webp"
       },
       {
         "@type": "Restaurant",
-        "@id": "https://kokkarakko.shop/#restaurant",
+        "@id": "https://www.kokkarakko.shop/#restaurant",
         "name": "Kokkarakko Crispy Chicken",
-        "image": "https://kokkarakko.shop/bg.webp",
-        "url": "https://kokkarakko.shop",
+        "image": "https://www.kokkarakko.shop/bg.webp",
+        "url": "https://www.kokkarakko.shop",
         "telephone": "+919630258147",
         "priceRange": "$$",
         "servesCuisine": "Crispy Fried Chicken, Burgers, Combos",
@@ -177,7 +177,7 @@ const LandingPage = () => {
           "@type": "OrderAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": "https://kokkarakko.shop",
+            "urlTemplate": "https://www.kokkarakko.shop",
             "inLanguage": "en-US",
             "actionPlatform": [
               "http://schema.org/DesktopWebPlatform",

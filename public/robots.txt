@@ -6,4 +6,4 @@ Disallow: /login
 Disallow: /dashboard
 Disallow: /api
 
-Sitemap: https://kokkarakko.shop/sitemap.xml
+Sitemap: https://www.kokkarakko.shop/sitemap.xml

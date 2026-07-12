@@ -6,7 +6,7 @@ const SEO = ({
   description,
   canonicalUrl,
   type = 'website',
-  imageUrl = 'https://kokkarakko.shop/logo.webp',
+  imageUrl = 'https://www.kokkarakko.shop/logo.webp',
   robots = 'index, follow',
   structuredData,
 }) => {
@@ -41,7 +41,7 @@ const SEO = ({
     }
 
     // 4. Canonical URL
-    const resolvedCanonical = canonicalUrl || `https://kokkarakko.shop${location.pathname}`;
+    const resolvedCanonical = canonicalUrl || `https://www.kokkarakko.shop${location.pathname}`;
     let canonicalLink = document.querySelector('link[rel="canonical"]');
     if (!canonicalLink) {
       canonicalLink = document.createElement('link');
