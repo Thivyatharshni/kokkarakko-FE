@@ -45,7 +45,7 @@ const HeroVisualCard = ({ bucketRef, originRef }) => {
         className="relative z-10 max-w-xs md:max-w-sm lg:max-w-md w-full aspect-square drop-shadow-[0_20px_35px_rgba(0,0,0,0.3)] hover:shadow-[0_0_120px_rgba(217,4,4,0.15)] transition-shadow duration-500"
       >
         <img
-          src="/hero-bucket.png"
+          src="/hero-bucket.webp"
           alt="Crispy Fried Chicken Bucket"
           className="w-full h-full object-contain select-none"
         />

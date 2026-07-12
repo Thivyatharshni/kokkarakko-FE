@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../../components/common/SEO';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -39,6 +40,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-[#080808] flex items-center justify-center p-4 relative overflow-hidden w-full max-w-full">
+      <SEO title="Admin Login | Kokkarakko" robots="noindex, nofollow" />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -56,7 +58,7 @@ const Login = () => {
             <span>Back</span>
           </button>
 
-          <img src="/logo.png" alt="Logo" className="mx-auto h-14 w-auto object-contain mb-3 rounded-full shadow-lg" />
+          <img src="/logo.webp" alt="Logo" className="mx-auto h-14 w-14 object-contain mb-3 rounded-full shadow-lg" />
           <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider">Kokkarakko</h2>
           <p className="text-gray-400 mt-1.5 text-xs sm:text-sm font-medium">Owner Portal Login</p>
         </div>

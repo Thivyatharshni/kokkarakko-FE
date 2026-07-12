@@ -3,6 +3,7 @@ import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LayoutDashboard, UtensilsCrossed, ClipboardList, QrCode, LogOut, Menu as MenuIcon, X, Home } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/common/SEO';
 
 const AdminLayout = () => {
   const { logoutContext, shop } = useAuth();
@@ -41,7 +42,7 @@ const AdminLayout = () => {
       <div className={`p-4 md:p-6 flex flex-col transition-all`}>
         <div className={`flex items-start justify-between w-full ${isCollapsed ? 'justify-center' : ''}`}>
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <img src="/logo.png" alt="Logo" className="w-11 h-11 md:w-12 md:h-12 object-cover rounded-full shadow-md border border-white/5 flex-shrink-0" />
+            <img src="/logo.webp" alt="Logo" className="w-11 h-11 md:w-12 md:h-12 object-cover rounded-full shadow-md border border-white/5 flex-shrink-0" />
             {!isCollapsed && (
               <div className="flex-1 min-w-0">
                 <h2 className="text-[20px] font-bold text-[#D90404] uppercase tracking-wider truncate leading-tight w-full max-w-[180px]">Kokkarakko</h2>
@@ -115,6 +116,7 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen flex bg-[#F8F8F8]">
+      <SEO robots="noindex, nofollow" />
       
       {/* Desktop Sidebar (Fixed 72 width) */}
       <aside className="hidden lg:flex w-72 flex-col fixed inset-y-0 z-50">
@@ -177,7 +179,7 @@ const AdminLayout = () => {
               {navItems.find(item => location.pathname.startsWith(item.path))?.name || 'Admin'}
             </h1>
           </div>
-          <img src="/logo.png" alt="Logo" className="h-8 w-8 object-cover rounded-full flex-shrink-0" />
+          <img src="/logo.webp" alt="Logo" className="h-8 w-8 object-cover rounded-full flex-shrink-0" />
         </header>
 
         <div className="flex-1 p-4 sm:p-6 md:p-8 w-full max-w-full overflow-x-hidden">

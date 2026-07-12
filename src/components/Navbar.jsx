@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { QrCode, Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import bgImage from '../assets/images/bg.png';
+import bgImage from '../assets/images/bg.webp';
 
 const Navbar = ({ shop }) => {
   const [activeTab, setActiveTab] = useState('landing');
@@ -183,7 +183,7 @@ const Navbar = ({ shop }) => {
             className="flex items-center gap-3 cursor-pointer" 
             onClick={handleHomeClick}
           >
-            <img src="/logo.png" alt="Logo" className="h-14 md:h-20 w-auto object-contain rounded-full shadow-md border border-white/10" />
+            <img src="/logo.webp" alt="Kokkarakko Crispy Chicken Logo" className="h-14 w-14 md:h-20 md:w-20 object-contain rounded-full shadow-md border border-white/10" />
             <div className="leading-tight">
               <span className={`block text-base md:text-xl font-black ${textColorClass} tracking-tight uppercase transition-colors duration-500`}>{brandMain}</span>
               <span className={`block text-[9px] md:text-[9px] font-bold ${subTextColorClass} uppercase tracking-widest transition-colors duration-500`}>{brandSub || 'Crispy Chicken'}</span>

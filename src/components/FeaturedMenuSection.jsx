@@ -133,7 +133,9 @@ const FeaturedCard = ({ item, index, slug }) => {
           {imageUrl ? (
             <img
               src={imageUrl}
-              alt={item.name}
+              alt={item.name || 'Featured Menu Item'}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder-food.svg'; }}
             />

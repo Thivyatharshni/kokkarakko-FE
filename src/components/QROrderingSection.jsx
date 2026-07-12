@@ -308,11 +308,13 @@ const QROrderingSection = ({ slug, shop }) => {
           >
             
             {/* Street Cart Illustration */}
-            <div className="relative max-w-sm w-full select-none">
+            <div className="relative max-w-sm w-full aspect-square select-none">
               <img
-                src="/street-cart.png"
+                src="/street-cart.webp"
                 alt={`${shop?.shopName || 'Kokkarakko'} Cart`}
-                className="w-full h-auto object-contain rounded-3xl drop-shadow-[0_10px_30px_rgba(217,4,4,0.15)]"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-contain rounded-3xl drop-shadow-[0_10px_30px_rgba(217,4,4,0.15)]"
               />
 
               {/* Glowing Red Neon Sign */}

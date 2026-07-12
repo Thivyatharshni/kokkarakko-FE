@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useTransform, useMotionTemplate } from 'framer-motion';
-import maskedLegPiece from '../assets/images/masked legpiece.png';
+import maskedLegPiece from '../assets/images/masked legpiece.webp';
 
 // Seasoning Dust / Masala Powder particle (Stage 2)
 const SeasoningParticle = ({ index, scrollYProgress, startX, startY, endX, endY, travelEnd, halfWidth, halfHeight }) => {

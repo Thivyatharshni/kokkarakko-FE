@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { CheckCircle, AlertTriangle, Copy } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import SEO from '../../components/common/SEO';
 
 const OrderSuccess = () => {
   const { orderNumber } = useParams();
@@ -21,6 +22,11 @@ const OrderSuccess = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-50 flex flex-col justify-center items-center px-4 py-4 sm:py-8 overflow-x-hidden">
+      <SEO 
+        title="Order Confirmed | Kokkarakko Crispy Chicken"
+        description="Your order at Kokkarakko Crispy Chicken has been confirmed. Note your token number and collect it when ready."
+        robots="noindex, follow"
+      />
       <div className="max-w-md w-full bg-white p-5 sm:p-8 rounded-3xl shadow-sm border border-gray-100 text-center space-y-4 sm:space-y-6 mx-auto">
         <div className="flex justify-center">
           <div className="bg-green-50 p-3 sm:p-4 rounded-full">

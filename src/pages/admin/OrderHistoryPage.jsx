@@ -7,6 +7,18 @@ import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
 import toast from 'react-hot-toast';
 
+const formatBusinessDate = (dateStr) => {
+  if (!dateStr) return '-';
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const year = parts[0];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const monthIdx = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[2], 10);
+  const month = months[monthIdx] || parts[1];
+  return `${day} ${month} ${year}`;
+};
+
 const OrderHistoryPage = () => {
   const { shopId, loading: shopLoading, error: shopError } = useCurrentShop();
   const [orders, setOrders] = useState([]);
@@ -261,6 +273,7 @@ const OrderHistoryPage = () => {
                 <thead className="bg-gray-50 text-gray-500 text-sm">
                   <tr>
                     <th className="p-4 font-semibold">Order ID</th>
+                    <th className="p-4 font-semibold">Business Date</th>
                     <th className="p-4 font-semibold">Customer Details</th>
                     <th className="p-4 font-semibold">Products</th>
                     <th className="p-4 font-semibold text-center">Quantity</th>
@@ -272,12 +285,21 @@ const OrderHistoryPage = () => {
                 <tbody className="divide-y divide-gray-100">
                   {filteredOrders.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="p-10 text-center text-gray-500">No orders found.</td>
+                      <td colSpan="8" className="p-10 text-center text-gray-500">No orders found.</td>
                     </tr>
                   ) : (
                     filteredOrders.map(order => (
                       <tr key={order._id} className="hover:bg-gray-50 transition-colors">
                         <td className="p-4 font-bold text-gray-900">{order.orderNumber}</td>
+                        <td className="p-4">
+                          {order.businessDate ? (
+                            <span className="inline-block px-2.5 py-1 bg-gray-50 border border-gray-100 text-gray-700 text-xs font-bold rounded-lg">
+                              {formatBusinessDate(order.businessDate)}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
+                        </td>
                         <td className="p-4">
                           <p className="font-semibold text-gray-900">{order.customerName}</p>
                           <p className="text-sm text-gray-500">{order.customerMobile || order.customerPhone || '-'}</p>
@@ -325,8 +347,13 @@ const OrderHistoryPage = () => {
                 filteredOrders.map(order => (
                   <div key={order._id} className="py-3.5 first:pt-0 last:pb-0 flex flex-col gap-2.5">
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-bold text-gray-900 text-sm">{order.orderNumber}</span>
+                        {order.businessDate && (
+                          <span className="text-[10px] bg-gray-100 text-gray-700 font-bold px-1.5 py-0.5 rounded-md border border-gray-200">
+                            {formatBusinessDate(order.businessDate)}
+                          </span>
+                        )}
                         <span className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-bold ${
                           order.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
                         }`}>

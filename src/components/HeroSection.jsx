@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
@@ -6,6 +6,14 @@ import heroVideo from '../assets/animations/herosection video.mp4';
 
 const HeroSection = ({ slug, shop }) => {
   const navigate = useNavigate();
+  const [videoSrc, setVideoSrc] = useState(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVideoSrc(heroVideo);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleExploreMenu = () => {
     if (slug) {
@@ -24,9 +32,10 @@ const HeroSection = ({ slug, shop }) => {
         loop
         muted
         playsInline
+        preload="none"
         className="absolute inset-0 w-full h-full object-cover z-0 opacity-70"
       >
-        <source src={heroVideo} type="video/mp4" />
+        {videoSrc && <source src={videoSrc} type="video/mp4" />}
       </video>
       {/* Premium Smoky Atmosphere Layers, Vignette, Grain & Floating Seasoning */}
       <div className="hero-smoke-layer-1"></div>
@@ -58,33 +67,33 @@ const HeroSection = ({ slug, shop }) => {
             HOT. FRESH. ALWAYS FRIED TO PERFECTION.
           </motion.div>
  
-           {/* Large Typography: CRISPY JUICY IRRESISTIBLE! */}
-           <div className="space-y-1 lg:space-y-2 select-none w-full">
-             <motion.h1 
-               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
-               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-               transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
-             >
-               CRISPY
-             </motion.h1>
-             <motion.h1 
-               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
-               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-               transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-[#D90404] leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
-             >
-               JUICY
-             </motion.h1>
-             <motion.h1 
-               initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
-               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-               transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none uppercase italic [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
-             >
-               IRRESISTIBLE!
-             </motion.h1>
-           </div>
+            {/* Large Typography: CRISPY JUICY IRRESISTIBLE! */}
+            <h1 className="space-y-1 lg:space-y-2 select-none w-full">
+              <motion.span 
+                initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+              >
+                CRISPY
+              </motion.span>
+              <motion.span 
+                initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-[#D90404] leading-none uppercase [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+              >
+                JUICY
+              </motion.span>
+              <motion.span 
+                initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none uppercase italic [text-shadow:_0_4px_16px_rgba(0,0,0,0.6)]"
+              >
+                IRRESISTIBLE!
+              </motion.span>
+            </h1>
  
            {/* Description Row / Supporting text */}
            <motion.p

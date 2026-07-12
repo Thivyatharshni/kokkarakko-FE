@@ -3,13 +3,13 @@ import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence }
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import all 6 correct assets directly using ES modules
-import bottomBun from '../assets/images/bottom bun.png';
-import friedChicken from '../assets/images/fried chicken.png';
-import cheddarCheese from '../assets/images/cheddar cheese.png';
-import lettuce from '../assets/images/lettuce.png';
-import onionTomato from '../assets/images/onion tomato.png';
-import topBun from '../assets/images/top bun.png';
-import bgImage from '../assets/images/bg.png';
+import bottomBun from '../assets/images/bottom bun.webp';
+import friedChicken from '../assets/images/fried chicken.webp';
+import cheddarCheese from '../assets/images/cheddar cheese.webp';
+import lettuce from '../assets/images/lettuce.webp';
+import onionTomato from '../assets/images/onion tomato.webp';
+import topBun from '../assets/images/top bun.webp';
+import bgImage from '../assets/images/bg.webp';
 
 const steps = [
   {

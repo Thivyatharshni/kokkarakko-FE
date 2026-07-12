@@ -199,12 +199,14 @@ const StreetStyleSection = ({ slug, shop, plateRef }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, type: 'spring', stiffness: 60 }}
-            className="relative z-10 max-w-sm w-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.08)] select-none"
+            className="relative z-10 max-w-sm w-full aspect-square drop-shadow-[0_15px_30px_rgba(0,0,0,0.08)] select-none"
           >
             <img
-              src="/street-cart.png"
+              src="/street-cart.webp"
               alt="Street Food Cart"
-              className="w-full h-auto object-contain"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-contain"
             />
             {/* Glowing neon red sign */}
             <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full border-4 border-[#D90404] bg-black flex flex-col items-center justify-center shadow-[0_0_15px_rgba(217,4,4,0.6),inset_0_0_8px_rgba(217,4,4,0.4)] rotate-[-12deg]">
