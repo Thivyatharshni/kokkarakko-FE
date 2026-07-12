@@ -194,11 +194,11 @@ const Analytics = () => {
             {/* QR Scan Trend */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">QR Scan Trend (Last 7 Days)</h2>
-              <div className="w-full h-[220px] lg:h-[320px] md:h-[300px]">
+              <div className="w-full">
                 {!displayQrData?.scansPerDay?.length ? (
                    <EmptyChart message="No scan trend data available" />
                 ) : (
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={280}>
                     <LineChart data={displayQrData.scansPerDay} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                       <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 11 }} dy={10} />
@@ -214,11 +214,11 @@ const Analytics = () => {
             {/* Customer Traffic Trend */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Customer Traffic Trend (Hourly)</h2>
-              <div className="w-full h-[220px] lg:h-[320px] md:h-[300px]">
+              <div className="w-full">
                 {!charts.trafficTrend?.length ? (
                   <EmptyChart message="No analytics data available" />
                 ) : (
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={280}>
                     <AreaChart data={charts.trafficTrend} margin={{ top: 10, right: 5, left: -25, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorTraffic" x1="0" y1="0" x2="0" y2="1">
@@ -240,11 +240,11 @@ const Analytics = () => {
             {/* Most Viewed Products */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Most Viewed Products (Top 10)</h2>
-              <div className="w-full h-[220px] md:h-[300px]">
+              <div className="w-full">
                 {!charts.mostViewed?.length ? (
                    <EmptyChart message="No analytics data available" />
                 ) : (
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={280}>
                     <BarChart layout="vertical" data={charts.mostViewed} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
                       <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 11 }} />
@@ -264,11 +264,11 @@ const Analytics = () => {
             {/* Most Ordered Products */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Most Ordered Products (Top 10)</h2>
-              <div className="w-full h-[220px] md:h-[300px]">
+              <div className="w-full">
                 {!charts.mostOrdered?.length ? (
                   <EmptyChart message="No analytics data available" />
                 ) : (
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={280}>
                     <BarChart layout="vertical" data={charts.mostOrdered} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
                       <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 11 }} />
@@ -288,11 +288,11 @@ const Analytics = () => {
             {/* Category Performance */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Category Distribution</h2>
-              <div className="w-full h-[220px] md:h-[300px]">
+              <div className="w-full">
                 {!charts.categoryPerformance?.length ? (
                   <EmptyChart message="No analytics data available" />
                 ) : (
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={280}>
                     <PieChart>
                       <Pie
                         data={charts.categoryPerformance}
@@ -318,11 +318,11 @@ const Analytics = () => {
             {/* Scan Source Analytics */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Scan Source Analytics</h2>
-              <div className="w-full h-[220px] md:h-[300px]">
+              <div className="w-full">
                 {!charts.scanSource?.length ? (
                    <EmptyChart message="No analytics data available" />
                 ) : (
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height={280}>
                     <PieChart>
                       <Pie
                         data={charts.scanSource}

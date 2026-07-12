@@ -218,8 +218,8 @@ const Dashboard = () => {
             {/* Weekly Orders Trend */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Weekly Orders</h2>
-              <div className="w-full h-[220px] md:h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="w-full">
+                <ResponsiveContainer width="100%" height={280}>
                   <BarChart data={displayData.weeklyOrdersChart} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />
@@ -234,8 +234,8 @@ const Dashboard = () => {
             {/* Weekly Revenue Trend */}
             <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 flex flex-col w-full overflow-hidden">
               <h2 className="text-[22px] font-bold text-gray-900 mb-4 sm:mb-6">Weekly Revenue (₹)</h2>
-              <div className="w-full h-[220px] md:h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="w-full">
+                <ResponsiveContainer width="100%" height={280}>
                   <LineChart data={displayData.weeklyRevenueChart} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />

@@ -16,8 +16,6 @@ const SidebarContent = ({
   setIsTabletExpanded,
   navigate
 }) => {
-  console.log('SidebarContent Render - pathname:', location?.pathname);
-  
   return (
     <div className="flex flex-col h-full bg-[#111111] text-white overflow-hidden">
       <div className="p-4 md:p-6 flex flex-col transition-all">
@@ -50,7 +48,6 @@ const SidebarContent = ({
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = location.pathname.startsWith(item.path);
-          console.log(`  Nav item: ${item.name}, path: ${item.path}, isActive: ${isActive}`);
           return (
             <Link 
               key={item.name}
