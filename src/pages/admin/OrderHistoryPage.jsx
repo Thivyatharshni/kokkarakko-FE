@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useCurrentShop } from '../../hooks/useCurrentShop';
 import { getHistoryOrders } from '../../services/orderService';
-import { Search, Calendar, Package, IndianRupee, CheckCircle, Hash, ArrowLeft } from 'lucide-react';
+import { Search, Calendar, Package, IndianRupee, CheckCircle, Hash, ArrowLeft, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
@@ -103,9 +103,15 @@ const OrderHistoryPage = () => {
         break;
     }
 
-    // Format YYYY-MM-DD
-    const fDate = start.toISOString().split('T')[0];
-    const tDate = end.toISOString().split('T')[0];
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const fDate = formatDate(start);
+    const tDate = formatDate(end);
     
     setFromDate(fDate);
     setToDate(tDate);
@@ -131,12 +137,15 @@ const OrderHistoryPage = () => {
   }, [displayOrders, searchTerm]);
 
   const stats = useMemo(() => {
-    const completedOrders = filteredOrders.filter(o => o.status !== 'Cancelled');
+    const completed = filteredOrders.filter(o => o.status === 'Completed' || !o.status);
+    const cancelled = filteredOrders.filter(o => o.status === 'Cancelled');
     const totalOrders = filteredOrders.length;
-    const revenue = completedOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
-    const avgValue = completedOrders.length > 0 ? Math.round(revenue / completedOrders.length) : 0;
+    const completedOrdersCount = completed.length;
+    const cancelledOrdersCount = cancelled.length;
+    const revenue = completed.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const avgValue = completedOrdersCount > 0 ? Math.round(revenue / completedOrdersCount) : 0;
 
-    return { totalOrders, revenue, avgValue };
+    return { totalOrders, completedOrdersCount, cancelledOrdersCount, revenue, avgValue };
   }, [filteredOrders]);
 
   const formatCompletedTime = (timestamp) => {
@@ -169,7 +178,7 @@ const OrderHistoryPage = () => {
       </div>
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6 w-full">
         <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
           <div className="overflow-hidden pr-2">
             <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">Total Orders</p>
@@ -182,10 +191,19 @@ const OrderHistoryPage = () => {
         <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
           <div className="overflow-hidden pr-2">
             <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">Completed Orders</p>
-            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">{stats.totalOrders}</h3>
+            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">{stats.completedOrdersCount}</h3>
           </div>
           <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-500 bg-opacity-10 flex items-center justify-center flex-shrink-0">
             <CheckCircle className="text-green-500" size={22} />
+          </div>
+        </div>
+        <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
+          <div className="overflow-hidden pr-2">
+            <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-0.5 truncate">Cancelled Orders</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 truncate">{stats.cancelledOrdersCount}</h3>
+          </div>
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-red-500 bg-opacity-10 flex items-center justify-center flex-shrink-0">
+            <X className="text-red-500" size={22} />
           </div>
         </div>
         <div className="bg-white rounded-[16px] h-[110px] md:h-auto p-4 sm:p-5 md:p-6 shadow-sm border border-gray-100 flex items-center justify-between overflow-hidden">
