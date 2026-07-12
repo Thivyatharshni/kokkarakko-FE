@@ -5,6 +5,7 @@ import { ArrowLeft, ShoppingBag, Loader2, AlertTriangle } from 'lucide-react';
 import { getCustomerOrders, cancelOrder } from '../../services/orderService';
 import socket, { connectSocket, disconnectSocket } from '../../sockets/socket';
 import toast from 'react-hot-toast';
+import SEO from '../../components/common/SEO';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
@@ -170,6 +171,10 @@ const OrdersPage = () => {
 
   return (
     <div className="bg-[#0A0A0A] min-h-screen text-white font-sans pb-16 relative">
+      <SEO 
+        title="Your Orders | Kokkarakko Crispy Chicken"
+        description="Track your active orders, check preparation status, and find pickup token numbers at Kokkarakko Crispy Chicken."
+      />
       
       {/* Confirmation Dialog Overlay */}
       <AnimatePresence>
@@ -226,10 +231,9 @@ const OrdersPage = () => {
         <motion.div whileTap={{ scale: 0.9 }} className="inline-block">
           <button 
             onClick={() => {
-              const activeSlug = localStorage.getItem('customer_shop_slug') || 'kokkarakko-fried-chicken';
-              navigate(`/menu/${activeSlug}`);
+              navigate('/');
             }} 
-            className="p-2 hover:bg-[#1A1A1A] rounded-full transition-colors text-gray-400 hover:text-white block"
+            className="p-2 hover:bg-[#1A1A1A] rounded-full transition-colors text-gray-400 hover:text-white block cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>

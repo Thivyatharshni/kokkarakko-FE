@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { Store, Loader2, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../../components/common/SEO';
 
 const SetupShop = () => {
   const [shopName, setShopName] = useState('');
@@ -45,6 +46,7 @@ const SetupShop = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <SEO title="Setup Shop | Kokkarakko" robots="noindex, nofollow" />
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

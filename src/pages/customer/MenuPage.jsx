@@ -17,11 +17,12 @@ import { clientCache } from '../../utils/cache';
 import Footer from '../../components/Footer';
 import ScrollReveal from '../../components/ScrollReveal';
 import toast from 'react-hot-toast';
+import SEO from '../../components/common/SEO';
 
 // Import banner images
-import bucketImg from '../../assets/images/bucket_chicken.png';
-import burgerImg from '../../assets/images/burger.png';
-import popcornImg from '../../assets/images/popcorn_chicken.png';
+import bucketImg from '../../assets/images/bucket_chicken.webp';
+import burgerImg from '../../assets/images/burger.webp';
+import popcornImg from '../../assets/images/popcorn_chicken.webp';
 
 const SkeletonCategoryButton = () => (
   <div className="h-10 bg-[#1A1A1A] border border-[#222] animate-pulse rounded-xl w-24 shrink-0"></div>
@@ -284,6 +285,10 @@ const MenuPage = () => {
 
   return (
     <div className="bg-[#0A0A0A] min-h-screen font-sans text-white">
+      <SEO 
+        title="Menu | Kokkarakko Crispy Chicken"
+        description="Browse the latest Kokkarakko Crispy Chicken menu including burgers, fried chicken, combos, beverages, and more."
+      />
       {/* Header */}
       <header className="flex flex-col sm:flex-row gap-4 justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full">
         <div className="flex justify-between items-center w-full sm:w-auto gap-4">
@@ -480,8 +485,9 @@ const MenuPage = () => {
                   {imageUrl ? (
                     <img
                       src={imageUrl}
-                      alt={item.name}
+                      alt={item.name || 'Menu Item'}
                       loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                       onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
                     />

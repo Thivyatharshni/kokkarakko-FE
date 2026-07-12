@@ -1,20 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { useScroll } from 'framer-motion';
 import Navbar from '../../components/Navbar';
 import HeroSection from '../../components/HeroSection';
-import SignaturePreparationSection from '../../components/SignaturePreparationSection';
-import FeaturesStrip from '../../components/FeaturesStrip';
-import StreetStyleSection from '../../components/StreetStyleSection';
-import BurgerAssemblySection from '../../components/BurgerAssemblySection';
-import FeaturedMenuSection from '../../components/FeaturedMenuSection';
-import QROrderingSection from '../../components/QROrderingSection';
-import Footer from '../../components/Footer';
-import AnimatedChickenLeg from '../../components/AnimatedChickenLeg';
 import { getShopBySlug } from '../../services/shopService';
 import { API_BASE_URL } from '../../config/constants';
 import { Loader2 } from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal';
 import { clientCache } from '../../utils/cache';
+import SEO from '../../components/common/SEO';
+
+// Lazy loaded below-the-fold sections
+const SignaturePreparationSection = lazy(() => import('../../components/SignaturePreparationSection'));
+const FeaturesStrip = lazy(() => import('../../components/FeaturesStrip'));
+const StreetStyleSection = lazy(() => import('../../components/StreetStyleSection'));
+const BurgerAssemblySection = lazy(() => import('../../components/BurgerAssemblySection'));
+const FeaturedMenuSection = lazy(() => import('../../components/FeaturedMenuSection'));
+const QROrderingSection = lazy(() => import('../../components/QROrderingSection'));
+const Footer = lazy(() => import('../../components/Footer'));
+const AnimatedChickenLeg = lazy(() => import('../../components/AnimatedChickenLeg'));
 
 const LandingPage = () => {
   const [coords, setCoords] = useState(null);
@@ -129,48 +132,115 @@ const LandingPage = () => {
     );
   }
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://kokkarakko.shop/#organization",
+        "name": "Kokkarakko Crispy Chicken",
+        "url": "https://kokkarakko.shop",
+        "logo": "https://kokkarakko.shop/logo.webp"
+      },
+      {
+        "@type": "Restaurant",
+        "@id": "https://kokkarakko.shop/#restaurant",
+        "name": "Kokkarakko Crispy Chicken",
+        "image": "https://kokkarakko.shop/bg.webp",
+        "url": "https://kokkarakko.shop",
+        "telephone": "+919630258147",
+        "priceRange": "$$",
+        "servesCuisine": "Crispy Fried Chicken, Burgers, Combos",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Main Restaurant Row",
+          "addressLocality": "Coimbatore",
+          "addressRegion": "Tamil Nadu",
+          "postalCode": "641001",
+          "addressCountry": "IN"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "11:00",
+          "closes": "23:00"
+        },
+        "potentialAction": {
+          "@type": "OrderAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://kokkarakko.shop",
+            "inLanguage": "en-US",
+            "actionPlatform": [
+              "http://schema.org/DesktopWebPlatform",
+              "http://schema.org/MobileWebPlatform"
+            ]
+          },
+          "deliveryMethod": ["http://schema.org/DeliveryModeOwnFleet"]
+        }
+      }
+    ]
+  };
+
   return (
     <div className="bg-white min-h-screen relative">
+      <SEO 
+        title="Kokkarakko Crispy Chicken | Fresh Fried Chicken & Fast Ordering"
+        description="Order delicious fried chicken online from Kokkarakko Crispy Chicken. Scan the QR code, browse the menu, place your order, and collect it quickly."
+        structuredData={structuredData}
+      />
       <Navbar shop={shop} />
       
       {/* Scroll animation container encompassing Hero down to StreetStyleSection */}
       <div ref={containerRef} className="relative z-30">
         <HeroSection slug={shop?.slug} shop={shop} />
         
-        <ScrollReveal type="section">
-          <SignaturePreparationSection bucketRef={bucketRef} originRef={originRef} />
-        </ScrollReveal>
-        
-        <ScrollReveal type="section">
-          <FeaturesStrip />
-        </ScrollReveal>
-        
-        <ScrollReveal type="section">
-          <StreetStyleSection slug={shop?.slug} shop={shop} plateRef={destRef} />
-        </ScrollReveal>
-        
-        {coords && (
-          <AnimatedChickenLeg 
-            key={`${Math.round(coords.start.x)}-${Math.round(coords.start.y)}-${Math.round(coords.end.x)}-${Math.round(coords.end.y)}`}
-            coords={coords} 
-            scrollYProgress={scrollYProgress}
-          />
-        )}
+        <Suspense fallback={<div className="min-h-[200px] bg-white animate-pulse" />}>
+          <ScrollReveal type="section">
+            <SignaturePreparationSection bucketRef={bucketRef} originRef={originRef} />
+          </ScrollReveal>
+          
+          <ScrollReveal type="section">
+            <FeaturesStrip />
+          </ScrollReveal>
+          
+          <ScrollReveal type="section">
+            <StreetStyleSection slug={shop?.slug} shop={shop} plateRef={destRef} />
+          </ScrollReveal>
+          
+          {coords && (
+            <AnimatedChickenLeg 
+              key={`${Math.round(coords.start.x)}-${Math.round(coords.start.y)}-${Math.round(coords.end.x)}-${Math.round(coords.end.y)}`}
+              coords={coords} 
+              scrollYProgress={scrollYProgress}
+            />
+          )}
+        </Suspense>
       </div>
       
-      <ScrollReveal type="section">
-        <BurgerAssemblySection />
-      </ScrollReveal>
-      
-      <FeaturedMenuSection shop={shop} />
-      
-      <ScrollReveal type="section">
-        <QROrderingSection slug={shop?.slug} shop={shop} />
-      </ScrollReveal>
-      
-      <ScrollReveal type="section">
-        <Footer shop={shop} />
-      </ScrollReveal>
+      <Suspense fallback={<div className="min-h-[200px] bg-[#0A0A0A] animate-pulse" />}>
+        <ScrollReveal type="section">
+          <BurgerAssemblySection />
+        </ScrollReveal>
+        
+        <FeaturedMenuSection shop={shop} />
+        
+        <ScrollReveal type="section">
+          <QROrderingSection slug={shop?.slug} shop={shop} />
+        </ScrollReveal>
+        
+        <ScrollReveal type="section">
+          <Footer shop={shop} />
+        </ScrollReveal>
+      </Suspense>
     </div>
   );
 };

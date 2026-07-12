@@ -9,6 +9,16 @@ import LoadingState from '../../components/common/LoadingState';
 import ErrorState from '../../components/common/ErrorState';
 import { clientCache } from '../../utils/cache';
 
+const getISTBusinessDateFormatted = () => {
+  const date = new Date();
+  const shifted = new Date(date.getTime() + (5.5 * 60 * 60 * 1000));
+  const y = shifted.getUTCFullYear();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const m = months[shifted.getUTCMonth()];
+  const d = shifted.getUTCDate();
+  return `${d} ${m} ${y}`;
+};
+
 const STATUS_COLORS = {
   Pending: 'bg-orange-100 text-orange-700',
   Preparing: 'bg-blue-100 text-blue-700',
@@ -181,7 +191,13 @@ const OrdersPage = () => {
     <div className="space-y-5 w-full max-w-full overflow-hidden">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-[28px] md:text-3xl font-bold text-gray-900 tracking-tight leading-tight truncate">Live Orders</h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-[28px] md:text-3xl font-bold text-gray-900 tracking-tight leading-tight truncate">Live Orders</h1>
+          <div className="bg-gray-50 border border-gray-100 rounded-xl px-3 py-1 flex flex-col text-[11px] font-bold text-gray-500 uppercase tracking-wider shadow-sm select-none">
+            <span className="text-[9px] text-gray-400 font-medium normal-case">Business Date</span>
+            <span className="text-gray-800 text-xs font-semibold mt-0.5">{getISTBusinessDateFormatted()}</span>
+          </div>
+        </div>
         <Link 
           to="/owner/orders/history"
           className="w-full sm:w-auto h-11 md:h-12 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold text-[15px] px-5 rounded-xl flex items-center justify-center gap-2 transition-all"
@@ -330,6 +346,8 @@ const OrdersPage = () => {
           </div>
         </div>
       )}
+
+
     </div>
   );
 };
