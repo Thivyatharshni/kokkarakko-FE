@@ -28,7 +28,9 @@ const GlobalStickyCart = () => {
   const isHome = pathname === '/';
   const isMenu = pathname.startsWith('/menu/');
   const isShop = pathname.startsWith('/shop/');
-  const shouldShow = (isHome || isMenu || isShop) && cartCount > 0;
+  const isOrders = pathname.startsWith('/orders');
+  const isOrderSuccess = pathname.startsWith('/order-success');
+  const shouldShow = (isHome || isMenu || isShop) && !isOrders && !isOrderSuccess && cartCount > 0;
 
   return (
     <AnimatePresence>

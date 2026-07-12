@@ -8,15 +8,12 @@ const MainLayout = () => {
   const isOrderSuccess = pathname.startsWith('/order-success/');
 
   useEffect(() => {
-    if (isLanding) {
-      document.body.style.backgroundColor = '#ffffff';
-    } else if (isOrderSuccess) {
-      document.body.style.backgroundColor = '#f9fafb'; // bg-gray-50
-    } else {
-      document.body.style.backgroundColor = '#0A0A0A'; // dark bg
-    }
+    const color = isLanding ? '#ffffff' : (isOrderSuccess ? '#f9fafb' : '#0A0A0A');
+    document.body.style.backgroundColor = color;
+    document.documentElement.style.backgroundColor = color;
     return () => {
       document.body.style.backgroundColor = '';
+      document.documentElement.style.backgroundColor = '';
     };
   }, [pathname, isLanding, isOrderSuccess]);
 

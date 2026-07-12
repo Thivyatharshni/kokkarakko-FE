@@ -5,6 +5,7 @@ import { ArrowLeft, ShoppingBag, Loader2, AlertTriangle } from 'lucide-react';
 import { getCustomerOrders, cancelOrder } from '../../services/orderService';
 import toast from 'react-hot-toast';
 import SEO from '../../components/common/SEO';
+import socket, { connectSocket, disconnectSocket } from '../../sockets/socket';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
@@ -75,6 +76,42 @@ const OrdersPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    connectSocket();
+
+    // Listen to real-time status updates (Completed/Cancelled auto-removes card or updates state status)
+    socket.on('order-status-updated', (updatedOrder) => {
+      setOrders((prevOrders) => {
+        const orderExists = prevOrders.some(o => o._id === updatedOrder._id);
+        if (!orderExists) return prevOrders;
+
+        // If the order status becomes Completed or Cancelled, remove it
+        if (updatedOrder.status === 'Completed' || updatedOrder.status === 'Cancelled') {
+          // Remove from local storage
+          const storedOrders = localStorage.getItem('customer_orders');
+          if (storedOrders) {
+            try {
+              const parsed = JSON.parse(storedOrders);
+              const cleaned = parsed.filter(o => o.orderNumber !== updatedOrder.orderNumber);
+              localStorage.setItem('customer_orders', JSON.stringify(cleaned));
+            } catch (e) {
+              console.error('Failed to update localStorage:', e);
+            }
+          }
+          return prevOrders.filter(o => o._id !== updatedOrder._id);
+        }
+
+        // Just update state
+        return prevOrders.map(o => o._id === updatedOrder._id ? updatedOrder : o);
+      });
+    });
+
+    return () => {
+      socket.off('order-status-updated');
+      disconnectSocket();
+    };
+  }, []);
+
 
 
   const handleCancelClick = (order) => {
@@ -86,7 +123,8 @@ const OrdersPage = () => {
     setCancelling(true);
 
     try {
-      const res = await cancelOrder(confirmCancelOrder.orderNumber, confirmCancelOrder.customerMobile);
+      const mobileNumber = confirmCancelOrder.customerMobile || confirmCancelOrder.customerPhone || confirmCancelOrder.mobile;
+      const res = await cancelOrder(confirmCancelOrder.orderNumber, mobileNumber);
       if (res.success) {
         toast.success('Order cancelled successfully.', { icon: '🗑️' });
 

@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const clearCart = () => {
-    localStorage.removeItem('kokkarakko_cart');
+    localStorage.setItem('kokkarakko_cart', JSON.stringify([]));
     setCart([]);
   };
 

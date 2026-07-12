@@ -13,7 +13,8 @@ const SidebarContent = ({
   navItems, 
   handleLogout, 
   setIsMobileOpen, 
-  setIsTabletExpanded 
+  setIsTabletExpanded,
+  navigate
 }) => (
   <div className="flex flex-col h-full bg-[#111111] text-white overflow-hidden">
     <div className="p-4 md:p-6 flex flex-col transition-all">
@@ -47,7 +48,9 @@ const SidebarContent = ({
           <Link 
             key={item.name}
             to={item.path} 
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(item.path);
               setIsMobileOpen(false);
               setIsTabletExpanded(false);
             }}
@@ -68,7 +71,9 @@ const SidebarContent = ({
     <div className="p-3 border-t border-gray-800 space-y-1">
       <Link 
         to="/" 
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
+          navigate('/');
           setIsMobileOpen(false);
           setIsTabletExpanded(false);
         }}
@@ -137,12 +142,19 @@ const AdminLayout = () => {
           handleLogout={handleLogout}
           setIsMobileOpen={setIsMobileOpen}
           setIsTabletExpanded={setIsTabletExpanded}
+          navigate={navigate}
         />
       </aside>
 
       {/* Tablet Collapsed Sidebar (md to lg) */}
       <aside 
-        onClick={() => setIsTabletExpanded(!isTabletExpanded)}
+        onClick={(e) => {
+          // Ignore container expand/collapse click if a link or button was clicked inside
+          if (e.target.closest('a') || e.target.closest('button')) {
+            return;
+          }
+          setIsTabletExpanded(!isTabletExpanded);
+        }}
         className={`hidden md:flex lg:hidden flex-col fixed inset-y-0 z-50 cursor-pointer transition-all duration-300 shadow-xl ${
           isTabletExpanded ? 'w-72' : 'w-20'
         }`}
@@ -155,6 +167,7 @@ const AdminLayout = () => {
           handleLogout={handleLogout}
           setIsMobileOpen={setIsMobileOpen}
           setIsTabletExpanded={setIsTabletExpanded}
+          navigate={navigate}
         />
       </aside>
       {isTabletExpanded && (
@@ -191,6 +204,7 @@ const AdminLayout = () => {
                 handleLogout={handleLogout}
                 setIsMobileOpen={setIsMobileOpen}
                 setIsTabletExpanded={setIsTabletExpanded}
+                navigate={navigate}
               />
             </motion.aside>
           </>

@@ -3,7 +3,6 @@ import { SOCKET_URL } from '../config/constants';
 
 const socket = io(SOCKET_URL, {
   autoConnect: false, // We'll connect manually when needed
-  transports: ['websocket'],
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,

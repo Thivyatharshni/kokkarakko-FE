@@ -25,6 +25,7 @@
     width: 100%;
     min-height: 100%;
     overscroll-behavior-y: none;
+    background-color: #F8F8F8;
   }
 
   body {

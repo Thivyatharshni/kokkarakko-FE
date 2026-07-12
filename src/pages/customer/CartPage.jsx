@@ -172,6 +172,7 @@ const CartPage = () => {
         localStorage.setItem('customer_orders', JSON.stringify(customerOrders));
 
         clearCart();
+        localStorage.setItem('kokkarakko_cart', JSON.stringify([]));
         localStorage.removeItem('customerName');
         localStorage.removeItem('customerMobile');
         navigate(`/order-success/${res.data.orderNumber}`);
