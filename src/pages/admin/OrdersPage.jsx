@@ -157,6 +157,11 @@ const OrdersPage = () => {
       if (res.success) {
         toast.success(`Order marked as ${newStatus}`);
         setOrders(prev => {
+          if (newStatus === 'Completed' || newStatus === 'Cancelled') {
+            const updated = prev.filter(o => o._id !== orderId);
+            clientCache.set(`live_orders_${shopId}`, updated);
+            return updated;
+          }
           const updated = prev.map(o => o._id === orderId ? { ...o, status: newStatus } : o);
           clientCache.set(`live_orders_${shopId}`, updated);
           return updated;

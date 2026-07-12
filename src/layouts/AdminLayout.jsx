@@ -48,11 +48,11 @@ const SidebarContent = ({
           <Link 
             key={item.name}
             to={item.path} 
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(item.path);
-              setIsMobileOpen(false);
-              setIsTabletExpanded(false);
+            onClick={() => {
+              setTimeout(() => {
+                setIsMobileOpen(false);
+                setIsTabletExpanded(false);
+              }, 100);
             }}
             title={isCollapsed ? item.name : undefined}
             className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] rounded-lg md:rounded-xl transition-all duration-200 ${
@@ -71,11 +71,11 @@ const SidebarContent = ({
     <div className="p-3 border-t border-gray-800 space-y-1">
       <Link 
         to="/" 
-        onClick={(e) => {
-          e.preventDefault();
-          navigate('/');
-          setIsMobileOpen(false);
-          setIsTabletExpanded(false);
+        onClick={() => {
+          setTimeout(() => {
+            setIsMobileOpen(false);
+            setIsTabletExpanded(false);
+          }, 100);
         }}
         title={isCollapsed ? 'Back to Home' : undefined}
         className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg md:rounded-xl transition-colors duration-200`}
