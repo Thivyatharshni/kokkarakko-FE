@@ -33,8 +33,11 @@ const SidebarContent = ({
           </div>
           {onClose && !isCollapsed && (
             <button 
-              onClick={onClose}
-              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:bg-white/20 transition-all duration-200 ml-4 flex-shrink-0 text-gray-400 hover:text-white"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 active:bg-white/20 transition-all duration-200 ml-4 flex-shrink-0 text-gray-400 hover:text-white cursor-pointer"
               aria-label="Close sidebar"
             >
               <X size={18} />
@@ -56,7 +59,7 @@ const SidebarContent = ({
                 setTimeout(() => {
                   setIsMobileOpen(false);
                   setIsTabletExpanded(false);
-                }, 100);
+                }, 80);
               }}
               title={isCollapsed ? item.name : undefined}
               className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] rounded-lg md:rounded-xl transition-all duration-200 ${
@@ -79,7 +82,7 @@ const SidebarContent = ({
             setTimeout(() => {
               setIsMobileOpen(false);
               setIsTabletExpanded(false);
-            }, 100);
+            }, 80);
           }}
           title={isCollapsed ? 'Back to Home' : undefined}
           className={`flex items-center ${isCollapsed ? 'justify-center px-2.5' : 'space-x-3 px-3 md:px-4'} h-[52px] text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg md:rounded-xl transition-colors duration-200`}
@@ -118,6 +121,12 @@ const AdminLayout = () => {
       document.body.style.overflow = 'unset';
     };
   }, [isMobileOpen]);
+
+  // Auto-close drawers/sidebars when route pathname transitions
+  useEffect(() => {
+    setIsMobileOpen(false);
+    setIsTabletExpanded(false);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logoutContext();
@@ -185,34 +194,39 @@ const AdminLayout = () => {
       {/* Mobile Drawer (< md) */}
       <AnimatePresence>
         {isMobileOpen && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileOpen(false)}
-              className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm"
+          <motion.div 
+            key="mobile-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMobileOpen(false);
+            }}
+            className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm cursor-pointer"
+          />
+        )}
+        {isMobileOpen && (
+          <motion.aside 
+            key="mobile-sidebar"
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+            className="fixed inset-y-0 left-0 w-[280px] z-50 md:hidden shadow-2xl"
+          >
+            <SidebarContent 
+              isCollapsed={false} 
+              onClose={() => setIsMobileOpen(false)}
+              shop={shop}
+              location={location}
+              navItems={navItems}
+              handleLogout={handleLogout}
+              setIsMobileOpen={setIsMobileOpen}
+              setIsTabletExpanded={setIsTabletExpanded}
+              navigate={navigate}
             />
-            <motion.aside 
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-              className="fixed inset-y-0 left-0 w-[280px] z-50 md:hidden shadow-2xl"
-            >
-              <SidebarContent 
-                isCollapsed={false} 
-                onClose={() => setIsMobileOpen(false)}
-                shop={shop}
-                location={location}
-                navItems={navItems}
-                handleLogout={handleLogout}
-                setIsMobileOpen={setIsMobileOpen}
-                setIsTabletExpanded={setIsTabletExpanded}
-                navigate={navigate}
-              />
-            </motion.aside>
-          </>
+          </motion.aside>
         )}
       </AnimatePresence>
 
